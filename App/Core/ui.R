@@ -1461,18 +1461,12 @@ tags$span(
 title = HTML(
   "<b>Example dataset</b><br><br>
 
-  Load a complete example Thermal Proteome Profiling dataset into the application.<br><br>
+  Staurosporine thermal proteome profiling dataset from the landmark study by Savitski et al. (Science, 2014).<br><br>
 
-  Use the example dataset to:
+  DOI: 10.1126/science.1255784<br><br>
 
-  <br>• Explore the workflow without uploading your own files.
-
-  <br>• Test analysis settings and parameters.
-
-  <br>• Learn the expected input formats and outputs.
-
-  <br><br>
-
+  Already log2 scaled and normalized to lowest temperature<br><br>
+  
   Loading the example dataset automatically populates all required input files."
 ),
   tags$i(
@@ -1546,6 +1540,16 @@ title = HTML(
                   uiOutput("protein_upload_message"),
 
                   uiOutput("protein_upload_ui"),
+                  checkboxInput(
+                  "already_log2",
+                  "Click here if the dataset is already log2 transformed",
+                  value = FALSE
+                ),
+                checkboxInput(
+                  "Already_lowestnorm",
+                  "Click here if the dataset is already normalized to the lowest temperature",
+                  value = FALSE
+                ),
                   uiOutput("custom_org_loader_ui")
               ),
               column(

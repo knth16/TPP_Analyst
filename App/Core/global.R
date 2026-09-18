@@ -207,8 +207,12 @@ plot_detect_custom_df <- function(df, colors = c("#1f77b4", "#ff7f0e"), font_fam
 
   stat <- df_long %>%
     group_by(rowname) %>%
-    summarise(mean = mean(val[val != 0], na.rm = TRUE), zeroval = any(val == 0))
+    summarise(mean = mean(val[val != 0], na.rm = TRUE), zeroval = any(val == 0, na.rm = TRUE))
+cat("\n====================\n")
+cat("DENSITY DEBUG\n")
+cat("====================\n")
 
+print(table(stat$zeroval))
   ggplot(stat, aes(mean, color = zeroval)) +
     geom_density(na.rm = TRUE) +
     scale_color_manual(values = colors) +
@@ -1941,7 +1945,11 @@ missingStatsModule <- function(dataReactive) {
     percentage = missing_percentage
   ))
 }
-zeroStatsModule <- function(id, filtered_data) {
+zeroStatsModule <- function(
+  id,
+  filtered_data,
+  already_log2
+) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
@@ -1950,15 +1958,30 @@ zeroStatsModule <- function(id, filtered_data) {
       
       df <- filtered_data()
 
+
+numeric_df <- df[, sapply(df, is.numeric), drop = FALSE]
+
+all_zero <- apply(
+  numeric_df,
+  1,
+  function(x) all(x == 0, na.rm = TRUE)
+)
+
+print(sum(all_zero))
+
+cat("Rows with at least one positive value:\n")
+print(sum(rowSums(numeric_df > 0, na.rm = TRUE) > 0))
 req(
-  input$filter_0,
   input$mean_intensity_filter
 )
 
 
-      threshold <- input$filter_0
-      
-      if (!is.null(threshold) && threshold > 0) {
+threshold <- input$filter_0
+
+if (
+  !is.null(threshold) &&
+  threshold > 0
+) {
         df <- df %>%
           filter(rowSums(across(-1, ~ . == 0)) <= threshold)
       }
@@ -1975,7 +1998,16 @@ req(
             return(0)
           }
 
-          mean(log2(x + 1))
+          if (already_log2()) {
+
+            mean(x)
+
+          } else {
+
+            mean(log2(x + 1))
+
+          }
+
 
         }
       )
@@ -1995,6 +2027,19 @@ req(
           ]
 
         }
+        cat("\nRows AFTER filtering:\n")
+print(nrow(df))
+
+numeric_df2 <- df[, sapply(df, is.numeric), drop = FALSE]
+
+all_zero2 <- apply(
+  numeric_df2,
+  1,
+  function(x) all(x == 0, na.rm = TRUE)
+)
+
+cat("All-zero rows after filtering:\n")
+print(sum(all_zero2))
       df
     })
 
@@ -2040,7 +2085,13 @@ zero_percentage <- reactive({
 }
 
 
-qcPanelModuleServer <- function(id, filtered_data, missing_stats, zero_stats) {
+qcPanelModuleServer <- function(
+  id,
+  filtered_data,
+  missing_stats,
+  zero_stats,
+  already_log2
+) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 last_heatmap <- reactiveVal(NULL)
@@ -2150,9 +2201,7 @@ output$missing_info_card <- renderUI({
         return(helpText("Apply a transformation to enable zero-value filtering."))
       }
 
-      if (!any(df == 0, na.rm = TRUE)) {
-        return(helpText("No zero values in the data to enable filtering."))
-      }
+
 
       max_val <- ncol(df) - 1
 
@@ -2169,7 +2218,15 @@ row_means <- apply(
       return(0)
     }
 
-    mean(log2(x + 1))
+    if (already_log2()) {
+
+      mean(x)
+
+    } else {
+
+      mean(log2(x + 1))
+
+    }
 
   }
 )
@@ -2184,37 +2241,66 @@ max_intensity <- ceiling(
 
 
 
-      tagList(
+has_zeros <- any(df == 0, na.rm = TRUE)
 
-        sliderInput(
-          inputId = ns("filter_0"),
-          label   = "Filter out proteins with number of zero values >= to:",
-          min     = 0,
-          max     = max(0, max_val),
-          value   = max(0, max_val),
-          step    = 1
-        ),
+controls <- list()
 
-        sliderInput(
-          inputId = ns("mean_intensity_filter"),
-          label = "Average log2 intensity range:",
+# ---------------------------------
+# Zero-value filter only if needed
+# ---------------------------------
 
-          min = min_intensity,
+if (has_zeros) {
 
-          max = max_intensity,
+  controls <- c(
+    controls,
 
-          value = c(
-            min_intensity,
-            max_intensity
-          ),
+    list(
 
-          step = 0.1
-        ),
-        verbatimTextOutput(
-          ns("filter_summary")
-        )
-
+      sliderInput(
+        inputId = ns("filter_0"),
+        label = "Filter out proteins with number of zero values >= to:",
+        min = 0,
+        max = max(0, max_val),
+        value = max(0, max_val),
+        step = 1
       )
+
+    )
+
+  )
+
+}
+
+# ---------------------------------
+# Intensity filter ALWAYS available
+# ---------------------------------
+
+controls <- c(
+  controls,
+
+  list(
+
+    sliderInput(
+      inputId = ns("mean_intensity_filter"),
+      label = "Average log2 intensity range:",
+      min = min_intensity,
+      max = max_intensity,
+      value = c(
+        min_intensity,
+        max_intensity
+      ),
+      step = 0.1
+    ),
+
+    verbatimTextOutput(
+      ns("filter_summary")
+    )
+
+  )
+
+)
+
+do.call(tagList, controls)
 
     })
 
@@ -2381,12 +2467,23 @@ output$download_zero_values_per_temp <- downloadHandler(
     "No proteins with zero values remain after filtering."
   )
 )
-      dflog2 <- df0 %>%
-        dplyr::mutate(
-          dplyr::across(where(is.numeric), log2)
-        )
+if (already_log2()) {
 
-      dflog2[dflog2 == -Inf] <- 0
+  dflog2 <- df0
+
+} else {
+
+  dflog2 <- df0 %>%
+    dplyr::mutate(
+      dplyr::across(
+        where(is.numeric),
+        log2
+      )
+    )
+
+  dflog2[dflog2 == -Inf] <- 0
+
+}
       incProgress(
         0.8,
         detail = "Calculating density"
@@ -2506,8 +2603,33 @@ req(
       )
 
       # keep original intensities
-      missval <- log2(filtered_mat + 1)
+      if (already_log2()) {
 
+  missval <- filtered_mat
+
+} else {
+
+  missval <- log2(filtered_mat + 1)
+
+}
+cat("\n====================\n")
+cat("HEATMAP DEBUG\n")
+cat("====================\n")
+
+cat("Rows:\n")
+print(nrow(missval))
+
+cat("Columns:\n")
+print(ncol(missval))
+
+cat("Zeros:\n")
+print(sum(missval == 0, na.rm = TRUE))
+
+cat("Positive values:\n")
+print(sum(missval > 0, na.rm = TRUE))
+
+cat("Range:\n")
+print(range(missval, na.rm = TRUE))
 
       incProgress(
         0.50,
@@ -3167,7 +3289,9 @@ normalizationPanelModuleUI <- function(id, label) {
               • <b>Reference protein normalization</b><br>
               Normalizes all proteins relative to a reference protein.<br><br>
 
-              If no reference protein is provided manually, the application automatically selects the most stable protein across the temperature range.<br><br>
+              • <b>Normalize to lowest temperature</b><br>
+              For each replicate, all temperature points are divided by the abundance measured at the lowest temperature.<br><br>
+
 
               If no normalization method is selected, the raw filtered dataset is used unchanged."
             ),
@@ -3188,9 +3312,10 @@ normalizationPanelModuleUI <- function(id, label) {
           inputId = ns("normalization_methods"),
           label = "Select normalization methods to apply:",
           choices = c(
-            "log2 transformation" = "log2",
-            "Within replicate median normalization" = "rep",
-            "Reference protein normalization" = "ref"
+          "log2 transformation" = "log2",
+          "Within replicate median normalization" = "rep",
+          "Reference protein normalization" = "ref",
+          "Normalize to lowest temperature" = "lowest_temp"
           ),
           selected = NULL,
           inline = TRUE
@@ -3608,7 +3733,8 @@ removed_samples <- reactiveValues(
 )
 #removed sample message for renormalize
 normalization_invalidated <- reactiveVal(FALSE)
-
+# Tracks whether lowest temperature normalization has actually been applied
+lowest_temp_normalized <- reactiveVal(FALSE)
 
 observe({
   selected_samples$data
@@ -3695,7 +3821,70 @@ normalized_data <- eventReactive(input$apply_normalization, {
       orig_order <- attr(df, "orig_order") %||% names(df)
       first_col  <- orig_order[1]
       temp_cols <- setdiff(orig_order[-1], "Organism")
+normalize_to_lowest_temperature <- function(df, first_col) {
 
+temp_cols <- names(df)[-1]
+
+temps_str <- stringr::str_extract(
+temp_cols,
+"^\\d+\\.?\\d*"
+)
+
+temps_num <- as.numeric(temps_str)
+
+replicates <- unique(
+stringr::str_extract(
+temp_cols,
+"REP\\d+"
+)
+)
+
+lowest_temp_str <- temps_str[
+which.min(temps_num)
+]
+
+out <- df
+
+for(rep in replicates){
+
+rep_cols <- grep(
+rep,
+names(out),
+value = TRUE
+)
+
+ref_col <- grep(
+paste0(
+"^",
+lowest_temp_str,
+"_",
+rep,
+"$"
+),
+names(out),
+value = TRUE
+)
+
+if(length(ref_col) == 0)
+next
+
+ref_vals <- out[[ref_col]]
+
+out[rep_cols] <- sweep(
+out[rep_cols],
+1,
+ref_vals,
+"/"
+)
+
+bad_rows <- is.na(ref_vals) | ref_vals == 0
+
+if(any(bad_rows)){
+out[rep_cols][bad_rows, ] <- NA
+}
+}
+out
+}
 
       # ---- LOG2 normalization ----
 if ("log2" %in% methods) {
@@ -3721,7 +3910,7 @@ if ("log2" %in% methods) {
 if ("rep" %in% methods) {
 
   incProgress(
-    0.50,
+    0.40,
     detail = "Applying replicate normalization"
   )
         # Long format -> compute normalization -> wide -> restore order
@@ -3768,12 +3957,26 @@ if ("rep" %in% methods) {
         # Ensure numerics
         df <- dplyr::mutate(df, dplyr::across(dplyr::all_of(temp_cols), ~ suppressWarnings(as.numeric(.))))
       }
+# ---- Lowest temperature normalization ----
 
+if ("lowest_temp" %in% methods) {
+
+incProgress(
+0.65,
+detail = "Normalizing to lowest temperature"
+)
+
+df <- normalize_to_lowest_temperature(
+df,
+first_col
+)
+
+}
       # ---- Reference-based normalization ----
 if ("ref" %in% methods) {
 
   incProgress(
-    0.75,
+    0.85,
     detail = "Applying reference protein normalization"
   )
 
@@ -3893,7 +4096,13 @@ observeEvent(input$apply_normalization, {
   } else {
     current_data(normalized_data())
   }
-normalization_invalidated(FALSE)
+
+  lowest_temp_normalized(
+    "lowest_temp" %in% methods
+  )
+
+  normalization_invalidated(FALSE)
+
 })
 
 plot_data <- reactive({
@@ -3959,6 +4168,7 @@ observeEvent(input$restore_selected, {
 
     removed_samples$data <- df
     normalization_invalidated(TRUE)
+    lowest_temp_normalized(FALSE)
   })
 
 })
@@ -3986,7 +4196,7 @@ observeEvent(input$remove_selected, {
     removed_samples$data <- unique(rbind(removed, current))
 
     normalization_invalidated(TRUE)
-
+    lowest_temp_normalized(FALSE)
     selected_samples$data <- data.frame(
       Sample = character(),
       stringsAsFactors = FALSE
@@ -4827,7 +5037,7 @@ incProgress(
 
       df_wide$distance <- apply(df_wide[,-1], 1, function(x) sum((x - avg_vector)^2, na.rm = TRUE))
       
-      df_wide$distance <- log(df_wide$distance)
+      df_wide$distance <- log(pmax(df_wide$distance, 1e-10))
       
       df_wide$distance <- df_wide$distance - min(df_wide$distance, na.rm = TRUE)
       df_wide$distance <- df_wide$distance / max(df_wide$distance, na.rm = TRUE) * 0.1
@@ -4933,7 +5143,7 @@ output$download_total_density_plot <- downloadHandler(
         sum((x - avg_vector)^2, na.rm = TRUE)
     )
 
-    df_wide$distance <- log(df_wide$distance)
+    df_wide$distance <- log(pmax(df_wide$distance, 1e-10))
 
     df_wide$distance <- df_wide$distance -
       min(df_wide$distance, na.rm = TRUE)
@@ -5201,14 +5411,19 @@ qc_applied <- reactive({
 })
 
 return(
-  list(
-    plot_data = plot_data,
-    current_data = current_data,
-    raw_data = raw_data,
-    normalized_data = normalized_data,
-    ref_protein_name = ref_protein_name,
-    qc_applied = qc_applied
-  )
+list(
+plot_data = plot_data,
+current_data = current_data,
+raw_data = raw_data,
+normalized_data = normalized_data,
+ref_protein_name = ref_protein_name,
+qc_applied = qc_applied,
+selected_methods = reactive(
+input$normalization_methods %||%
+character(0)
+),
+lowest_temp_normalized = lowest_temp_normalized
+)
 )
   })
 }
@@ -5307,28 +5522,6 @@ clusterPanelModuleUI <- function(id, label) {
           "Spearman" = "spearman"
         ),
         selected = "spearman"
-      ),
-        div(
-        style = "
-          padding:10px;
-          margin-top:10px;
-          margin-bottom:10px;
-          background-color:#f8f9fa;
-          border:1px solid #dee2e6;
-          border-radius:4px;
-        ",
-
-        tags$b("Normalization before clustering"),
-
-        tags$p(
-          "By default, protein intensities are normalized to the lowest temperature within each replicate before clustering."
-        ),
-
-        checkboxInput(
-          inputId = ns("normalize_before_clustering"),
-          label = "Normalize to lowest temperature before clustering",
-          value = TRUE
-        )
       ),
 
         actionButton(ns("run_clustering"), "Run clustering"),
@@ -5742,13 +5935,7 @@ output$cluster_recommendation <- renderUI({
       border:1px solid #dee2e6;
       border-radius:4px;
     ",
-tags$p(
-  if (isTRUE(input$normalize_before_clustering)) {
-    "Clustering input: normalized to lowest temperature"
-  } else {
-    "Clustering input: raw (not normalized to lowest temperature)"
-  }
-),
+
     tags$b(
       paste(
         "Recommended number of clusters:",
@@ -5895,60 +6082,7 @@ clustering_result <- eventReactive(input$run_clustering, {
   detail = "Preparing dataset"
 )
 
-  normalize_to_lowest_temperature <- function(df) {
 
-  tempcols <- names(df)[-1]
-
-  # extract dataset suffix
-  datasets <- stringr::str_extract(tempcols, "(?<=\\.).+$")
-  datasets[is.na(datasets)] <- "main"
-
-  # extract temperature and replicate
-  temps <- as.numeric(stringr::str_extract(tempcols, "^\\d+\\.?\\d*"))
-  reps  <- stringr::str_extract(tempcols, "REP\\d+")
-
-  out <- df
-
-  for (ds in unique(datasets)) {
-
-    for (rep in unique(reps)) {
-
-      cols <- tempcols[datasets == ds & reps == rep]
-
-      if (length(cols) == 0) next
-
-      temps_rep <- as.numeric(stringr::str_extract(cols, "^\\d+\\.?\\d*"))
-      lowest_col <- cols[which.min(temps_rep)]
-
-      if (length(lowest_col) != 1) {
-        stop(paste("Reference column issue for", rep, "dataset", ds))
-      }
-
-      # ✅ Normalize ONLY within dataset + replicate
-
-
-# sort columns by temperature
-ord <- order(temps_rep)
-cols_ord <- cols[ord]
-
-vals <- out[cols_ord]
-
-
-# find first non-zero value per row
-ref <- apply(vals, 1, function(x) {
-  idx <- which(x != 0 & !is.na(x))
-  if (length(idx) == 0) return(NA)
-  x[min(idx)]
-})
-
-# normalize row-wise
-out[cols_ord] <- vals / ref
-
-    }
-  }
-
-  out
-}
   # =====================================================
   # INDIVIDUAL MODE (UNCHANGED)
   # =====================================================
@@ -5962,9 +6096,6 @@ incProgress(
     
 df <- plot_data()
 
-if (isTRUE(input$normalize_before_clustering)) {
-  df <- normalize_to_lowest_temperature(df)
-}
 
 
 df_clean <- df %>%
@@ -6058,18 +6189,7 @@ selected_names <- setdiff(
   # -----------------------------
 
 
-  if (isTRUE(input$normalize_before_clustering)) {
-
-  datasets_norm <- lapply(
-    datasets_list,
-    normalize_to_lowest_temperature
-  )
-
-} else {
-
-  datasets_norm <- datasets_list
-
-}
+datasets_norm <- datasets_list
 incProgress(
   0.50,
   detail = "Clustering each dataset"
@@ -8178,6 +8298,7 @@ color = "#0EA5A5"
 
 
 
+
               numericInput(
                 inputId = ns("R2_threshold"),
                 label = "Filter: R² ≥",
@@ -8201,6 +8322,26 @@ color = "#0EA5A5"
                 min = 0,
                 max = 1
               ),
+              numericInput(
+              ns("tm_min"),
+              "Filter: Tm ≥",
+              value = 30,
+              step = 1
+            ),
+
+            numericInput(
+              ns("tm_max"),
+              "Filter: Tm ≤",
+              value = 95,
+              step = 1
+            ),
+            actionButton(
+              ns("run_curve_fitting"),
+              "Run melting curve fitting",
+              icon = icon("play"),
+              class = "btn-success"
+            ),
+
 
             )
           ),
@@ -8251,20 +8392,19 @@ color = "#0EA5A5"
                   value = FALSE
                 ),
 
-                downloadButton(
-                  ns("download_tm_distribution"),
-                  "Download Tm distribution plot"
-                ),
-
-                br(),
                 br(),
 
                 plotOutput(
                   ns("tm_distribution_plot"),
                   height = 300
                 ) %>% withSpinner(
-color = "#0EA5A5"
-)
+                color = "#0EA5A5"
+                ),
+                br(),
+                downloadButton(
+                  ns("download_tm_distribution"),
+                  "Download Tm distribution plot"
+                ),
               )
           )
         )
@@ -8674,11 +8814,40 @@ output$download_limma_volcano_plot <- downloadHandler(
 meltingCurveModuleServer <- function(
   id,
   normalized_data,
-  all_normalized_data = NULL
-) {
+  all_normalized_data = NULL,
+  normalization_results,
+  already_lowestnorm
+){
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+
+#check all conditions
+all_datasets_lowest_temp <- reactive({
+
+  if (isTRUE(already_lowestnorm())) {
+    return(TRUE)
+  }
+
+  status <- sapply(
+    names(reactiveValuesToList(normalization_results)),
+    function(nm){
+
+      tryCatch(
+        isTRUE(
+          normalization_results[[nm]]$lowest_temp_normalized()
+        ),
+        error = function(e) FALSE
+      )
+
+    }
+  )
+
+  print(status)
+
+  all(status)
+
+})
     # ------------------------------------------------------------
     # Models
     # ------------------------------------------------------------
@@ -8702,54 +8871,14 @@ meltingCurveModuleServer <- function(
     })
 
     # ------------------------------------------------------------
-    # Normalization
-    # ------------------------------------------------------------
-    normalize_dataset <- function(df) {
-
-      temp_cols <- names(df)[-1]
-
-      temps_str <- stringr::str_extract(temp_cols, "^\\d+\\.?\\d*")
-      temps_num <- as.numeric(temps_str)
-      replicates <- unique(stringr::str_extract(temp_cols, "REP\\d+"))
-
-      lowest_temp_str <- temps_str[which.min(temps_num)]
-
-      out <- df
-
-      for (rep in replicates) {
-
-        rep_cols <- grep(rep, names(out), value = TRUE)
-
-        ref_col <- grep(
-          paste0("^", lowest_temp_str, "_", rep, "$"),
-          names(out),
-          value = TRUE
-        )
-
-        ref_vals <- out[[ref_col]]
-
-        out[rep_cols] <- sweep(out[rep_cols], 1, ref_vals, FUN = "/")
-
-        zero_or_na <- is.na(ref_vals) | ref_vals == 0
-        if (any(zero_or_na)) out[rep_cols][zero_or_na, ] <- NA
-      }
-
-      out
-    }
-
-    # ------------------------------------------------------------
     # protein_df
     # ------------------------------------------------------------
 protein_df <- reactive({
 
-  df <- normalized_data()
+df <- normalized_data()
 
-
-
-  df <- normalize_dataset(df)
-
-      df <- normalize_dataset(df)
-      df <- df %>% dplyr::filter(complete.cases(df[, -1]))
+df <- df %>%
+dplyr::filter(complete.cases(df[, -1]))
 
       df <- as.data.frame(df)
       rownames(df) <- df[, 1]
@@ -8853,9 +8982,35 @@ protein_df <- reactive({
     # ------------------------------------------------------------
     # Main reactive: run selected model
     # ------------------------------------------------------------
-raw_fit_results <- reactive({
-  run_standard_logistic_fit()
-})
+# ------------------------------------------------------------
+# Main reactive: run selected model
+# ------------------------------------------------------------
+
+raw_fit_results <- eventReactive(
+  input$run_curve_fitting,
+  {
+
+    if (!all_datasets_lowest_temp()) {
+
+      showNotification(
+        paste(
+          "Melting Curve analysis requires",
+          "'Normalize to lowest temperature'",
+          "to be selected in all datasets."
+        ),
+        type = "error",
+        duration = 8
+      )
+
+      return(NULL)
+    }
+
+    run_standard_logistic_fit()
+
+  },
+  ignoreInit = TRUE
+)
+
 
     # ------------------------------------------------------------
     # Filtering
@@ -8865,14 +9020,16 @@ delayed_filters <- reactive({
   list(
     R2 = input$R2_threshold,
     slope = input$slope_threshold,
-    p = input$plateau_threshold
+    p = input$plateau_threshold,
+    tm_min = input$tm_min,
+    tm_max = input$tm_max
   )
 
 }) %>%
   debounce(2000)
 
 fit_results <- reactive({
-
+req(raw_fit_results())
   filt <- delayed_filters()
 
   raw_fit_results() %>%
@@ -8880,16 +9037,38 @@ fit_results <- reactive({
       !is.na(R2),
       R2 >= filt$R2,
       slope <= filt$slope,
-      p <= filt$p
+      p <= filt$p,
+      Tm >= filt$tm_min,
+      Tm <= filt$tm_max
     )
 })
 
 
 
-tm_boxplot_data <- reactive({
+tm_boxplot_data <- eventReactive(
+  input$run_curve_fitting,
+  {
 
   req(all_normalized_data)
+if (!all_datasets_lowest_temp()) {
 
+showNotification(
+
+paste(
+
+"Tm distribution analysis requires",
+"'Normalize to lowest temperature'",
+"to be selected in all datasets."
+
+),
+
+type = "error",
+
+duration = 8
+
+)
+return(NULL)
+}
   datasets <- all_normalized_data()
 
   withProgress(
@@ -8913,17 +9092,14 @@ processed_proteins <- 0
   for (nm in names(datasets)) {
 
     df <- datasets[[nm]]
-
+    
     if (is.null(df))
-      next
-
-    # same preprocessing used by this module
-    df <- normalize_dataset(df)
-
+    next
+    
     df <- df %>%
-      dplyr::filter(
-        complete.cases(df[, -1])
-      )
+    dplyr::filter(
+    complete.cases(df[, -1])
+    )
 
     df <- as.data.frame(df)
 
@@ -9032,8 +9208,11 @@ result <- result %>%
     !is.na(R2),
     R2 >= filt$R2,
     slope <= filt$slope,
-    p <= filt$p
+    p <= filt$p,
+    Tm >= filt$tm_min,
+    Tm <= filt$tm_max
   )
+
 
     result$Dataset <- nm
 
@@ -9098,7 +9277,9 @@ combined
 
     }
   )
-})
+},
+ignoreInit = TRUE
+)
 
     # ------------------------------------------------------------
     # Table
@@ -9308,13 +9489,13 @@ output$download_tm_distribution <- downloadHandler(
         y = "Melting Temperature (Tm)"
       )
 
-    ggsave(
-      filename = file,
-      plot = p,
-      width = 10,
-      height = 6,
-      dpi = 300
-    )
+ggsave(
+  filename = file,
+  plot = p,
+  width = 16,
+  height = 8,
+  dpi = 300
+)
   }
 )
 

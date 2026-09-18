@@ -114,7 +114,7 @@ div(
   ),
 
   tags$a(
-    href = "YOUR_GITHUB_README_URL",
+    href = "https://github.com/knth16/TPP_Analyst",
     target = "_blank",
 
     "Open GitHub documentation",
@@ -331,7 +331,33 @@ observeEvent(input$load_example, {
 
   example_data$loaded <- TRUE
 
+  # Automatically set preprocessing flags for example dataset
+updateCheckboxInput(
+  session,
+  "already_log2",
+  value = TRUE
+)
+
+updateCheckboxInput(
+  session,
+  "Already_lowestnorm",
+  value = TRUE
+)
+
 })
+
+observeEvent(using_example_data(), {
+
+  if (!using_example_data()) {
+
+    updateCheckboxInput(session, "already_log2", value = FALSE)
+
+    updateCheckboxInput(session, "Already_lowestnorm", value = FALSE)
+
+  }
+
+})
+
 #mapping for example dataset
 example_mapping <- reactive({
 
@@ -1292,7 +1318,13 @@ output$show_dataset_tabs <- reactive({
   !is.null(input$file) && !is.null(input$file2)
 })
 outputOptions(output, "show_dataset_tabs", suspendWhenHidden = FALSE)
+already_log2 <- reactive({
+  isTRUE(input$already_log2)
+})
 
+already_normalized <- reactive({
+isTRUE(input$already_normalized)
+})
 #cache
 analysis_cache <- reactiveValues()
 
@@ -1392,6 +1424,40 @@ vehicle_df <-
 
 treatment_df <-
   normalization_results[[treatment_name]]$plot_data()
+
+vehicle_lowest_temp <- tryCatch(
+  normalization_results[[vehicle_name]]$lowest_temp_normalized(),
+  error = function(e) FALSE
+)
+
+treatment_lowest_temp <- tryCatch(
+  normalization_results[[treatment_name]]$lowest_temp_normalized(),
+  error = function(e) FALSE
+)
+
+if(
+  !isTRUE(input$Already_lowestnorm) &&
+  (
+    !isTRUE(vehicle_lowest_temp) ||
+    !isTRUE(treatment_lowest_temp)
+  )
+){
+
+  showNotification(
+    paste(
+      "TPP analysis requires either:",
+      "\n• 'Normalize to lowest temperature' to be applied in both datasets",
+      "\nor",
+      "\n• 'Dataset already normalized to lowest temperature' to be checked."
+    ),
+    type = "error",
+    duration = 8
+  )
+
+  return()
+
+}
+
 n_proteins <- length(
   unique(
     vehicle_df[[1]]
@@ -1405,94 +1471,41 @@ incProgress(
     "proteins."
   )
 )
-  normalize_dataset <- function(df) {
+convert_to_tpp_long <- function(df){
 
-    temp_cols <- names(df)[-1]
-
-    temps_str <- stringr::str_extract(
-      temp_cols,
-      "^\\d+\\.?\\d*"
-    )
-
-    temps_num <- as.numeric(
-      temps_str
-    )
-
-    replicates <- unique(
-      stringr::str_extract(
-        temp_cols,
-        "REP\\d+"
-      )
-    )
-
-    lowest_temp_str <- temps_str[
-      which.min(temps_num)
-    ]
-
-    out <- df
-
-    for(rep in replicates){
-
-      rep_cols <- grep(
-        rep,
-        names(out),
-        value = TRUE
-      )
-
-      ref_col <- grep(
-        paste0(
-          lowest_temp_str,
-          "_",
-          rep
-        ),
-        names(out),
-        value = TRUE,
-        fixed = TRUE
-      )
-
-      out[rep_cols] <-
-        out[rep_cols] /
-        ifelse(
-          out[[ref_col]] == 0,
-          NA,
-          out[[ref_col]]
-        )
-
-    }
-
-    out %>%
-      tidyr::pivot_longer(
-        cols = -1,
-        names_to = "Replicate",
-        values_to = "RelAbundance"
-      ) %>%
-      tidyr::separate(
-        Replicate,
-        into = c(
-          "Temperature",
-          "Replicate"
-        ),
-        sep = "_"
-      ) %>%
-      dplyr::mutate(
-        Temperature = as.numeric(
-          Temperature
-        )
-      )
-  }
+df %>%
+tidyr::pivot_longer(
+cols = -1,
+names_to = "Replicate",
+values_to = "RelAbundance"
+) %>%
+tidyr::separate(
+Replicate,
+into = c(
+"Temperature",
+"Replicate"
+),
+sep = "_"
+) %>%
+dplyr::mutate(
+Temperature = as.numeric(
+Temperature
+)
+)
+}
 incProgress(
   0.10,
   detail = "Normalizing vehicle condition"
 )
 
-vehicle_rel <- normalize_dataset(vehicle_df)
+vehicle_rel <- convert_to_tpp_long(vehicle_df)
 
 incProgress(
   0.10,
   detail = "Normalizing treatment condition"
 )
 
-treatment_rel <- normalize_dataset(treatment_df)
+treatment_rel <- convert_to_tpp_long(treatment_df)
 
 
 build_tpp_matrix <- function(
@@ -2594,17 +2607,19 @@ print(names(tmp))
           })
         )
 
-        zero_stats <- zeroStatsModule(
-          id = dataset_name,
-          filtered_data
-        )
+zero_stats <- zeroStatsModule(
+  id = dataset_name,
+  filtered_data = filtered_data,
+  already_log2 = already_log2
+)
 
         # ---- QC ----
         qcPanelModuleServer(
           id = dataset_name,
           filtered_data = filtered_data,
           missing_stats = missing_stats,
-          zero_stats    = zero_stats
+          zero_stats    = zero_stats,
+          already_log2 = already_log2
         )
 
         # ---- NORMALIZATION ----
@@ -2707,7 +2722,9 @@ if (!isTRUE(qc_done))
   }
 
   out
-})
+}),
+normalization_results = normalization_results,
+already_lowestnorm = reactive(input$Already_lowestnorm)
 )
 # ------------------------
 # ✅ GO ORA INPUTS
@@ -3139,43 +3156,65 @@ req(
   normalization_results[[cond2]]
 )
 
-  # Helper function for normalization
- 
-normalize_dataset <- function(df) {
-  temp_cols <- names(df)[-1]
+lowest1 <- tryCatch(
+  normalization_results[[cond1]]$lowest_temp_normalized(),
+  error = function(e) FALSE
+)
 
-  # Extract temperature and replicate info
-  temps_str <- stringr::str_extract(temp_cols, "^\\d+\\.?\\d*")  # keep decimals
-  temps_num <- as.numeric(temps_str)
-  replicates <- unique(stringr::str_extract(temp_cols, "REP\\d+"))
+lowest2 <- tryCatch(
+  normalization_results[[cond2]]$lowest_temp_normalized(),
+  error = function(e) FALSE
+)
 
-  # Find the lowest temperature as string
-  lowest_temp_str <- temps_str[which.min(temps_num)]
+if(
+  !isTRUE(input$Already_lowestnorm) &&
+  (
+    !isTRUE(lowest1) ||
+    !isTRUE(lowest2)
+  )
+){
+  showNotification(
+    paste(
+      "NPARC requires either:",
+      "\n• 'Normalize to lowest temperature' to be applied in both datasets",
+      "\nor",
+      "\n• 'Dataset already normalized to lowest temperature' to be checked."
+    ),
+    type = "error",
+    duration = 8
+  )
 
-  out <- df
-  for (rep in replicates) {
-    rep_cols <- grep(rep, names(out), value = TRUE)
-    ref_col <- grep(paste0(lowest_temp_str, "_", rep), names(out), value = TRUE, fixed = TRUE)
-
-
-    if (length(ref_col) == 0) {
-      stop(paste("Reference column not found for replicate:", rep))
-    }
-
-    out[rep_cols] <- out[rep_cols] / ifelse(out[[ref_col]] == 0, NA, out[[ref_col]]) #if the reference temperatrue value is 0 then replace withNA this is important
-  }
-
-  out %>%
-    tidyr::pivot_longer(cols = -1, names_to = "Replicate", values_to = "RelAbundance") %>%
-    tidyr::separate(Replicate, into = c("Temperature", "Replicate"), sep = "_") %>%
-    dplyr::mutate(Temperature = as.numeric(Temperature))
+  return()
 }
 
 
+convert_to_nparc_long <- function(df){
+
+df %>%
+tidyr::pivot_longer(
+cols = -1,
+names_to = "Replicate",
+values_to = "RelAbundance"
+) %>%
+tidyr::separate(
+Replicate,
+into = c(
+"Temperature",
+"Replicate"
+),
+sep = "_"
+) %>%
+dplyr::mutate(
+Temperature = as.numeric(
+Temperature
+)
+)
+
+}
 
   # Apply normalization with error handling
 compar1_rel <- tryCatch(
-  normalize_dataset(
+  convert_to_nparc_long(
     normalization_results[[cond1]]$plot_data()
   ),
 
@@ -3205,7 +3244,7 @@ write.csv(
 
 
 compar2_rel <- tryCatch(
-  normalize_dataset(
+  convert_to_nparc_long(
     normalization_results[[cond2]]$plot_data()
   ),
   
@@ -3215,16 +3254,7 @@ compar2_rel <- tryCatch(
       return(NULL)
     }
   )
-  compar2_rel <- tryCatch(
-  normalize_dataset(
-    normalization_results[[cond2]]$plot_data()
-  ),
 
-  error = function(e) {
-    showNotification(e$message, type = "error")
-    return(NULL)
-  }
-)
 
 # --------------------------------------------------
 # TEMPORARY EXPORT FOR TPP TESTING
