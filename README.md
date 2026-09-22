@@ -80,7 +80,7 @@ setwd("TPP_Analyst")
 Install all required dependencies:
 
 ```r
-source("install_dependencies.R")
+source("dependencies.R")
 ```
 
 Launch the application:
