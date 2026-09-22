@@ -7,15 +7,15 @@ required_r <- package_version("4.6.1")
 if (getRversion() < required_r) {
   stop(
     sprintf(
-      "TPP Analyst requires R >= %s. Current version: %s",
-      required_r,
-      getRversion()
+    "TPP Analyst requires R >= %s. Current version: %s",
+    as.character(required_r),
+    as.character(getRversion())
     )
   )
 }
 
 
-cat("[OK] R version:", getRversion(), "\n")
+cat("[OK] R version:", as.character(getRversion()), "\n")
 
 cran_repo <- "https://cloud.r-project.org"
 
@@ -84,10 +84,10 @@ if (length(missing_cran) > 0) {
 
 }
 
-cat("\nConfiguring Bioconductor 3.22...\n")
+cat("\nConfiguring Bioconductor...\n")
 
 BiocManager::install(
-  version = "3.22",
+  version = "3.23",
   ask = FALSE
 )
 
@@ -193,7 +193,7 @@ if (current_r != tested_r) {
 
 } else {
 
-  cat("[OK] R version:", current_r, "\n")
+  cat("[OK] R version:", as.character(current_r), "\n")
 
 }
 
