@@ -1270,8 +1270,33 @@ a.action-button:hover .fas {
 
     background-color: var(--color-accent) !important;
 
-}
+    background-image: linear-gradient(
+        45deg,
+        rgba(255,255,255,.15) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(255,255,255,.15) 50%,
+        rgba(255,255,255,.15) 75%,
+        transparent 75%,
+        transparent
+    ) !important;
 
+    background-size: 40px 40px !important;
+
+    animation: progress-bar-stripes 1s linear infinite;
+
+}
+@keyframes progress-bar-stripes {
+
+  from {
+    background-position: 40px 0;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+
+}
 
 
 /* shinycssloaders */

@@ -5098,6 +5098,8 @@ fluidRow(
     plotOutput(
       "tpp_curve_plot",
       height = 650
+    ) %>% withSpinner(
+      color = "#0EA5A5"
     ),
 
     br(),
