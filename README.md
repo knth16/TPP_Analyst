@@ -4,6 +4,8 @@ TPP Analyst can be run in three different ways depending on your needs and exper
 
 ## Option 1: Run the Pre-Built Docker Image (Recommended)
 
+For this and the option 2 you will need to install Docker desktop on your computer.
+
 This is the easiest and most reliable option. The Docker image contains all required R packages, Bioconductor packages, and system dependencies.
 
 ```bash
@@ -27,7 +29,7 @@ If you would like to inspect, customize, or modify the Docker environment, you c
 Clone the repository:
 
 ```bash
-git clone https://github.com/<your-username>/TPP_Analyst.git
+git clone https://github.com/knth16/TPP_Analyst.git
 cd TPP_Analyst
 ```
 
@@ -60,7 +62,6 @@ TPP Analyst can also be executed directly from an R session without Docker.
 ### Requirements
 
 - R ≥ 4.6.1
-- Bioconductor 3.22
 - Internet connection during the initial package installation
 
 ### Installation
@@ -68,7 +69,7 @@ TPP Analyst can also be executed directly from an R session without Docker.
 Clone the repository:
 
 ```bash
-git clone https://github.com/<your-username>/TPP_Analyst.git
+git clone https://github.com/knth16/TPP_Analyst.git
 ```
 
 Open R and navigate to the project directory:
