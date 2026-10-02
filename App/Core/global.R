@@ -2280,17 +2280,23 @@ controls <- c(
 
   list(
 
-    sliderInput(
-      inputId = ns("mean_intensity_filter"),
-      label = "Average log2 intensity range:",
-      min = min_intensity,
-      max = max_intensity,
-      value = c(
-        min_intensity,
-        max_intensity
-      ),
-      step = 0.1
-    ),
+sliderInput(
+  inputId = ns("mean_intensity_filter"),
+
+  label = if (already_log2()) {
+    "Average intensity range:"
+  } else {
+    "Average log2 intensity range:"
+  },
+
+  min = min_intensity,
+  max = max_intensity,
+  value = c(
+    min_intensity,
+    max_intensity
+  ),
+  step = 0.1
+),
 
     verbatimTextOutput(
       ns("filter_summary")
@@ -2519,10 +2525,23 @@ output$download_missing_values_density <- downloadHandler(
 
     df0 <- zero_stats$filtered()
 
-    dflog2 <- df0 %>%
-      dplyr::mutate(
-        dplyr::across(where(is.numeric), log2)
+if (already_log2()) {
+
+  dflog2 <- df0
+
+} else {
+
+  dflog2 <- df0 %>%
+    mutate(
+      across(
+        where(is.numeric),
+        log2
       )
+    )
+
+  dflog2[dflog2 == -Inf] <- 0
+
+}
 
     dflog2[dflog2 == -Inf] <- 0
 
@@ -2810,6 +2829,13 @@ if (
   left_annot <- intensity_annotation
 
 }
+
+legend_title <- if (already_log2()) {
+  "Intensity"
+} else {
+  "log2(Intensity)"
+}
+
       # switch depending on UI
       if (input$pattern_mode == "clustered") {
 
@@ -2820,7 +2846,11 @@ if (
           } else {
             missval_clustered_intensity
           }
-
+legend_title <- if (already_log2()) {
+  "Intensity"
+} else {
+  "log2(Intensity)"
+}
           ht <- ComplexHeatmap::Heatmap(
             plot_mat,
             col = col_fun,
@@ -2832,7 +2862,7 @@ if (
           show_column_names = TRUE,
           name = "Missing values pattern",
           heatmap_legend_param = list(
-            title = "log2(Intensity)",
+            title = legend_title,
             direction = "horizontal",
             title_position = "leftcenter"
           ),
@@ -2858,7 +2888,7 @@ last_heatmap(ht)
           left_annotation = left_annot,
           row_names_max_width = grid::unit(20, "mm"),
           heatmap_legend_param = list(
-            title = "log2(Intensity)",
+            title = legend_title,
             direction = "horizontal",
             title_position = "leftcenter"
           ),
@@ -8829,19 +8859,23 @@ all_datasets_lowest_temp <- reactive({
     return(TRUE)
   }
 
-  status <- sapply(
-    names(reactiveValuesToList(normalization_results)),
-    function(nm){
+  req(all_normalized_data())
 
-      tryCatch(
-        isTRUE(
-          normalization_results[[nm]]$lowest_temp_normalized()
-        ),
-        error = function(e) FALSE
-      )
+  dataset_names <- names(all_normalized_data())
 
-    }
-  )
+  status <- sapply(dataset_names, function(nm){
+
+    if (is.null(normalization_results[[nm]]))
+      return(FALSE)
+
+    tryCatch(
+      isTRUE(
+        normalization_results[[nm]]$lowest_temp_normalized()
+      ),
+      error = function(e) FALSE
+    )
+
+  })
 
   print(status)
 
@@ -9045,7 +9079,7 @@ req(raw_fit_results())
 
 
 
-tm_boxplot_data <- eventReactive(
+tm_boxplot_data_raw <- eventReactive(
   input$run_curve_fitting,
   {
 
@@ -9212,6 +9246,9 @@ result <- result %>%
     Tm >= filt$tm_min,
     Tm <= filt$tm_max
   )
+if (nrow(result) == 0) {
+  next
+}
 
 
     result$Dataset <- nm
@@ -9220,57 +9257,8 @@ result <- result %>%
   }
 combined <- dplyr::bind_rows(out_list)
 
-if (isTRUE(input$shared_proteins_only)) {
-
-  # ------------------------------------------------
-  # Infer organism from dataset name
-  # ------------------------------------------------
-
-  combined$OrganismGroup <- dplyr::case_when(
-
-    grepl("H.sapiens|Homo sapiens|human",
-          combined$Dataset,
-          ignore.case = TRUE) ~ "Human",
-
-    TRUE ~ "Sulfolobus"
-  )
-
-  # ------------------------------------------------
-  # Shared proteins INSIDE EACH ORGANISM
-  # ------------------------------------------------
-
-  shared_by_organism <- combined %>%
-
-    dplyr::group_by(OrganismGroup) %>%
-
-    dplyr::group_modify(~{
-
-      required_sets <- dplyr::n_distinct(.x$Dataset)
-
-      shared_ids <- .x %>%
-
-        dplyr::group_by(Protein) %>%
-
-        dplyr::summarise(
-          n_sets = dplyr::n_distinct(Dataset),
-          .groups = "drop"
-        ) %>%
-
-        dplyr::filter(
-          n_sets == required_sets
-        ) %>%
-
-        dplyr::pull(Protein)
-
-      .x %>%
-        dplyr::filter(
-          Protein %in% shared_ids
-        )
-    }) %>%
-
-    dplyr::ungroup()
-
-  combined <- shared_by_organism
+if (nrow(combined) == 0) {
+  return(data.frame())
 }
 
 combined
@@ -9281,11 +9269,71 @@ combined
 ignoreInit = TRUE
 )
 
+tm_boxplot_data <- reactive({
+
+  req(tm_boxplot_data_raw())
+
+  combined <- tm_boxplot_data_raw()
+
+  if (isTRUE(input$shared_proteins_only)) {
+
+    combined$OrganismGroup <- dplyr::case_when(
+
+      grepl(
+        "H.sapiens|Homo sapiens|human",
+        combined$Dataset,
+        ignore.case = TRUE
+      ) ~ "Human",
+
+      TRUE ~ "Sulfolobus"
+    )
+
+    shared_by_organism <- combined %>%
+      dplyr::group_by(OrganismGroup) %>%
+      dplyr::group_modify(~{
+
+        required_sets <- dplyr::n_distinct(.x$Dataset)
+
+        shared_ids <- .x %>%
+          dplyr::group_by(Protein) %>%
+          dplyr::summarise(
+            n_sets = dplyr::n_distinct(Dataset),
+            .groups = "drop"
+          ) %>%
+          dplyr::filter(
+            n_sets == required_sets
+          ) %>%
+          dplyr::pull(Protein)
+
+        .x %>%
+          dplyr::filter(
+            Protein %in% shared_ids
+          )
+
+      }) %>%
+      dplyr::ungroup()
+
+    combined <- shared_by_organism
+  }
+
+  combined
+})
+
     # ------------------------------------------------------------
     # Table
     # ------------------------------------------------------------
-    output$melting_curve_results_table <- DT::renderDataTable({
-      df <- fit_results()
+output$melting_curve_results_table <- DT::renderDataTable({
+
+  df <- fit_results()
+
+  validate(
+    need(
+      nrow(df) > 0,
+      "No proteins pass the current filters."
+    )
+  )
+
+
       DT::datatable(df,
         options = list(pageLength = 5, scrollX = TRUE),
         selection = "single"

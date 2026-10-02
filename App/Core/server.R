@@ -382,7 +382,20 @@ dataset1 <- proteindataModuleServer(
 
 selected_organisms <- reactive({
 
-  mapping <- condition_organism_mapping()
+  mapping <- resolved_condition_mapping()
+
+contains_unresolved_other <- any(
+  sapply(
+    mapping,
+    function(x)
+      any(x == "Other")
+  )
+)
+
+if (contains_unresolved_other) {
+  return(list())
+}
+
 
   mapping <- mapping[
     sapply(
@@ -404,6 +417,9 @@ dataset2 <- designdataModuleServer(
   selected_organisms = selected_organisms,
   exampleData = design_source
 )
+organism_mode <- reactive({
+  input$organism_mode
+})
 #debugs
 observe({
 
@@ -477,10 +493,75 @@ available_organisms <- c(
   "Other"
 )
 
-output$condition_organism_mapping_ui <- renderUI({
+#organism mode selector
+output$organism_mode_ui <- renderUI({
 
   req(dataset2$data())
 
+  radioButtons(
+    "organism_mode",
+    "How many organisms are present in this experiment?",
+    choices = c(
+      "One organism" = "single",
+      "Two or more organisms" = "multiple"
+    ),
+    selected = "single"
+  )
+
+})
+
+#single oranism selection UI
+output$single_organism_ui <- renderUI({
+
+  req(dataset2$data())
+  req(input$organism_mode)
+
+  if (input$organism_mode != "single") {
+    return(NULL)
+  }
+
+  selectInput(
+    "single_organism",
+    "Organism",
+    choices = available_organisms,
+    selected = if (
+    using_example_data()
+      ) {
+        "H.sapiens"
+      } else {
+        NULL
+      }
+    )
+
+})
+#custom organism naming UI
+output$single_custom_organism_ui <- renderUI({
+
+  req(input$organism_mode)
+
+  if (
+    input$organism_mode == "single" &&
+    input$single_organism == "Other"
+  ) {
+
+    textInput(
+      "single_custom_organism",
+      "Custom organism name",
+      placeholder = "Example: A.taliana"
+    )
+
+  }
+
+})
+
+output$condition_organism_mapping_ui <- renderUI({
+
+  req(dataset2$data())
+  req(input$organism_mode)
+
+  if (input$organism_mode == "single") {
+    return(NULL)
+  }
   design <- dataset2$data()
 
   req(design)
@@ -566,14 +647,28 @@ output$custom_org_loader_ui <- renderUI({
   dataset1$data()
 )
 
+if (
+  input$organism_mode == "single" &&
+  single_custom_organism_selected()
+) {
+
+  conditions_with_other <- "CUSTOM_SINGLE"
+
+} else {
+
   mapping <- condition_organism_mapping()
 
   conditions_with_other <- names(mapping)[
     sapply(
       mapping,
-      function(x) "Other" %in% x
+      function(x)
+        !is.null(x) &&
+        "Other" %in% x
     )
   ]
+
+}
+
 
   if (length(conditions_with_other) == 0) {
     return(NULL)
@@ -640,10 +735,22 @@ label = tags$span(
     color: #333;
     font-size: 14px;
   ",
+if(cond == "CUSTOM_SINGLE") {
+
+  paste(
+  "Upload GO database for",
+  resolved_single_organism()
+)
+
+} else {
+
   paste(
     cond,
     "- Upload Org_data"
   )
+
+}
+
 ),
     accept = c(
       ".csv",
@@ -669,8 +776,21 @@ output$custom_org_mapping_ui <- renderUI({
     input$file,
     dataset1$data()
   )
-
+if (
+  input$organism_mode == "single"
+) {
+  return(NULL)
+}
   mapping <- condition_organism_mapping()
+
+if (
+  input$organism_mode == "single" &&
+  single_custom_organism_selected()
+) {
+
+  conditions_with_other <- "CUSTOM_SINGLE"
+
+} else {
 
   conditions_with_other <- names(mapping)[
     sapply(
@@ -680,6 +800,8 @@ output$custom_org_mapping_ui <- renderUI({
         "Other" %in% x
     )
   ]
+
+}
 
   if (length(conditions_with_other) == 0) {
     return(NULL)
@@ -719,32 +841,19 @@ tags$label(
       conditions_with_other,
       function(cond) {
 
-        selectInput(
-          inputId = paste0(
-            "custom_protein_org_",
-            make.names(cond)
-          ),
+textInput(
+  inputId = paste0(
+    "custom_organism_name_",
+    make.names(cond)
+  ),
 
-label = tags$span(
-  style = "
-    font-weight: normal;
-    color: #333;
-    font-size: 14px;
-  ",
-  paste(
+  label = paste(
     cond,
-    "- Organism in protein dataset"
-  )
-),
+    "- Custom organism name"
+  ),
 
-          choices = sort(
-            unique(
-              as.character(
-                dataset1$data()$Organism
-              )
-            )
-          )
-        )
+  placeholder = "Example: A.taliana"
+)
 
       }
     )
@@ -753,10 +862,67 @@ label = tags$span(
 
 })
 
+resolved_single_organism <- reactive({
+
+  req(input$organism_mode)
+
+  if (input$organism_mode != "single") {
+    return(NULL)
+  }
+
+  if (input$single_organism == "Other") {
+
+    req(input$single_custom_organism)
+
+    return(
+      trimws(
+        input$single_custom_organism
+      )
+    )
+
+  }
+
+  input$single_organism
+
+})
+single_custom_organism_selected <- reactive({
+
+  req(input$organism_mode)
+
+  input$organism_mode == "single" &&
+    identical(
+      input$single_organism,
+      "Other"
+    )
+
+})
 condition_organism_mapping <- reactive({
 if (using_example_data()) {
   return(example_mapping())
 }
+
+if (
+  !is.null(input$organism_mode) &&
+  input$organism_mode == "single"
+) {
+
+  org <- resolved_single_organism()
+
+  conditions <- unique(
+    dataset2$data()$Condition
+  )
+
+  out <- setNames(
+    as.list(
+      rep(org, length(conditions))
+    ),
+    conditions
+  )
+
+  return(out)
+
+}
+
   req(dataset2$data())
 
   design <- dataset2$data()
@@ -799,18 +965,57 @@ custom_protein_mapping <- reactive({
 
   out <- list()
 
-  for (cond in conditions_with_other) {
+  for(cond in conditions_with_other){
 
-    out[[cond]] <- input[[paste0(
-      "custom_protein_org_",
-      make.names(cond)
-    )]]
+    out[[cond]] <- trimws(
+      input[[paste0(
+        "custom_organism_name_",
+        make.names(cond)
+      )]]
+    )
 
   }
 
   out
 
 })
+
+resolved_condition_mapping <- reactive({
+
+  mapping <- condition_organism_mapping()
+
+  customs <- custom_protein_mapping()
+
+  for(cond in names(mapping)) {
+
+    vals <- mapping[[cond]]
+
+    if("Other" %in% vals) {
+
+      custom_name <- customs[[cond]]
+
+      if(
+        is.null(custom_name) ||
+        length(custom_name) == 0 ||
+        trimws(custom_name) == ""
+      ) {
+
+        next
+
+      }
+
+      vals[vals == "Other"] <- custom_name
+
+    }
+
+    mapping[[cond]] <- vals
+
+  }
+
+  mapping
+
+})
+
 
 custom_orgdata_files <- reactive({
 
@@ -916,19 +1121,12 @@ custom_orgdata_for_conditions <- reactive({
 
 require_protein_organism_column <- reactive({
 
-  mapping <- selected_organisms()
+  req(input$organism_mode)
 
-  if (length(mapping) == 0) {
-    return(FALSE)
-  }
-
-  all_orgs <- unique(
-    unlist(mapping)
-  )
-
-  length(all_orgs) > 1
+  input$organism_mode == "multiple"
 
 })
+
 mapping_complete <- reactive({
   if (using_example_data()) {
   return(TRUE)
@@ -936,13 +1134,15 @@ mapping_complete <- reactive({
 
   mapping <- condition_organism_mapping()
 
-  all(
-    sapply(
-      mapping,
-      function(x)
-        !is.null(x) && length(x) > 0
-    )
+all(
+  sapply(
+    mapping,
+    function(x)
+      !is.null(x) &&
+      length(x) > 0 &&
+      !any(x == "Other")
   )
+)
 
 })
 output$protein_upload_message <- renderUI({

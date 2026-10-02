@@ -1579,7 +1579,9 @@ title = HTML(
               ),
               column(
                 width = 6,
-
+                uiOutput("organism_mode_ui"),
+                uiOutput("single_organism_ui"),
+                uiOutput("single_custom_organism_ui"),
                 uiOutput("condition_organism_mapping_ui"),
                 uiOutput("custom_org_mapping_ui")
               )
