@@ -1355,7 +1355,6 @@ dataset_name <- if (
   org
 
 }
-
 split_list[[paste0(
   cond,
   "_",
@@ -1363,8 +1362,25 @@ split_list[[paste0(
 )]] <-
   proteins %>%
   dplyr::filter(
-    tolower(trimws(Organism)) %in%
-      tolower(trimws(aliases))
+    vapply(
+      tolower(trimws(Organism)),
+      function(org_value) {
+        any(
+          vapply(
+            tolower(trimws(aliases)),
+            function(alias) {
+              grepl(
+                alias,
+                org_value,
+                fixed = TRUE
+              )
+            },
+            logical(1)
+          )
+        )
+      },
+      logical(1)
+    )
   ) %>%
   dplyr::select(
     all_of(keep_cols)
@@ -2114,6 +2130,20 @@ zeroStatsModule <- function(
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
+# ---------------------------------
+# Debounce QC filter sliders
+# ---------------------------------
+
+filter_0_debounced <- debounce(
+  reactive(input$filter_0),
+  millis = 700
+)
+
+mean_intensity_filter_debounced <- debounce(
+  reactive(input$mean_intensity_filter),
+  millis = 700
+)
+
     # Reactive: Filtered data based on 0-value threshold
     filtered_0_data <- reactive({
       
@@ -2133,11 +2163,11 @@ print(sum(all_zero))
 cat("Rows with at least one positive value:\n")
 print(sum(rowSums(numeric_df > 0, na.rm = TRUE) > 0))
 req(
-  input$mean_intensity_filter
+  mean_intensity_filter_debounced()
 )
 
 
-threshold <- input$filter_0
+threshold <- filter_0_debounced()
 
 if (
   !is.null(threshold) &&
@@ -2177,7 +2207,7 @@ if (
       )
 
 
-        range_selected <- input$mean_intensity_filter
+        range_selected <- mean_intensity_filter_debounced()
 
         if (
           !is.null(range_selected)
@@ -2318,40 +2348,42 @@ withProgress(
     msg <- "Please choose how to Handle the missing data"
 
     #filter summary output
-    output$filter_summary <- renderText({
+output$filter_summary <- renderText({
 
-      df_original <- safe_df()
+  df_original <- safe_df()
 
-      req(df_original)
+  req(df_original)
 
-      n_original <- nrow(df_original)
+  # Wait until the debounced QC filtering
+  # has produced its first valid dataset
+  df_filtered <- zero_stats$filtered()
 
-      n_remaining <- nrow(
-        zero_stats$filtered()
-      )
+  req(
+    !is.null(df_filtered),
+    is.data.frame(df_filtered)
+  )
 
-      threshold_0 <- input$filter_0
+  n_original <- nrow(df_original)
+  n_remaining <- nrow(df_filtered)
 
-      intensity_range <- input$mean_intensity_filter
+  paste0(
 
-      paste0(
+    "Proteins retained: ",
+    format(n_remaining, big.mark = ","),
+    " / ",
+    format(n_original, big.mark = ","),
 
-        "Proteins retained: ",
-        format(n_remaining, big.mark = ","),
-        " / ",
-        format(n_original, big.mark = ","),
+    "\n",
 
-        "\n",
+    "Proteins removed: ",
+    format(
+      n_original - n_remaining,
+      big.mark = ","
+    )
 
-        "Proteins removed: ",
-        format(
-          n_original - n_remaining,
-          big.mark = ","
-        )
+  )
 
-      )
-
-    })
+})
     # -------------------------------
     # Info box for missing values
     # -------------------------------
@@ -5859,6 +5891,43 @@ color = "#0EA5A5"
           value = FALSE
         ),
 
+        checkboxInput(
+          inputId = ns("custom_cluster_ylim"),
+          label = "Set custom Y-axis range",
+          value = FALSE
+        ),
+
+        conditionalPanel(
+          condition = sprintf(
+            "input['%s'] == true",
+            ns("custom_cluster_ylim")
+          ),
+
+          fluidRow(
+
+            column(
+              width = 6,
+              numericInput(
+                inputId = ns("cluster_y_min"),
+                label = "Y-axis minimum:",
+                value = 0
+              )
+            ),
+
+            column(
+              width = 6,
+              numericInput(
+                inputId = ns("cluster_y_max"),
+                label = "Y-axis maximum:",
+                value = 1.5,
+                min = 0
+              )
+            )
+
+          )
+        ),
+        
+
 
         downloadButton(ns("download_clustering_plot"), "Download cluster trend plot")
       )
@@ -6009,6 +6078,41 @@ color = "#0EA5A5"
           label = "Show missing values as zero (sub-clustering plot)",
           value = FALSE
         ),
+        checkboxInput(
+        inputId = ns("custom_recluster_ylim"),
+        label = "Set custom Y-axis range",
+        value = FALSE
+      ),
+
+      conditionalPanel(
+        condition = sprintf(
+          "input['%s'] == true",
+          ns("custom_recluster_ylim")
+        ),
+
+        fluidRow(
+
+          column(
+            width = 6,
+            numericInput(
+              inputId = ns("recluster_y_min"),
+              label = "Y-axis minimum:",
+              value = 0
+            )
+          ),
+
+          column(
+            width = 6,
+            numericInput(
+              inputId = ns("recluster_y_max"),
+              label = "Y-axis maximum:",
+              value = 1.5,
+              min = 0
+            )
+          )
+
+        )
+      ),
         downloadButton(
           ns("download_reclustered_plot"),
           "Download sub-ustered trend plot"
@@ -6922,11 +7026,25 @@ incProgress(
         .groups = "drop"
       )
 
+#y asignment responsive to the y acis changes
+annotation_y <- if (
+  isTRUE(input$custom_cluster_ylim) &&
+  !is.null(input$cluster_y_max) &&
+  is.finite(input$cluster_y_max)
+) {
+
+  input$cluster_y_max * 0.95
+
+} else {
+
+  max(df2$Mean_Intensity, na.rm = TRUE)
+
+}
 
 facet_color_df <- data.frame(
   Cluster = factor(cluster_levels, levels = cluster_levels),
   x = min(df2$temperature, na.rm = TRUE),
-  y = max(df2$Mean_Intensity, na.rm = TRUE),
+  y = annotation_y,
   label = paste0(
     "Cluster ",
     cluster_levels,
@@ -7025,6 +7143,27 @@ strip.text = element_text(
         x = "Temperature (°C)",
         y = "Relative abundance"
       )
+
+#y axis control
+      if (
+  isTRUE(input$custom_cluster_ylim) &&
+  !is.null(input$cluster_y_min) &&
+  !is.null(input$cluster_y_max) &&
+  is.finite(input$cluster_y_min) &&
+  is.finite(input$cluster_y_max) &&
+  input$cluster_y_min < input$cluster_y_max
+) {
+
+  p <- p +
+    coord_cartesian(
+      ylim = c(
+        input$cluster_y_min,
+        input$cluster_y_max
+      )
+    )
+
+}
+
 incProgress(
   1,
   detail = "Done"
@@ -7198,6 +7337,26 @@ scale_colour_manual(
         fill = NA
       )
     )
+
+#y axis control
+    if (
+  isTRUE(input$custom_cluster_ylim) &&
+  !is.null(input$cluster_y_min) &&
+  !is.null(input$cluster_y_max) &&
+  is.finite(input$cluster_y_min) &&
+  is.finite(input$cluster_y_max) &&
+  input$cluster_y_min < input$cluster_y_max
+) {
+
+  p <- p +
+    coord_cartesian(
+      ylim = c(
+        input$cluster_y_min,
+        input$cluster_y_max
+      )
+    )
+
+}
 incProgress(
   1,
   detail = "Done"
@@ -7246,6 +7405,8 @@ output$download_clustering_plot <- downloadHandler(
     )
   }
 )
+
+#Reclustering recommendation
 observe({
 
   cat(
@@ -7947,11 +8108,25 @@ cluster_colors <- setNames(
   )[seq_along(cluster_levels)],
   as.character(cluster_levels)
 )
+#y asignment responsive to the y acis changes
+annotation_y <- if (
+  isTRUE(input$custom_cluster_ylim) &&
+  !is.null(input$cluster_y_max) &&
+  is.finite(input$cluster_y_max)
+) {
+
+  input$cluster_y_max * 0.95
+
+} else {
+
+  max(df2$Mean_Intensity, na.rm = TRUE)
+
+}
 
 facet_color_df <- data.frame(
   Recluster = factor(cluster_levels, levels = cluster_levels),
   x = min(df2$temperature, na.rm = TRUE),
-  y = max(df2$Mean_Intensity, na.rm = TRUE),
+    y = annotation_y,
   label = paste0(
     "Cluster ",
     cluster_levels,
@@ -8024,10 +8199,30 @@ labs(
   y = "Relative abundance"
 )
 
+#y axis control
+if (
+  isTRUE(input$custom_recluster_ylim) &&
+  !is.null(input$recluster_y_min) &&
+  !is.null(input$recluster_y_max) &&
+  is.finite(input$recluster_y_min) &&
+  is.finite(input$recluster_y_max) &&
+  input$recluster_y_min < input$recluster_y_max
+) {
+
+  p <- p +
+    coord_cartesian(
+      ylim = c(
+        input$recluster_y_min,
+        input$recluster_y_max
+      )
+    )
+
+}
 incProgress(
   1,
   detail = "Done"
 )
+
     return(p)
   }
 
@@ -8208,6 +8403,26 @@ facet_wrap(
         linewidth = 0.5
       )
     )
+#y axis control
+if (
+  isTRUE(input$custom_recluster_ylim) &&
+  !is.null(input$recluster_y_min) &&
+  !is.null(input$recluster_y_max) &&
+  is.finite(input$recluster_y_min) &&
+  is.finite(input$recluster_y_max) &&
+  input$recluster_y_min < input$recluster_y_max
+) {
+
+  p <- p +
+    coord_cartesian(
+      ylim = c(
+        input$recluster_y_min,
+        input$recluster_y_max
+      )
+    )
+
+}
+
 incProgress(
   1,
   detail = "Done"

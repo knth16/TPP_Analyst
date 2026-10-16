@@ -332,11 +332,7 @@ observeEvent(input$load_example, {
   example_data$loaded <- TRUE
 
   # Automatically set preprocessing flags for example dataset
-updateCheckboxInput(
-  session,
-  "already_log2",
-  value = TRUE
-)
+
 
 updateCheckboxInput(
   session,
@@ -350,7 +346,6 @@ observeEvent(using_example_data(), {
 
   if (!using_example_data()) {
 
-    updateCheckboxInput(session, "already_log2", value = FALSE)
 
     updateCheckboxInput(session, "Already_lowestnorm", value = FALSE)
 
@@ -409,6 +404,7 @@ if (contains_unresolved_other) {
   mapping
 
 })
+
 dataset2 <- designdataModuleServer(
   "dataset2",
   fileInput = reactive(input$file2),
@@ -482,16 +478,21 @@ processed <- processedDataModuleServer(
 )
 
 available_organisms <- c(
+  "Homo sapiens",
+  "Mus musculus",
+  "Rattus norvegicus",
+  "Arabidopsis thaliana",
+  "Saccharomyces cerevisiae",
+  "Escherichia coli",
   "Sulfolobus acidocaldarius",
   "Parageobacillus thermoglucosidasius",
   "Caldimonas thermodepolymerans",
   "Haloferax volcanii",
   "Thermosynechococcus elongatus",
   "Thermus thermophilus",
-  "E.coli",
-  "H.sapiens",
   "Other"
 )
+
 
 #organism mode selector
 output$organism_mode_ui <- renderUI({
@@ -537,20 +538,23 @@ output$single_organism_ui <- renderUI({
 #custom organism naming UI
 output$single_custom_organism_ui <- renderUI({
 
-  req(input$organism_mode)
+  if (
+    !identical(input$organism_mode, "single")
+  ) {
+    return(NULL)
+  }
 
   if (
-    input$organism_mode == "single" &&
-    input$single_organism == "Other"
+    !identical(input$single_organism, "Other")
   ) {
-
-    textInput(
-      "single_custom_organism",
-      "Custom organism name",
-      placeholder = "Example: A.taliana"
-    )
-
+    return(NULL)
   }
+
+  textInput(
+    "single_custom_organism",
+    "Custom organism name",
+    placeholder = "Example: A.thaliana"
+  )
 
 })
 
@@ -870,7 +874,9 @@ resolved_single_organism <- reactive({
     return(NULL)
   }
 
-  if (input$single_organism == "Other") {
+  req(input$single_organism)
+
+  if (identical(input$single_organism, "Other")) {
 
     req(input$single_custom_organism)
 
@@ -1021,17 +1027,27 @@ custom_orgdata_files <- reactive({
 
   req(dataset2$data())
 
+if (
+  input$organism_mode == "single" &&
+  single_custom_organism_selected()
+) {
+
+  conditions_with_other <- "CUSTOM_SINGLE"
+
+} else {
+
   mapping <- condition_organism_mapping()
 
+  conditions_with_other <- names(mapping)[
+    sapply(
+      mapping,
+      function(x)
+        !is.null(x) &&
+        "Other" %in% x
+    )
+  ]
 
-conditions_with_other <- names(mapping)[
-  sapply(
-    mapping,
-    function(x)
-      !is.null(x) &&
-      "Other" %in% x
-  )
-]
+}
 
 
   out <- list()
@@ -1092,16 +1108,187 @@ df <- switch(
 
 )
 
+required_cols <- c(
+  "Entry",
+  "Protein names",
+  "Gene Names",
+  "Organism",
+  "Gene Ontology (GO)",
+  "Gene Ontology (biological process)",
+  "Gene Ontology (cellular component)",
+  "Gene Ontology (molecular function)",
+  "Gene Ontology IDs"
+)
+
+missing_cols <- setdiff(
+  required_cols,
+  names(df)
+)
+
+if(length(missing_cols) > 0) {
+
+  showModal(
+    modalDialog(
+      title = "❌ Invalid organism database",
+
+      paste0(
+        "The uploaded organism database is missing required columns:\n\n",
+        paste(
+          missing_cols,
+          collapse = "\n"
+        )
+      ),
+
+      easyClose = TRUE
+    )
+  )
+
+  return(list())
+
+}
+
+names(df) <- make.names(
+  names(df),
+  unique = TRUE
+)
+
+if (cond == "CUSTOM_SINGLE") {
+
+  custom_name <- resolved_single_organism()
+
+} else {
+
+  custom_name <- custom_protein_mapping()[[cond]]
+
+}
+
+if(
+  !is.null(custom_name) &&
+  length(custom_name) > 0 &&
+  trimws(custom_name) != ""
+) {
+
+  df$Organism <- custom_name
+
+}
 
 out[[cond]] <- df
 
 
 
   }
+cat("\n====================\n")
+cat("CUSTOM ORG FILES OUTPUT\n")
+cat("====================\n")
 
+print(names(out))
+
+print(length(out))
   out
 
 })
+
+observeEvent(
+  input$custom_org_CUSTOM_SINGLE,
+  {
+
+    file_obj <- input$custom_org_CUSTOM_SINGLE
+
+    req(file_obj)
+
+    ext <- tolower(
+      tools::file_ext(file_obj$name)
+    )
+
+    df <- tryCatch(
+
+      switch(
+
+        ext,
+
+        csv = read.csv(
+          file_obj$datapath,
+          check.names = FALSE
+        ),
+
+        tsv = read.delim(
+          file_obj$datapath,
+          check.names = FALSE
+        ),
+
+        txt = read.delim(
+          file_obj$datapath,
+          check.names = FALSE
+        ),
+
+        xlsx = as.data.frame(
+          readxl::read_excel(
+            file_obj$datapath
+          )
+        ),
+
+        xls = as.data.frame(
+          readxl::read_excel(
+            file_obj$datapath
+          )
+        ),
+
+        NULL
+
+      ),
+
+      error = function(e) NULL
+
+    )
+
+    if(is.null(df))
+      return()
+
+    required_cols <- c(
+      "Entry",
+      "Protein names",
+      "Gene Names",
+      "Organism",
+      "Length",
+      "Gene Ontology (GO)",
+      "Gene Ontology (biological process)",
+      "Gene Ontology (cellular component)",
+      "Gene Ontology (molecular function)",
+      "Gene Ontology IDs"
+    )
+
+    missing_cols <- setdiff(
+      required_cols,
+      names(df)
+    )
+
+    if(length(missing_cols) > 0) {
+
+      showModal(
+
+        modalDialog(
+
+          title = "❌ Invalid organism database",
+
+          paste0(
+            "Missing columns:\n\n",
+            paste(
+              missing_cols,
+              collapse = "\n"
+            )
+          ),
+
+          easyClose = TRUE
+
+        )
+
+      )
+
+    }
+
+  },
+  ignoreInit = TRUE
+)
 
 custom_orgdata_for_conditions <- reactive({
 
@@ -1350,11 +1537,26 @@ observe({
 
   req(processed$data())
 
+  choices <- names(processed$data())
+
+  req(length(choices) > 0)
+
+  current <- isolate(input$selected_split)
+
+  selected <- if (
+    !is.null(current) &&
+    current %in% choices
+  ) {
+    current
+  } else {
+    choices[1]
+  }
+
   updateSelectInput(
     session,
     "selected_split",
-    choices = names(processed$data()),
-    selected = names(processed$data())[1]
+    choices = choices,
+    selected = selected
   )
 
 })
@@ -1484,7 +1686,20 @@ output$split_table <- renderDT({
     input$selected_split
   )
 
-  df <- processed$data()[[input$selected_split]]
+  datasets <- processed$data()
+
+  # Prevent rendering while the selector is temporarily
+  # pointing to a dataset from the previous split mode
+  req(
+    input$selected_split %in% names(datasets)
+  )
+
+  df <- datasets[[input$selected_split]]
+
+  req(
+    !is.null(df),
+    ncol(df) > 0
+  )
 
   numeric_cols <- which(
     vapply(
@@ -1494,19 +1709,29 @@ output$split_table <- renderDT({
     )
   )
 
-  DT::datatable(
+  tbl <- DT::datatable(
     df,
     options = list(
       pageLength = 5,
       scrollX = TRUE
     )
-  ) %>%
-    DT::formatRound(
+  )
+
+  # Only call formatRound if numeric columns actually exist
+  if (length(numeric_cols) > 0) {
+
+    tbl <- DT::formatRound(
+      tbl,
       columns = numeric_cols,
       digits = 1
     )
 
+  }
+
+  tbl
+
 })
+
 
 
 
@@ -1523,7 +1748,7 @@ already_log2 <- reactive({
 })
 
 already_normalized <- reactive({
-isTRUE(input$already_normalized)
+  isTRUE(input$Already_lowestnorm)
 })
 #cache
 analysis_cache <- reactiveValues()
@@ -2810,7 +3035,8 @@ print(names(tmp))
 zero_stats <- zeroStatsModule(
   id = dataset_name,
   filtered_data = filtered_data,
-  already_log2 = already_log2
+  already_log2 = already_log2,
+  already_normalized = already_normalized
 )
 
         # ---- QC ----
@@ -2819,7 +3045,8 @@ zero_stats <- zeroStatsModule(
           filtered_data = filtered_data,
           missing_stats = missing_stats,
           zero_stats    = zero_stats,
-          already_log2 = already_log2
+          already_log2 = already_log2,
+          already_normalized = already_normalized
         )
 
         # ---- NORMALIZATION ----
@@ -2958,12 +3185,17 @@ Org_data = reactive({
         "Homo sapiens",
         "human"
       )
+cat("\nGO ORA ORGS:\n")
+print(orgs)
 
+cat("\nORG_DATA ORGANISMS:\n")
+print(unique(dataset2$Org_data()$Organism))
       if (!all(orgs %in% known_orgs)) {
 
+          cat("\nCUSTOM ORGANISM DETECTED\n")
 
+          return(dataset2$Org_data())
 
-        return(NULL)
       }
 
 cat("\nORGS REQUESTED:\n")
@@ -3031,13 +3263,18 @@ go_ora_results[[dataset_name]] <-
     "Homo sapiens",
     "human"
   )
+cat("\nGO ORA ORGS:\n")
+print(orgs)
 
-  if (!all(orgs %in% known_orgs)) {
+cat("\nORG_DATA ORGANISMS:\n")
+print(unique(dataset2$Org_data()$Organism))
+if (!all(orgs %in% known_orgs)) {
 
+    cat("\nCUSTOM ORGANISM DETECTED\n")
 
+    return(dataset2$Org_data())
 
-    return(NULL)
-  }
+}
 
 
 
@@ -3513,7 +3750,7 @@ withProgress(message = "Fitting models", value = 0, {
         BPPARAM = BiocParallel::SerialParam(
           progressbar = FALSE
         ),
-        returnModels = FALSE
+        returnModels = TRUE
       )
 
     },
@@ -3792,6 +4029,69 @@ make_model_comparison_plot <- function() {
 
   plot_data <- combined_data %>%
     dplyr::filter(.data[[id_col]] == selected_protein)
+  
+  x_grid <- seq(
+  min(plot_data$Temperature),
+  max(plot_data$Temperature),
+  length.out = 100
+)
+smooth_alt_curves <- list()
+
+for(ds in unique(plot_data$Dataset)) {
+
+  ds_data <- plot_data %>%
+    dplyr::filter(
+      Dataset == ds
+    )
+
+  fit <- NPARC::fitSingleSigmoid(
+    x = ds_data$Temperature,
+    y = ds_data$RelAbundance
+  )
+
+  if(inherits(fit, "try-error")) {
+    next
+  }
+
+  pred <- predict(
+    fit,
+    newdata = data.frame(
+      x = x_grid
+    )
+  )
+
+  smooth_alt_curves[[as.character(ds)]] <- data.frame(
+    Temperature = x_grid,
+    fitted = pred,
+    Dataset = ds
+  )
+}
+smooth_alt_curves <- dplyr::bind_rows(
+  smooth_alt_curves
+)
+null_fit <- NPARC::fitSingleSigmoid(
+  x = plot_data$Temperature,
+  y = plot_data$RelAbundance
+)
+
+smooth_null_curve <- NULL
+
+if(!inherits(null_fit, "try-error")) {
+
+  smooth_null_curve <- data.frame(
+
+    Temperature = x_grid,
+
+    fitted = predict(
+      null_fit,
+      newdata = data.frame(
+        x = x_grid
+      )
+    )
+
+  )
+
+}
 
   validate(need(nrow(plot_data) > 0, "No data available for the selected protein."))
 
@@ -3827,30 +4127,41 @@ make_model_comparison_plot <- function() {
   # --------------------------------------------------------------------
   # Alternative model curves: one per dataset
   # --------------------------------------------------------------------
-  p <- p + geom_line(
-    data = pc %>% dplyr::filter(modelType == "alternative"),
-    aes(
-      x = Temperature,
-      y = fitted,
-      color = Dataset,
-      group = Dataset
-    ),
-    linewidth = 1.1
-  )
+p <- p + geom_line(
+  data = smooth_alt_curves,
+
+  aes(
+    x = Temperature,
+    y = fitted,
+    color = Dataset,
+    group = Dataset
+  ),
+
+  linewidth = 1.1
+)
 
   # --------------------------------------------------------------------
   # Null model curve: single dashed black line
   # --------------------------------------------------------------------
+if(!is.null(smooth_null_curve)) {
+
   p <- p + geom_line(
-    data = pc %>% dplyr::filter(modelType == "null"),
+
+    data = smooth_null_curve,
+
     aes(
       x = Temperature,
       y = fitted,
       linetype = "Null model"
     ),
+
     color = "black",
+
     linewidth = 1
+
   )
+
+}
 
   # --------------------------------------------------------------------
   # Customize legend for null model

@@ -1453,6 +1453,30 @@ $(document).on('click', '[data-toggle=\"popover\"]', function() {
 
 });
 
+// Preserve page position when changing the split dataset preview
+var splitDatasetScrollY = null;
+
+$(document).on('mousedown', '#selected_split', function() {
+  splitDatasetScrollY = window.pageYOffset;
+});
+
+$(document).on('change', '#selected_split', function() {
+
+  var savedY = splitDatasetScrollY;
+
+  if (savedY === null) {
+    savedY = window.pageYOffset;
+  }
+
+  setTimeout(function() {
+    window.scrollTo(0, savedY);
+  }, 50);
+
+  setTimeout(function() {
+    window.scrollTo(0, savedY);
+  }, 200);
+
+});
 
 "))
 ,
