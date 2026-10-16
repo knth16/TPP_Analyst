@@ -208,11 +208,8 @@ plot_detect_custom_df <- function(df, colors = c("#1f77b4", "#ff7f0e"), font_fam
   stat <- df_long %>%
     group_by(rowname) %>%
     summarise(mean = mean(val[val != 0], na.rm = TRUE), zeroval = any(val == 0, na.rm = TRUE))
-cat("\n====================\n")
-cat("DENSITY DEBUG\n")
-cat("====================\n")
-
-print(table(stat$zeroval))
+cat("\nDENSITY ROW MEANS\n")
+print(summary(stat$mean))
   ggplot(stat, aes(mean, color = zeroval)) +
     geom_density(na.rm = TRUE) +
     scale_color_manual(values = colors) +
@@ -669,40 +666,133 @@ orgs <- setdiff(
   }
 
 
-    org_files <- list(
-      list(
-        names = c("Sulfolobus acidocaldarius"),
-        file  = "Data/SACIuniprotkb_taxonomy_id_2285_2025_09_30.tsv"
-      ),
-      list(
-        names = c("Parageobacillus thermoglucosidasius"),
-        file  = "Data/uniprotkb_taxonomy_id_1426_2026_01_20.tsv"
-      ),
-      list(
-        names = c("Caldimonas thermodepolymerans"),
-        file  = "Data/uniprotkb_proteome_UP000239406_2026_01_20 (1).tsv"
-      ),
-      list(
-        names = c("Haloferax volcanii"),
-        file  = "Data/uniprotkb_taxonomy_id_2246_2026_01_20.tsv"
-      ),
-      list(
-        names = c("Thermosynechococcus elongatus"),
-        file  = "Data/uniprotkb_taxonomy_id_197221_2026_01_21.tsv"
-      ),
-      list(
-        names = c("Thermus thermophilus"),
-        file  = "Data/uniprotkb_proteome_UP000000532_2026_01_20.tsv"
-      ),
-      list(
-        names = c("E.coli", "Escherichia coli", "E coli"),
-        file  = "Data/uniprotkb_E_coli_AND_model_organism_833_2026_01_20.tsv"
-      ),
-      list(
-        names = c("H.sapiens", "Homo sapiens", "human"),
-        file  = "Data/uniprotkb_taxonomy_id_9606_2026_01_20.tsv"
-      )
-    )
+org_files <- list(
+
+  # Human
+  list(
+    names = c(
+      "Homo sapiens",
+      "H.sapiens",
+      "H. sapiens",
+      "human"
+    ),
+    file = "Data/uniprotkb_taxonomy_id_9606_2026_01_20.tsv"
+  ),
+
+  # Mouse
+  list(
+    names = c(
+      "Mus musculus",
+      "M.musculus",
+      "M. musculus",
+      "mouse"
+    ),
+    file = "Data/uniprotkb_mus_musculus_AND_model_organi_2026_10_15.tsv"
+  ),
+
+  # Rat
+  list(
+    names = c(
+      "Rattus norvegicus",
+      "R.norvegicus",
+      "R. norvegicus",
+      "rat"
+    ),
+    file = "Data/uniprotkb_taxonomy_id_10116_2026_10_15.tsv"
+  ),
+
+  # Arabidopsis
+  list(
+    names = c(
+      "Arabidopsis thaliana",
+      "A.thaliana",
+      "A. thaliana",
+      "Arabidopsis"
+    ),
+    file = "Data/uniprotkb_Arabidopsis_thaliana_AND_mode_2026_10_15.tsv"
+  ),
+
+  # Budding yeast
+  list(
+    names = c(
+      "Saccharomyces cerevisiae",
+      "S.cerevisiae",
+      "S. cerevisiae",
+      "baker's yeast",
+      "budding yeast"
+    ),
+    file = "Data/uniprotkb_Saccharomyces_cerevisiae_AND_2026_10_15.tsv"
+  ),
+
+
+
+  # E. coli
+  list(
+    names = c(
+      "Escherichia coli",
+      "E.coli",
+      "E. coli",
+      "E coli"
+    ),
+    file = "Data/uniprotkb_E_coli_AND_model_organism_833_2026_01_20.tsv"
+  ),
+
+  # Existing organisms
+  list(
+    names = c(
+      "Sulfolobus acidocaldarius",
+      "S.acidocaldarius",
+      "S. acidocaldarius"
+    ),
+    file = "Data/SACIuniprotkb_taxonomy_id_2285_2025_09_30.tsv"
+  ),
+
+  list(
+    names = c(
+      "Parageobacillus thermoglucosidasius",
+      "P.thermoglucosidasius",
+      "P. thermoglucosidasius"
+    ),
+    file = "Data/uniprotkb_taxonomy_id_1426_2026_01_20.tsv"
+  ),
+
+  list(
+    names = c(
+      "Caldimonas thermodepolymerans",
+      "C.thermodepolymerans",
+      "C. thermodepolymerans"
+    ),
+    file = "Data/uniprotkb_proteome_UP000239406_2026_01_20 (1).tsv"
+  ),
+
+  list(
+    names = c(
+      "Haloferax volcanii",
+      "H.volcanii",
+      "H. volcanii"
+    ),
+    file = "Data/uniprotkb_taxonomy_id_2246_2026_01_20.tsv"
+  ),
+
+  list(
+    names = c(
+      "Thermosynechococcus elongatus",
+      "T.elongatus",
+      "T. elongatus"
+    ),
+    file = "Data/uniprotkb_taxonomy_id_197221_2026_01_21.tsv"
+  ),
+
+  list(
+    names = c(
+      "Thermus thermophilus",
+      "T.thermophilus",
+      "T. thermophilus"
+    ),
+    file = "Data/uniprotkb_proteome_UP000000532_2026_01_20.tsv"
+  )
+
+)
     data_list <- lapply(orgs, function(org) {
 message("[ORG_DATA] processing: ", org)
       # normalize input
@@ -762,9 +852,14 @@ if (!is.null(org_file_cache[[cache_key]])) {
 # --------------------------------------------------
 # Add custom uploaded organism databases
 # --------------------------------------------------
+cat("\nCUSTOM ORG DATA RECEIVED:\n")
+
+print(names(customOrgData()))
+
+print(length(customOrgData()))
 
 custom_list <- customOrgData()
-
+str(custom_list)
 if (!is.null(custom_list)) {
 
   custom_dfs <- unname(custom_list)
@@ -779,19 +874,35 @@ if (!is.null(custom_list)) {
 if (length(data_list) == 0) {
   return(NULL)
 }
+cat("\nFINAL DATA LIST STRUCTURES\n")
 
+for(i in seq_along(data_list)) {
+
+  cat("\nITEM", i, "\n")
+
+  print(names(data_list[[i]])[1:10])
+
+}
 final_df <- do.call(
   rbind,
   data_list
 )
-cat("\nORG_DATA DIM:\n")
-print(dim(final_df))
-message(
-  "[ORG_DATA] final rows: ",
-  nrow(final_df)
+
+cat("\nFINAL_DF COLUMN NAMES\n")
+
+print(names(final_df))
+
+print(
+  unique(
+    final_df$Organism
+  )
 )
 
+cat("\nORG_DATA DIM:\n")
+print(dim(final_df))
+
 final_df
+
     })
 
     return(list(data = data, Org_data = Org_data))
@@ -821,40 +932,84 @@ processedDataModuleServer <- function(
     }
 organism_aliases <- list(
 
-  "H.sapiens" = c(
-    "H.sapiens",
+  "Homo sapiens" = c(
     "Homo sapiens",
+    "H.sapiens",
+    "H. sapiens",
     "human"
   ),
 
-  "E.coli" = c(
-    "E.coli",
+  "Mus musculus" = c(
+    "Mus musculus",
+    "M.musculus",
+    "M. musculus",
+    "mouse"
+  ),
+
+  "Rattus norvegicus" = c(
+    "Rattus norvegicus",
+    "R.norvegicus",
+    "R. norvegicus",
+    "rat"
+  ),
+
+  "Arabidopsis thaliana" = c(
+    "Arabidopsis thaliana",
+    "A.thaliana",
+    "A. thaliana",
+    "Arabidopsis"
+  ),
+
+  "Saccharomyces cerevisiae" = c(
+    "Saccharomyces cerevisiae",
+    "S.cerevisiae",
+    "S. cerevisiae",
+    "baker's yeast",
+    "budding yeast"
+  ),
+
+
+  "Escherichia coli" = c(
     "Escherichia coli",
+    "E.coli",
+    "E. coli",
     "E coli"
   ),
 
   "Sulfolobus acidocaldarius" = c(
-    "Sulfolobus acidocaldarius"
+    "Sulfolobus acidocaldarius",
+    "S.acidocaldarius",
+    "S. acidocaldarius"
   ),
 
   "Parageobacillus thermoglucosidasius" = c(
-    "Parageobacillus thermoglucosidasius"
+    "Parageobacillus thermoglucosidasius",
+    "P.thermoglucosidasius",
+    "P. thermoglucosidasius"
   ),
 
   "Caldimonas thermodepolymerans" = c(
-    "Caldimonas thermodepolymerans"
+    "Caldimonas thermodepolymerans",
+    "C.thermodepolymerans",
+    "C. thermodepolymerans"
   ),
 
   "Haloferax volcanii" = c(
-    "Haloferax volcanii"
+    "Haloferax volcanii",
+    "H.volcanii",
+    "H. volcanii"
   ),
 
   "Thermosynechococcus elongatus" = c(
-    "Thermosynechococcus elongatus"
+    "Thermosynechococcus elongatus",
+    "T.elongatus",
+    "T. elongatus"
   ),
 
   "Thermus thermophilus" = c(
-    "Thermus thermophilus"
+    "Thermus thermophilus",
+    "T.thermophilus",
+    "T. thermophilus"
   )
 
 )
@@ -1568,6 +1723,11 @@ fluidRow(
           selected = "intensity",
           inline = TRUE
         ),
+        checkboxInput(
+        inputId = ns("show_zero_only"),
+        label = "Show only proteins with zero values",
+        value = TRUE
+        ),
 
         plotOutput(
           ns("missing_values_pattern"),
@@ -1596,7 +1756,7 @@ fluidRow(
     fluidRow(
 
       box(
-        title = "Density plots of average log2 intensity",
+        title = "Density plots of average intensity",
         width = 12,
         status = "primary",
         solidHeader = TRUE,
@@ -1948,7 +2108,8 @@ missingStatsModule <- function(dataReactive) {
 zeroStatsModule <- function(
   id,
   filtered_data,
-  already_log2
+  already_log2,
+  already_normalized
 ) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
@@ -1998,15 +2159,18 @@ if (
             return(0)
           }
 
-          if (already_log2()) {
+if (
+  already_log2() ||
+  already_normalized()
+) {
 
-            mean(x)
+  mean(x)
 
-          } else {
+} else {
 
-            mean(log2(x + 1))
+  mean(log2(x + 1))
 
-          }
+}
 
 
         }
@@ -2040,6 +2204,8 @@ all_zero2 <- apply(
 
 cat("All-zero rows after filtering:\n")
 print(sum(all_zero2))
+cat("\nFILTERED DATASET SIZE:\n")
+print(nrow(df))
       df
     })
 
@@ -2090,12 +2256,39 @@ qcPanelModuleServer <- function(
   filtered_data,
   missing_stats,
   zero_stats,
-  already_log2
+  already_log2,
+  already_normalized
 ) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 last_heatmap <- reactiveVal(NULL)
 last_tick_labels <- reactiveVal(NULL)
+
+qc_values_already_scaled <- reactive({
+
+  already_log2() ||
+    already_normalized()
+
+})
+
+density_label <- reactive({
+
+  if (already_normalized()) {
+
+    return("Average normalized abundance")
+
+  }
+
+  if (already_log2()) {
+
+    return("Average intensity")
+
+  }
+
+  "Average log2 intensity"
+
+})
+
 #progress bar
 withProgress(
   message = paste("Initializing QC module:", id),
@@ -2218,15 +2411,15 @@ row_means <- apply(
       return(0)
     }
 
-    if (already_log2()) {
+  if (qc_values_already_scaled()) {
 
-      mean(x)
+    mean(x)
 
-    } else {
+  } else {
 
-      mean(log2(x + 1))
+    mean(log2(x + 1))
 
-    }
+  }
 
   }
 )
@@ -2283,11 +2476,10 @@ controls <- c(
 sliderInput(
   inputId = ns("mean_intensity_filter"),
 
-  label = if (already_log2()) {
-    "Average intensity range:"
-  } else {
-    "Average log2 intensity range:"
-  },
+  label = paste0(
+    density_label(),
+    " range:"
+  ),
 
   min = min_intensity,
   max = max_intensity,
@@ -2451,7 +2643,7 @@ output$download_zero_values_per_temp <- downloadHandler(
 )
 
     # -------------------------------
-    # Plot: Density of average log2 intensity
+    # Plot: Density of average intensity
     # -------------------------------
 
   output$missing_values_density <- renderPlot({
@@ -2467,13 +2659,16 @@ output$download_zero_values_per_temp <- downloadHandler(
       )
 
       df0 <- zero_stats$filtered()
+      cat("\nDENSITY DATASET SIZE:\n")
+print(nrow(df0))
+
       validate(
   need(
     any(df0 == 0, na.rm = TRUE),
     "No proteins with zero values remain after filtering."
   )
 )
-if (already_log2()) {
+if (qc_values_already_scaled()) {
 
   dflog2 <- df0
 
@@ -2496,6 +2691,12 @@ if (already_log2()) {
       )
 
 p <- plot_detect_custom_df(dflog2)
+
+p <- p +
+  ggplot2::labs(
+    x = density_label()
+  )
+
 
 incProgress(
   1,
@@ -2525,7 +2726,7 @@ output$download_missing_values_density <- downloadHandler(
 
     df0 <- zero_stats$filtered()
 
-if (already_log2()) {
+if (qc_values_already_scaled()) {
 
   dflog2 <- df0
 
@@ -2545,9 +2746,12 @@ if (already_log2()) {
 
     dflog2[dflog2 == -Inf] <- 0
 
-    print(
-      plot_detect_custom_df(dflog2)
-    )
+    p <- plot_detect_custom_df(dflog2) +
+      ggplot2::labs(
+        x = density_label()
+      )
+
+    print(p)
 
     dev.off()
 
@@ -2595,7 +2799,8 @@ req(
       )
 
       df0 <- zero_stats$filtered()
-
+cat("\nHEATMAP DATASET SIZE:\n")
+print(nrow(df0))
       incProgress(
         0.25,
         detail = "Preparing matrix"
@@ -2605,24 +2810,35 @@ req(
       df_numeric <- df0[, sapply(df0, is.numeric), drop = FALSE]
 
       validate(
-        need(ncol(df_numeric) > 0, "No numeric columns to display."),
-        need(any(df_numeric == 0, na.rm = TRUE), "No zero values in the data to display.")
+        need(
+          ncol(df_numeric) > 0,
+          "No numeric columns to display."
+        )
       )
+
 
       # keep only rows with zeros
       filtered_mat <- as.matrix(df_numeric)
-      filtered_mat <- filtered_mat[
-        apply(filtered_mat == 0, 1, any),
-        ,
-        drop = FALSE
-      ]
 
-      validate(
-        need(nrow(filtered_mat) > 0, "No zero values to display.")
-      )
+      if (isTRUE(input$show_zero_only)) {
+
+        filtered_mat <- filtered_mat[
+          apply(filtered_mat == 0, 1, any),
+          ,
+          drop = FALSE
+        ]
+
+        validate(
+          need(
+            nrow(filtered_mat) > 0,
+            "No proteins containing zero values to display."
+          )
+        )
+
+      }
 
       # keep original intensities
-      if (already_log2()) {
+      if (qc_values_already_scaled()) {
 
   missval <- filtered_mat
 
@@ -2659,7 +2875,7 @@ print(range(missval, na.rm = TRUE))
       # ---------------------------------
 
       row_means <- apply(
-        missval,
+        filtered_mat,
         1,
         function(x) {
 
@@ -2669,7 +2885,15 @@ print(range(missval, na.rm = TRUE))
             return(0)
           }
 
-          mean(x)
+          if (qc_values_already_scaled()) {
+
+            mean(x)
+
+          } else {
+
+            mean(log2(x + 1))
+
+          }
 
         }
       )
@@ -2681,6 +2905,9 @@ print(range(missval, na.rm = TRUE))
       row_means_sorted <- row_means[
       row_order_intensity
       ]
+      cat("\nHEATMAP ROW MEANS\n")
+print(summary(row_means_sorted))
+
 validate(
   need(
     length(row_means_sorted) > 0,
@@ -2830,11 +3057,20 @@ if (
 
 }
 
-legend_title <- if (already_log2()) {
+legend_title <- if (already_normalized()) {
+
+  "Normalized abundance"
+
+} else if (already_log2()) {
+
   "Intensity"
+
 } else {
+
   "log2(Intensity)"
+
 }
+
 
       # switch depending on UI
       if (input$pattern_mode == "clustered") {
@@ -2846,7 +3082,7 @@ legend_title <- if (already_log2()) {
           } else {
             missval_clustered_intensity
           }
-legend_title <- if (already_log2()) {
+legend_title <- if (qc_values_already_scaled()) {
   "Intensity"
 } else {
   "log2(Intensity)"
@@ -2860,7 +3096,7 @@ legend_title <- if (already_log2()) {
           column_names_gp = grid::gpar(fontsize = 8),
           show_row_names = FALSE,
           show_column_names = TRUE,
-          name = "Missing values pattern",
+          name = "Protein intensity heatmap",
           heatmap_legend_param = list(
             title = legend_title,
             direction = "horizontal",
@@ -2896,7 +3132,7 @@ last_heatmap(ht)
           column_names_side = "top",
           show_row_names = FALSE,
           show_column_names = TRUE,
-          name = "Missing values pattern",
+          name = "Protein intensity heatmap",
           column_names_gp = grid::gpar(fontsize = 8),
           cluster_columns = FALSE, 
           use_raster = FALSE,
@@ -6214,117 +6450,87 @@ selected_names <- setdiff(
 
   names(datasets_list) <- c(current_dataset_name, selected_names)
 
-  # -----------------------------
-  # 3. NORMALIZATION (PER DATASET)
-  # -----------------------------
 
+# -----------------------------
+# 3. JOIN DATASETS FIRST
+# -----------------------------
 
-datasets_norm <- datasets_list
+df_joined <- Reduce(
+  function(x, y) {
+    dplyr::full_join(
+      x,
+      y,
+      by = "Accession"
+    )
+  },
+  datasets_list
+)
+incProgress(
+  0.40,
+  detail = "Combining protein profiles"
+)
 incProgress(
   0.50,
-  detail = "Clustering each dataset"
+  detail = "Building combined protein profiles"
 )
-  # -----------------------------
-  # 4. CLUSTER EACH DATASET INDEPENDENTLY
-  # -----------------------------
-  cluster_results <- lapply(datasets_norm, function(df) {
 
-    df_clean <- df %>%
-      mutate(across(where(is.numeric), ~ tidyr::replace_na(., 0)))
+# -----------------------------
+# 4. BUILD COMBINED MATRIX
+# -----------------------------
 
-    mat <- as.matrix(df_clean[, -1])
-    rownames(mat) <- df_clean[[1]]
-
-
-
-    cor_matrix <- cor(t(mat), method = method)
-    cor_matrix[is.na(cor_matrix)] <- 0
-
-    diss <- as.dist((1 - cor_matrix) / 2)
-    hc <- hclust(diss, method = "complete")
-    clusters <- cutree(hc, k = k)
-
-    list(
-      df = df,
-      clusters = clusters,
-      hc = hc
-    )
-  })
-
-  # -----------------------------
-  # 5. USE CURRENT DATASET AS REFERENCE
-  # -----------------------------
-  current_res <- cluster_results[[current_dataset_name]]
-  clusters <- current_res$clusters
-
-  # -----------------------------
-  # 6. APPLY SAME CLUSTERS TO ALL DATASETS
-  # -----------------------------
-  clustered_data <- lapply(datasets_norm, function(df) {
-
-    annotation <- data.frame(
-      Accession = names(clusters),
-      Cluster   = factor(clusters)
-    )
-
-    df %>% left_join(annotation, by = "Accession")
-  })
-
-  # -----------------------------
-  # 7. JOIN FOR PLOTTING ONLY
-  # -----------------------------
-# keep cluster from reference dataset ONLY
-cluster_ref <- clustered_data[[current_dataset_name]] %>%
-  dplyr::select(Accession, Cluster)
-
-# join all datasets WITHOUT cluster
-data_only <- lapply(clustered_data, function(df) {
-  dplyr::select(df, -Cluster)
-})
-
-df_joined <- Reduce(function(x, y) {
-  dplyr::left_join(x, y, by = "Accession")
-}, data_only)
-
-# reattach cluster
-df_joined <- dplyr::left_join(cluster_ref, df_joined, by = "Accession")
-
-# ✅ REBUILD MATRIX FOR HEATMAP
-
-incProgress(
-  0.85,
-  detail = "Building combined clustering structure"
-)
 df_clean <- df_joined %>%
-  dplyr::mutate(across(where(is.numeric), ~ tidyr::replace_na(., 0)))
+  dplyr::mutate(
+    across(
+      where(is.numeric),
+      ~ tidyr::replace_na(., 0)
+    )
+  )
 
 mat <- df_clean %>%
-  dplyr::select(-Accession, -Cluster) %>%
+  dplyr::select(-Accession) %>%
   as.matrix()
-
+incProgress(
+  0.60,
+  detail = "Building clustering matrix"
+)
 rownames(mat) <- df_clean$Accession
 
-# ✅ IMPORTANT: DO NOT TOUCH CLUSTERS LENGTH
-# just reuse original clustering order
-cor_matrix <- cor(t(mat), method = method)
+# -----------------------------
+# 5. CLUSTER COMBINED PROFILES
+# -----------------------------
+incProgress(
+  0.75,
+  detail = "Calculating correlation matrix"
+)
+cor_matrix <- cor(
+  t(mat),
+  method = method
+)
+
 cor_matrix[is.na(cor_matrix)] <- 0
 
-diss <- as.dist((1 - cor_matrix) / 2)
-hc <- hclust(diss, method = "complete")
+diss <- as.dist(
+  (1 - cor_matrix) / 2
+)
+incProgress(
+  0.90,
+  detail = "Generating hierarchical clustering"
+)
+hc <- hclust(
+  diss,
+  method = "complete"
+)
 
+clusters <- cutree(
+  hc,
+  k = k
+)
 
-
-
-
-cor_matrix <- cor(t(mat), method = method)
-cor_matrix[is.na(cor_matrix)] <- 0
-
-diss <- as.dist((1 - cor_matrix) / 2)
-hc <- hclust(diss, method = "complete")
 incProgress(
   1,
   detail = "Done"
 )
+
 return(list(
   mode = "comparison",
   mat = mat,
@@ -6332,6 +6538,7 @@ return(list(
   clusters = clusters,
   df = df_joined
 ))
+
 
     }
   )
@@ -9402,10 +9609,21 @@ make_melting_curve_example_plot <- function() {
     if (is.null(fit)) 
       return(ggplot() + ggtitle("Fit failed"))
 
-    y_pred <- predict(fit)
+    temp_grid <- seq(
+      min(temp),
+      max(temp),
+      length.out = 100
+    )
 
-
-  fit_df <- data.frame(temp = temp, y_pred = y_pred)
+    fit_df <- data.frame(
+      temp = temp_grid,
+      y_pred = predict(
+        fit,
+        newdata = data.frame(
+          temp = temp_grid
+        )
+      )
+    )
 
   # --------------------------------------------------------
   # Final Plot
