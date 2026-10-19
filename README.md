@@ -132,3 +132,8 @@ TPP               3.40.0
 NPARC             1.24.0
 ComplexHeatmap    2.28.0
 clusterProfiler   4.20.0
+```
+# User Manual
+
+knth16.github.io/TPP_Analyst/
+
