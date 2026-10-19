@@ -138,6 +138,6 @@ clusterProfiler   4.20.0
 
 A complete step-by-step user manual for TPP Analyst is available online:
 
-[**Open the TPP Analyst User Manual**](knth16.github.io/TPP_Analyst/)
+[**Open the TPP Analyst User Manual**](https://knth16.github.io/TPP_Analyst/)
 
 
