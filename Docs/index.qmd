@@ -5,6 +5,8 @@ subtitle: "User Manual"
 
 # Welcome to TPP Analyst
 
+![welcome.](images/input-data/welcome.png){#fig-experimental-design width=85%}
+
 **TPP Analyst** is a free and open-source web application designed for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.
 
 TPP Analyst provides an integrated workflow for processing, exploring, and statistically analyzing thermal proteomics datasets through an interactive graphical interface.
