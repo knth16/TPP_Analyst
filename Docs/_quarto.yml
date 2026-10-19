@@ -1,0 +1,82 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "TPP Analyst"
+
+  navbar:
+    background: primary
+
+    left:
+      - href: index.qmd
+        text: Home
+
+      - href: getting-started.qmd
+        text: Getting Started
+
+      - href: input-data.qmd
+        text: Input Data
+
+      - href: quality-control.qmd
+        text: Quality Control
+
+      - href: normalization.qmd
+        text: Normalization
+
+      - href: clustering.qmd
+        text: Clustering
+
+      - href: modelfitting.qmd
+        text: Model Fitting
+
+      - href: proteinplots.qmd
+        text: Protein Plots
+
+      - href: GO.qmd
+        text: GO Analysis
+
+      - href: modelcomparison.qmd
+        text: Comparison Models
+
+  sidebar:
+    style: "docked"
+    search: true
+
+    contents:
+      - href: index.qmd
+        text: Home
+
+      - href: getting-started.qmd
+        text: Getting Started
+
+      - href: input-data.qmd
+        text: Input Data
+
+      - href: quality-control.qmd
+        text: Quality Control
+
+      - href: normalization.qmd
+        text: Normalization
+
+      - href: clustering.qmd
+        text: Clustering
+
+      - href: modelfitting.qmd
+        text: Model Fitting
+
+      - href: proteinplots.qmd
+        text: Protein Plots
+
+      - href: GO.qmd
+        text: GO Analysis
+
+      - href: modelcomparison.qmd
+        text: Comparison Models
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    smooth-scroll: true

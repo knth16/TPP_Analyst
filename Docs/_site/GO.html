@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>GO Analysis – TPP Analyst</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-df8525f35ba63c6f0b1065eede4603db.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">TPP Analyst</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./getting-started.html"> 
+<span class="menu-text">Getting Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./input-data.html"> 
+<span class="menu-text">Input Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./quality-control.html"> 
+<span class="menu-text">Quality Control</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./normalization.html"> 
+<span class="menu-text">Normalization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./clustering.html"> 
+<span class="menu-text">Clustering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./modelfitting.html"> 
+<span class="menu-text">Model Fitting</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./proteinplots.html"> 
+<span class="menu-text">Protein Plots</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./GO.html"> 
+<span class="menu-text">GO Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./modelcomparison.html"> 
+<span class="menu-text">Comparison Models</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./GO.html">GO Analysis</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./input-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Input Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Normalization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelfitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Fitting</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./proteinplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protein Plots</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./GO.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">GO Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelcomparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comparison Models</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#gene-ontology-annotations" id="toc-gene-ontology-annotations" class="nav-link active" data-scroll-target="#gene-ontology-annotations">Gene Ontology annotations</a>
+  <ul class="collapse">
+  <li><a href="#fetching-uniprot-annotations" id="toc-fetching-uniprot-annotations" class="nav-link" data-scroll-target="#fetching-uniprot-annotations">Fetching UniProt annotations</a></li>
+  </ul></li>
+  <li><a href="#over-representation-analysis" id="toc-over-representation-analysis" class="nav-link" data-scroll-target="#over-representation-analysis">Over-Representation Analysis</a>
+  <ul class="collapse">
+  <li><a href="#requirement-clustering" id="toc-requirement-clustering" class="nav-link" data-scroll-target="#requirement-clustering">Requirement: clustering</a></li>
+  <li><a href="#background-protein-set" id="toc-background-protein-set" class="nav-link" data-scroll-target="#background-protein-set">Background protein set</a></li>
+  <li><a href="#selecting-a-cluster" id="toc-selecting-a-cluster" class="nav-link" data-scroll-target="#selecting-a-cluster">Selecting a cluster</a></li>
+  <li><a href="#running-ora" id="toc-running-ora" class="nav-link" data-scroll-target="#running-ora">Running ORA</a></li>
+  </ul></li>
+  <li><a href="#ora-advanced-options" id="toc-ora-advanced-options" class="nav-link" data-scroll-target="#ora-advanced-options">ORA advanced options</a>
+  <ul class="collapse">
+  <li><a href="#multiple-testing-correction" id="toc-multiple-testing-correction" class="nav-link" data-scroll-target="#multiple-testing-correction">Multiple-testing correction</a></li>
+  <li><a href="#minimum-gene-set-size" id="toc-minimum-gene-set-size" class="nav-link" data-scroll-target="#minimum-gene-set-size">Minimum gene set size</a></li>
+  <li><a href="#maximum-gene-set-size" id="toc-maximum-gene-set-size" class="nav-link" data-scroll-target="#maximum-gene-set-size">Maximum gene set size</a></li>
+  <li><a href="#p-value-cutoff" id="toc-p-value-cutoff" class="nav-link" data-scroll-target="#p-value-cutoff">P-value cutoff</a></li>
+  <li><a href="#q-value-cutoff" id="toc-q-value-cutoff" class="nav-link" data-scroll-target="#q-value-cutoff">Q-value cutoff</a></li>
+  <li><a href="#expand-go-hierarchy" id="toc-expand-go-hierarchy" class="nav-link" data-scroll-target="#expand-go-hierarchy">Expand GO hierarchy</a></li>
+  </ul></li>
+  <li><a href="#ora-results-table" id="toc-ora-results-table" class="nav-link" data-scroll-target="#ora-results-table">ORA results table</a>
+  <ul class="collapse">
+  <li><a href="#go-ontology-categories" id="toc-go-ontology-categories" class="nav-link" data-scroll-target="#go-ontology-categories">GO ontology categories</a></li>
+  </ul></li>
+  <li><a href="#ora-visualizations" id="toc-ora-visualizations" class="nav-link" data-scroll-target="#ora-visualizations">ORA visualizations</a>
+  <ul class="collapse">
+  <li><a href="#ora-dotplot" id="toc-ora-dotplot" class="nav-link" data-scroll-target="#ora-dotplot">ORA dotplot</a></li>
+  <li><a href="#enrichment-map" id="toc-enrichment-map" class="nav-link" data-scroll-target="#enrichment-map">Enrichment map</a></li>
+  <li><a href="#ora-upset-plot" id="toc-ora-upset-plot" class="nav-link" data-scroll-target="#ora-upset-plot">ORA Upset plot</a></li>
+  </ul></li>
+  <li><a href="#gene-set-enrichment-analysis" id="toc-gene-set-enrichment-analysis" class="nav-link" data-scroll-target="#gene-set-enrichment-analysis">Gene Set Enrichment Analysis</a></li>
+  <li><a href="#requirement-limma-analysis" id="toc-requirement-limma-analysis" class="nav-link" data-scroll-target="#requirement-limma-analysis">Requirement: Limma analysis</a>
+  <ul class="collapse">
+  <li><a href="#ranking-proteins" id="toc-ranking-proteins" class="nav-link" data-scroll-target="#ranking-proteins">Ranking proteins</a></li>
+  <li><a href="#t-statistic" id="toc-t-statistic" class="nav-link" data-scroll-target="#t-statistic">t-statistic</a></li>
+  <li><a href="#logfc" id="toc-logfc" class="nav-link" data-scroll-target="#logfc">logFC</a></li>
+  <li><a href="#running-gsea" id="toc-running-gsea" class="nav-link" data-scroll-target="#running-gsea">Running GSEA</a></li>
+  </ul></li>
+  <li><a href="#gsea-advanced-options" id="toc-gsea-advanced-options" class="nav-link" data-scroll-target="#gsea-advanced-options">GSEA advanced options</a>
+  <ul class="collapse">
+  <li><a href="#gsea-p-value-adjustment-method" id="toc-gsea-p-value-adjustment-method" class="nav-link" data-scroll-target="#gsea-p-value-adjustment-method">GSEA p-value adjustment method</a></li>
+  <li><a href="#minimum-gene-set-size-1" id="toc-minimum-gene-set-size-1" class="nav-link" data-scroll-target="#minimum-gene-set-size-1">Minimum gene set size</a></li>
+  <li><a href="#maximum-gene-set-size-1" id="toc-maximum-gene-set-size-1" class="nav-link" data-scroll-target="#maximum-gene-set-size-1">Maximum gene set size</a></li>
+  <li><a href="#gsea-p-value-cutoff" id="toc-gsea-p-value-cutoff" class="nav-link" data-scroll-target="#gsea-p-value-cutoff">GSEA p-value cutoff</a></li>
+  <li><a href="#exponent" id="toc-exponent" class="nav-link" data-scroll-target="#exponent">Exponent</a></li>
+  <li><a href="#number-of-permutations" id="toc-number-of-permutations" class="nav-link" data-scroll-target="#number-of-permutations">Number of permutations</a></li>
+  <li><a href="#gsea-go-hierarchy-expansion" id="toc-gsea-go-hierarchy-expansion" class="nav-link" data-scroll-target="#gsea-go-hierarchy-expansion">GSEA GO hierarchy expansion</a></li>
+  </ul></li>
+  <li><a href="#gsea-results-and-visualizations" id="toc-gsea-results-and-visualizations" class="nav-link" data-scroll-target="#gsea-results-and-visualizations">GSEA results and visualizations</a>
+  <ul class="collapse">
+  <li><a href="#gsea-upset-plot" id="toc-gsea-upset-plot" class="nav-link" data-scroll-target="#gsea-upset-plot">GSEA Upset plot</a></li>
+  <li><a href="#ridge-line-plot" id="toc-ridge-line-plot" class="nav-link" data-scroll-target="#ridge-line-plot">Ridge line plot</a></li>
+  <li><a href="#running-score-and-preranked-list-plot" id="toc-running-score-and-preranked-list-plot" class="nav-link" data-scroll-target="#running-score-and-preranked-list-plot">Running score and preranked list plot</a></li>
+  <li><a href="#significant-terms-available-for-plotting" id="toc-significant-terms-available-for-plotting" class="nav-link" data-scroll-target="#significant-terms-available-for-plotting">Significant terms available for plotting</a></li>
+  </ul></li>
+  <li><a href="#recommended-ora-workflow" id="toc-recommended-ora-workflow" class="nav-link" data-scroll-target="#recommended-ora-workflow">Recommended ORA workflow</a></li>
+  <li><a href="#recommended-gsea-workflow" id="toc-recommended-gsea-workflow" class="nav-link" data-scroll-target="#recommended-gsea-workflow">Recommended GSEA workflow</a></li>
+  <li><a href="#choosing-between-ora-and-gsea" id="toc-choosing-between-ora-and-gsea" class="nav-link" data-scroll-target="#choosing-between-ora-and-gsea">Choosing between ORA and GSEA</a>
+  <ul class="collapse">
+  <li><a href="#next-step" id="toc-next-step" class="nav-link" data-scroll-target="#next-step">Next step</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">GO Analysis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The GO Analysis section provides tools for investigating the biological functions associated with proteins identified during TPP analysis.</p>
+<p>TPP Analyst provides two complementary Gene Ontology enrichment approaches:</p>
+<ol type="1">
+<li><strong>Over-Representation Analysis (ORA)</strong></li>
+<li><strong>Gene Set Enrichment Analysis (GSEA)</strong></li>
+</ol>
+<p>ORA evaluates whether particular Gene Ontology terms are represented more frequently within protein clusters than expected from the background protein set.</p>
+<p>GSEA instead evaluates whether proteins associated with particular GO terms tend to occur toward the top or bottom of a ranked protein list.</p>
+<p>The two approaches therefore answer related but different biological questions.</p>
+<section id="gene-ontology-annotations" class="level1">
+<h1>Gene Ontology annotations</h1>
+<p>Both ORA and GSEA require associations between protein identifiers and Gene Ontology terms.</p>
+<p>TPP Analyst uses organism-specific protein annotations to construct these associations.</p>
+<p>The GO annotations include terms belonging to the three major Gene Ontology categories:</p>
+<ul>
+<li><strong>Biological Process (BP)</strong></li>
+<li><strong>Molecular Function (MF)</strong></li>
+<li><strong>Cellular Component (CC)</strong></li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Protein identifiers
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>UniProt accession identifiers are recommended in the <code>Accession</code> column.</p>
+<p>GO analysis relies on matching the protein identifiers in the analyzed dataset to the available GO annotations. Alternative identifier formats may result in incomplete or unsuccessful annotation matching.</p>
+</div>
+</div>
+<section id="fetching-uniprot-annotations" class="level2">
+<h2 class="anchored" data-anchor-id="fetching-uniprot-annotations">Fetching UniProt annotations</h2>
+<p>When organism annotation data are not already available, TPP Analyst can retrieve GO information for the proteins in the clustered dataset.</p>
+<p>Click:</p>
+<p><strong>Fetch data</strong></p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Fetch.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Fetching annotations
+</figcaption>
+</figure>
+</div>
+<p>to retrieve the required protein annotation information.</p>
+<p>The protein accessions from the current clustered dataset are used for this process.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Annotation retrieval
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Fetching GO information is required only when the corresponding organism annotation data are not already available to the application or not provided by the user when loading the datasets.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="over-representation-analysis" class="level1">
+<h1>Over-Representation Analysis</h1>
+<p>The <strong>Over-Representation Analysis (ORA)</strong> workflow evaluates whether proteins associated with particular GO terms are represented more frequently within a protein cluster than expected from the background protein population.</p>
+<p>In TPP Analyst, ORA is performed independently for the protein clusters generated in the Clustering section.</p>
+<section id="requirement-clustering" class="level2">
+<h2 class="anchored" data-anchor-id="requirement-clustering">Requirement: clustering</h2>
+<p>ORA requires protein cluster assignments.</p>
+<p>Before running ORA, first complete the <a href="./clustering.html">Clustering</a> analysis.</p>
+<p>The proteins assigned to each cluster are used as the target protein sets for enrichment analysis.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Clustering is required
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Run the <strong>Clustering</strong> section before performing ORA.</p>
+<p>ORA uses the protein clusters generated during clustering as the groups tested for functional enrichment.</p>
+</div>
+</div>
+</section>
+<section id="background-protein-set" class="level2">
+<h2 class="anchored" data-anchor-id="background-protein-set">Background protein set</h2>
+<p>The background for ORA consists of the unique protein accessions available in the clustered dataset.</p>
+<p>Each individual cluster is then compared against this background.</p>
+<p>This allows enrichment results to be interpreted relative to the proteins available in the analyzed experiment.</p>
+</section>
+<section id="selecting-a-cluster" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-a-cluster">Selecting a cluster</h2>
+<p>Use:</p>
+<p><strong>Select cluster to analyze</strong></p>
+<p>to choose the cluster whose ORA results should be displayed.</p>
+<p>Available choices depend on the number of clusters generated during clustering.</p>
+<p>For example:</p>
+<pre class="text"><code>Cluster 1
+Cluster 2
+Cluster 3
+Cluster 4</code></pre>
+<p>The enrichment analysis is calculated for the available clusters, while the selector determines which cluster is displayed in the result table and plots.</p>
+</section>
+<section id="running-ora" class="level2">
+<h2 class="anchored" data-anchor-id="running-ora">Running ORA</h2>
+<p>After clustering and GO annotations are available, click:</p>
+<p><strong>Run ORA</strong></p>
+<p>to perform enrichment analysis.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/RunORA.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Running ORA
+</figcaption>
+</figure>
+</div>
+<p>The proteins belonging to each cluster are tested against the GO annotation database using the configured statistical parameters.</p>
+<p>Results are then available for individual clusters through the cluster selector.</p>
+</section>
+</section>
+<section id="ora-advanced-options" class="level1">
+<h1>ORA advanced options</h1>
+<p>The <strong>Advanced options</strong> panel provides additional control over the statistical enrichment procedure.</p>
+<p>The available settings are:</p>
+<ul>
+<li><strong>p-value adjustment method</strong></li>
+<li><strong>Minimum gene set size</strong></li>
+<li><strong>Maximum gene set size</strong></li>
+<li><strong>p-value cutoff</strong></li>
+<li><strong>q-value cutoff</strong></li>
+<li><strong>Expand GO hierarchy</strong></li>
+</ul>
+<p>For most analyses, the default settings provide a convenient starting point.</p>
+<section id="multiple-testing-correction" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-testing-correction">Multiple-testing correction</h2>
+<p>The:</p>
+<p><strong>p-value adjustment method</strong></p>
+<p>determines how p-values are corrected for multiple hypothesis testing.</p>
+<p>Available options include:</p>
+<pre class="text"><code>BH
+holm
+hochberg
+hommel
+bonferroni
+BY
+fdr
+none</code></pre>
+<p>The default method is:</p>
+<pre class="text"><code>BH</code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Multiple GO terms are tested
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GO enrichment analysis evaluates many terms simultaneously. Multiple-testing correction helps control the statistical error associated with performing many enrichment tests.</p>
+</div>
+</div>
+</section>
+<section id="minimum-gene-set-size" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-gene-set-size">Minimum gene set size</h2>
+<p>The:</p>
+<p><strong>Minimum gene set size</strong></p>
+<p>determines the minimum number of annotated proteins required for a GO term to be considered during enrichment analysis.</p>
+<p>The default value is:</p>
+<pre class="text"><code>10</code></pre>
+<p>GO terms containing fewer proteins than this threshold are excluded.</p>
+</section>
+<section id="maximum-gene-set-size" class="level2">
+<h2 class="anchored" data-anchor-id="maximum-gene-set-size">Maximum gene set size</h2>
+<p>The:</p>
+<p><strong>Maximum gene set size</strong></p>
+<p>defines the maximum number of annotated proteins allowed for a GO term.</p>
+<p>The default value is:</p>
+<pre class="text"><code>500</code></pre>
+<p>Terms exceeding this limit are excluded from the enrichment analysis.</p>
+<p>These minimum and maximum thresholds can be used to avoid testing gene sets that are either very small or extremely broad.</p>
+</section>
+<section id="p-value-cutoff" class="level2">
+<h2 class="anchored" data-anchor-id="p-value-cutoff">P-value cutoff</h2>
+<p>The:</p>
+<p><strong>p-value cutoff</strong></p>
+<p>defines the significance threshold used during ORA.</p>
+<p>The default value is:</p>
+<pre class="text"><code>0.05</code></pre>
+</section>
+<section id="q-value-cutoff" class="level2">
+<h2 class="anchored" data-anchor-id="q-value-cutoff">Q-value cutoff</h2>
+<p>The:</p>
+<p><strong>q-value cutoff</strong></p>
+<p>provides an additional significance threshold for enrichment results.</p>
+<p>The default value is:</p>
+<pre class="text"><code>0.2</code></pre>
+</section>
+<section id="expand-go-hierarchy" class="level2">
+<h2 class="anchored" data-anchor-id="expand-go-hierarchy">Expand GO hierarchy</h2>
+<p>The:</p>
+<p><strong>Expand GO hierarchy (buildGOmap)</strong></p>
+<p>option is enabled by default.</p>
+<p>When enabled, TPP Analyst expands the protein-to-GO associations through the Gene Ontology hierarchy.</p>
+<p>This propagates annotations to related parent GO terms, increasing the coverage of the enrichment database.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>GO hierarchy expansion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Enable <strong>Expand GO hierarchy</strong> when enrichment should consider the hierarchical relationships between GO terms.</p>
+<p>Because parent GO categories are generally broader than their descendant terms, hierarchy expansion can increase annotation coverage while also producing broader functional enrichment results.</p>
+<p>This option will considerably increase the loading time for the enrichment database, especially for organisms with large annotation sets.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="ora-results-table" class="level1">
+<h1>ORA results table</h1>
+<p>The <strong>ORA result table</strong> displays the enrichment results for the currently selected cluster.</p>
+<p>Results are ordered according to adjusted p-value.</p>
+<p>The table contains information describing the enriched GO terms together with their statistical enrichment results.</p>
+<p>The exact result fields are generated from the enrichment analysis and include GO descriptions and associated statistical measures.</p>
+<p>The table provides column-specific filters that can be used to inspect particular terms or result ranges.</p>
+<p>A summary below the table reports the number of enriched terms identified for the selected cluster.</p>
+<section id="go-ontology-categories" class="level2">
+<h2 class="anchored" data-anchor-id="go-ontology-categories">GO ontology categories</h2>
+<p>TPP Analyst determines whether enriched terms belong to:</p>
+<ul>
+<li><strong>BP</strong>: Biological Process</li>
+<li><strong>CC</strong>: Cellular Component</li>
+<li><strong>MF</strong>: Molecular Function</li>
+</ul>
+<p>The GO description associated with each identifier is retrieved from the Gene Ontology annotation resources used by the application.</p>
+</section>
+</section>
+<section id="ora-visualizations" class="level1">
+<h1>ORA visualizations</h1>
+<p>TPP Analyst provides three complementary visualizations for interpreting ORA results:</p>
+<ol type="1">
+<li><strong>Dotplot</strong></li>
+<li><strong>Enrichment map</strong></li>
+<li><strong>Upset plot</strong></li>
+</ol>
+<p>The visualizations are generated for the currently selected cluster.</p>
+<section id="ora-dotplot" class="level2">
+<h2 class="anchored" data-anchor-id="ora-dotplot">ORA dotplot</h2>
+<p>The <strong>Dotplot</strong> summarizes the enriched GO terms identified for the selected cluster.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Dotplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: ORA Dotplot
+</figcaption>
+</figure>
+</div>
+<p>The plot provides a compact overview of significant functional categories and their enrichment characteristics.</p>
+<p>Only results containing GO terms with adjusted p-values below:</p>
+<pre class="text"><code>0.05</code></pre>
+<p>are displayed.</p>
+<p>If no terms satisfy this criterion, TPP Analyst displays:</p>
+<pre class="text"><code>No enriched terms found</code></pre>
+</section>
+<section id="enrichment-map" class="level2">
+<h2 class="anchored" data-anchor-id="enrichment-map">Enrichment map</h2>
+<p>The <strong>Enrichment plot</strong> displays relationships between enriched GO terms based on their similarity.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Enrichmentplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Enrichment map
+</figcaption>
+</figure>
+</div>
+<p>The enrichment map is useful for identifying groups of related functional categories rather than interpreting every enriched GO term independently.</p>
+<p>At least three significant GO terms are required to generate the enrichment map.</p>
+<p>If fewer than three significant terms are available, TPP Analyst displays:</p>
+<pre class="text"><code>Enrichment map requires at least 3 significant GO terms.</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpreting related GO terms
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GO enrichment frequently produces several related or partially overlapping terms.</p>
+<p>The enrichment map can help reveal broader functional themes represented by groups of related GO categories.</p>
+</div>
+</div>
+</section>
+<section id="ora-upset-plot" class="level2">
+<h2 class="anchored" data-anchor-id="ora-upset-plot">ORA Upset plot</h2>
+<p>The <strong>Upset plot</strong> visualizes overlap between the protein sets associated with enriched GO terms.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Upsetplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Upset plot
+</figcaption>
+</figure>
+</div>
+<p>This can help identify proteins contributing to multiple enriched biological categories.</p>
+<p>As with the other ORA visualizations, the plot requires significant enrichment results with adjusted p-values below 0.05.</p>
+</section>
+</section>
+<section id="gene-set-enrichment-analysis" class="level1">
+<h1>Gene Set Enrichment Analysis</h1>
+<p>Gene Set Enrichment Analysis (GSEA) provides an alternative approach to functional interpretation.</p>
+<p>Unlike ORA, GSEA does not begin with proteins separated into a significant target group and background group.</p>
+<p>Instead, proteins are ordered according to a quantitative ranking statistic, and the analysis determines whether proteins associated with particular GO terms tend to accumulate toward one end of that ranked list.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>ORA versus GSEA
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>ORA</strong> asks whether GO terms are over-represented within a predefined protein group such as a cluster.</p>
+<p><strong>GSEA</strong> asks whether proteins associated with a GO term tend to occur preferentially toward the top or bottom of a ranked list.</p>
+<p>These approaches provide complementary views of functional enrichment.</p>
+</div>
+</div>
+</section>
+<section id="requirement-limma-analysis" class="level1">
+<h1>Requirement: Limma analysis</h1>
+<p>GSEA uses the statistical results generated in the Limma section of Model Fitting.</p>
+<p>Before running GSEA, complete the Limma analysis in <a href="./modelfitting.html">Model Fitting</a>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Limma is required
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Run <strong>Limma</strong> before performing GSEA.</p>
+<p>The Limma results provide the statistics used to rank proteins for the enrichment analysis.</p>
+</div>
+</div>
+<section id="ranking-proteins" class="level2">
+<h2 class="anchored" data-anchor-id="ranking-proteins">Ranking proteins</h2>
+<p>TPP Analyst provides two ranking metrics:</p>
+<ul>
+<li><strong>t-statistic</strong></li>
+<li><strong>logFC</strong></li>
+</ul>
+<p>The ranking statistic determines the order of proteins provided to GSEA.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/RunGSEA.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Run GSEA
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="t-statistic" class="level2">
+<h2 class="anchored" data-anchor-id="t-statistic">t-statistic</h2>
+<p>The:</p>
+<p><strong>t-statistic</strong></p>
+<p>option ranks proteins according to the t-statistic obtained from the Limma analysis.</p>
+<p>This is the recommended ranking method in the interface.</p>
+<p>Because the t-statistic incorporates both effect magnitude and its estimated variability, it provides a statistical ranking of the temperature-associated protein responses.</p>
+</section>
+<section id="logfc" class="level2">
+<h2 class="anchored" data-anchor-id="logfc">logFC</h2>
+<p>The:</p>
+<p><strong>logFC</strong></p>
+<p>option ranks proteins according to the estimated effect generated by the Limma analysis.</p>
+<p>This option is intended for appropriately normalized or transformed data.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>logFC and raw intensity data
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When logFC values appear to remain on a raw-intensity scale, TPP Analyst displays a warning recommending either:</p>
+<ul>
+<li>t-statistic ranking; or</li>
+<li>normalization/log transformation before using logFC.</li>
+</ul>
+<p>For this reason, <strong>t-statistic</strong> is the recommended default ranking method.</p>
+</div>
+</div>
+</section>
+<section id="running-gsea" class="level2">
+<h2 class="anchored" data-anchor-id="running-gsea">Running GSEA</h2>
+<p>After selecting the ranking statistic, click:</p>
+<p><strong>Run GSEA</strong></p>
+<p>TPP Analyst:</p>
+<ol type="1">
+<li>obtains the protein ranking from the Limma results;</li>
+<li>constructs the protein-to-GO mappings;</li>
+<li>optionally expands the GO hierarchy;</li>
+<li>performs the enrichment analysis using the ranked protein list.</li>
+</ol>
+<p>Proteins with missing ranking values are excluded from the ranked list.</p>
+</section>
+</section>
+<section id="gsea-advanced-options" class="level1">
+<h1>GSEA advanced options</h1>
+<p>The GSEA <strong>Advanced options</strong> panel provides controls for:</p>
+<ul>
+<li><strong>p-value adjustment method</strong></li>
+<li><strong>Minimum gene set size</strong></li>
+<li><strong>Maximum gene set size</strong></li>
+<li><strong>p-value cutoff</strong></li>
+<li><strong>Exponent</strong></li>
+<li><strong>Number of permutations</strong></li>
+<li><strong>Expand GO hierarchy</strong></li>
+</ul>
+<section id="gsea-p-value-adjustment-method" class="level2">
+<h2 class="anchored" data-anchor-id="gsea-p-value-adjustment-method">GSEA p-value adjustment method</h2>
+<p>Available multiple-testing correction methods include:</p>
+<pre class="text"><code>BH
+holm
+hochberg
+hommel
+bonferroni
+BY
+fdr
+none</code></pre>
+<p>The default method is:</p>
+<pre class="text"><code>BH</code></pre>
+</section>
+<section id="minimum-gene-set-size-1" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-gene-set-size-1">Minimum gene set size</h2>
+<p>The default minimum gene set size is:</p>
+<pre class="text"><code>5</code></pre>
+<p>GO sets containing fewer mapped proteins are excluded from the analysis.</p>
+</section>
+<section id="maximum-gene-set-size-1" class="level2">
+<h2 class="anchored" data-anchor-id="maximum-gene-set-size-1">Maximum gene set size</h2>
+<p>The default maximum gene set size is:</p>
+<pre class="text"><code>500</code></pre>
+<p>GO sets larger than this threshold are excluded.</p>
+</section>
+<section id="gsea-p-value-cutoff" class="level2">
+<h2 class="anchored" data-anchor-id="gsea-p-value-cutoff">GSEA p-value cutoff</h2>
+<p>The default p-value cutoff is:</p>
+<pre class="text"><code>0.05</code></pre>
+</section>
+<section id="exponent" class="level2">
+<h2 class="anchored" data-anchor-id="exponent">Exponent</h2>
+<p>The <strong>Exponent</strong> controls the weighting applied to the ranked protein list during enrichment score calculation.</p>
+<p>The default value is:</p>
+<pre class="text"><code>1</code></pre>
+<p>The interface allows values from 0 to 5.</p>
+</section>
+<section id="number-of-permutations" class="level2">
+<h2 class="anchored" data-anchor-id="number-of-permutations">Number of permutations</h2>
+<p>The number of permutations controls the permutation-based estimation performed during GSEA.</p>
+<p>The default value is:</p>
+<pre class="text"><code>10,000</code></pre>
+<p>The application allows values from:</p>
+<pre class="text"><code>10,000 to 500,000</code></pre>
+<p>in increments of:</p>
+<pre class="text"><code>10,000</code></pre>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Number of permutations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Increasing the number of permutations can increase computation time considerably.</p>
+<p>Use larger values when additional statistical stability is required and the additional computational cost is acceptable.</p>
+</div>
+</div>
+</section>
+<section id="gsea-go-hierarchy-expansion" class="level2">
+<h2 class="anchored" data-anchor-id="gsea-go-hierarchy-expansion">GSEA GO hierarchy expansion</h2>
+<p>The:</p>
+<p><strong>Expand GO hierarchy (buildGOmap)</strong></p>
+<p>option determines whether protein annotations are propagated through the GO hierarchy before GSEA.</p>
+<p>The option is enabled by default.</p>
+<p>As in ORA, hierarchy expansion can increase annotation coverage while also introducing broader parent GO categories into the analysis.</p>
+</section>
+</section>
+<section id="gsea-results-and-visualizations" class="level1">
+<h1>GSEA results and visualizations</h1>
+<p>TPP Analyst provides three main visualizations for GSEA:</p>
+<ol type="1">
+<li><strong>Upset plot</strong></li>
+<li><strong>Ridge line plot</strong></li>
+<li><strong>Running score and preranked list plot</strong></li>
+</ol>
+<p>Visualizations are displayed when significant enrichment results are available.</p>
+<section id="gsea-upset-plot" class="level2">
+<h2 class="anchored" data-anchor-id="gsea-upset-plot">GSEA Upset plot</h2>
+<p>The <strong>Upset plot</strong> summarizes overlap among proteins associated with enriched GO terms.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Upsetplot2.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: GSEA Upset plot.
+</figcaption>
+</figure>
+</div>
+<p>This helps identify proteins contributing to several functionally enriched categories.</p>
+<p>If no terms have an adjusted p-value below 0.05, the application reports:</p>
+<pre class="text"><code>No enriched terms found</code></pre>
+</section>
+<section id="ridge-line-plot" class="level2">
+<h2 class="anchored" data-anchor-id="ridge-line-plot">Ridge line plot</h2>
+<p>The <strong>Ridge line plot</strong> displays the distribution of ranked protein values associated with enriched GO terms.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Ridgeplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: GSEA Ridge line plot.
+</figcaption>
+</figure>
+</div>
+<p>The plot provides a comparative overview of where proteins belonging to different functional categories occur within the ranked protein list.</p>
+<p>This can help distinguish GO terms whose associated proteins show different distributions across the ranking statistic.</p>
+</section>
+<section id="running-score-and-preranked-list-plot" class="level2">
+<h2 class="anchored" data-anchor-id="running-score-and-preranked-list-plot">Running score and preranked list plot</h2>
+<p>The <strong>Running score and preranked list plot</strong> provides a detailed visualization of individual GSEA results.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/GO/Runningplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: GSEA Running score and preranked list plot.
+</figcaption>
+</figure>
+</div>
+<p>After GSEA has been performed, significant GO terms become available in:</p>
+<p><strong>Select term(s) to display</strong></p>
+<p>The selector can be searched using the GO term description.</p>
+<p>Multiple significant terms can be selected simultaneously.</p>
+<p>The resulting plot displays the enrichment running score across the ranked protein list for the selected GO sets.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Examining individual GO terms
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use the running-score plot when a particular biological process, molecular function, or cellular component is of special interest.</p>
+<p>The searchable term selector makes it possible to move from the global enrichment overview to individual GO terms.</p>
+</div>
+</div>
+</section>
+<section id="significant-terms-available-for-plotting" class="level2">
+<h2 class="anchored" data-anchor-id="significant-terms-available-for-plotting">Significant terms available for plotting</h2>
+<p>The term selector contains GO terms with adjusted p-values below:</p>
+<pre class="text"><code>0.05</code></pre>
+<p>GO descriptions are displayed in the selector when available, while the corresponding GO identifiers are used internally for plotting.</p>
+<p>This allows enriched terms to be located using their biological descriptions rather than GO identifiers alone.</p>
+</section>
+</section>
+<section id="recommended-ora-workflow" class="level1">
+<h1>Recommended ORA workflow</h1>
+<p>A typical ORA workflow is:</p>
+<ol type="1">
+<li><strong>Complete the Clustering analysis.</strong></li>
+<li><strong>Ensure protein identifiers can be matched to GO annotations.</strong></li>
+<li><strong>Fetch annotation data when organism annotations are not already available.</strong></li>
+<li><strong>Review the advanced options or retain the default settings.</strong></li>
+<li><strong>Decide whether GO hierarchy expansion should be used.</strong></li>
+<li><strong>Click Run ORA.</strong></li>
+<li><strong>Select the cluster of interest.</strong></li>
+<li><strong>Inspect the enrichment result table.</strong></li>
+<li><strong>Review significant GO terms in the dotplot.</strong></li>
+<li><strong>Use the enrichment map to identify groups of related terms.</strong></li>
+<li><strong>Use the Upset plot to inspect overlapping protein sets.</strong></li>
+<li><strong>Repeat the interpretation for additional clusters.</strong></li>
+<li><strong>Download relevant tables and figures.</strong></li>
+</ol>
+</section>
+<section id="recommended-gsea-workflow" class="level1">
+<h1>Recommended GSEA workflow</h1>
+<p>A typical GSEA workflow is:</p>
+<ol type="1">
+<li><strong>Run the Limma analysis in the Model Fitting section.</strong></li>
+<li><strong>Ensure protein identifiers can be matched to GO annotations.</strong></li>
+<li><strong>Select the desired ranking statistic.</strong></li>
+<li><strong>Use t-statistic ranking as the recommended starting option.</strong></li>
+<li><strong>Review the advanced GSEA parameters.</strong></li>
+<li><strong>Decide whether GO hierarchy expansion should be enabled.</strong></li>
+<li><strong>Select the desired number of permutations.</strong></li>
+<li><strong>Click Run GSEA.</strong></li>
+<li><strong>Inspect the Upset plot for overlap among enriched terms.</strong></li>
+<li><strong>Inspect the ridge line plot for global ranking patterns.</strong></li>
+<li><strong>Search for specific significant GO terms using the term selector.</strong></li>
+<li><strong>Inspect their running enrichment score profiles.</strong></li>
+<li><strong>Download the relevant enrichment visualizations.</strong></li>
+</ol>
+</section>
+<section id="choosing-between-ora-and-gsea" class="level1">
+<h1>Choosing between ORA and GSEA</h1>
+<p>ORA and GSEA can be used independently or as complementary analyses.</p>
+<p>A practical distinction is:</p>
+<pre class="text"><code>ORA
+↓
+Starts from protein groups
+↓
+Tests whether particular GO terms are over-represented</code></pre>
+<p>while:</p>
+<pre class="text"><code>GSEA
+↓
+Starts from a ranked protein list
+↓
+Tests whether GO-associated proteins accumulate toward the extremes of that ranking</code></pre>
+<p>In TPP Analyst, this also determines which upstream analysis is required:</p>
+<pre class="text"><code>Clustering
+    ↓
+   ORA</code></pre>
+<p>and:</p>
+<pre class="text"><code>Limma
+   ↓
+  GSEA</code></pre>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Functional enrichment depends on annotation quality
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>GO analysis can only evaluate proteins that can be associated with the available GO annotations.</p>
+<p>Using consistent UniProt accession identifiers improves the ability of TPP Analyst to match the analyzed proteins to organism-specific functional annotations.</p>
+</div>
+</div>
+<section id="next-step" class="level2">
+<h2 class="anchored" data-anchor-id="next-step">Next step</h2>
+<p>After functional enrichment analysis, continue to <a href="./modelcomparison.html">Comparison Models</a> to statistically compare thermal stability profiles between experimental conditions.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

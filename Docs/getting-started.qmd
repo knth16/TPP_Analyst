@@ -1,0 +1,48 @@
+---
+title: "Getting Started"
+---
+
+TPP Analyst provides an integrated workflow for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.
+
+This section provides an overview of the analysis workflow and the main steps required to begin an analysis.
+
+## Analysis workflow
+
+A typical TPP Analyst analysis consists of the following steps:
+
+1. **Prepare and load the input data**
+2. **Perform quality control**
+3. **Normalize the protein abundance data**
+4. **Explore thermal profiles using clustering**
+5. **Fit linear or sigmoidal models to the data**
+6. **Visualize individual protein thermal profiles**
+7. **Perform Gene Ontology analysis on clusters and limma results**
+8. **Compare thermal stability profiles between experimental conditions using NPARC or TPP R methods**
+
+Each analysis module builds upon the processed data generated in the previous stages.
+
+## Starting an analysis
+
+An analysis begins by providing the protein abundance data together with an experimental design describing the corresponding experimental conditions, temperatures, and replicates.
+
+The application supports both single-organism and multi-organism experiments.
+
+Once the files have been loaded, TPP Analyst validates their structure and generates the datasets used throughout the downstream analysis.
+
+Detailed input requirements are described in the [Input Data](input-data.qmd) section.
+
+## Example datasets
+
+TPP Analyst includes the Staurosporine thermal proteome profiling dataset from the landmark study by Savitski et al. (Science, 2014, DOI: 10.1126/science.1255784). as example dataset that can be loaded directly from the application.
+
+The dataset allow users to explore the available analysis modules and become familiar with the expected workflow without uploading their own data.
+
+## Navigating the application
+
+The different analysis modules can be accessed through the TPP Analyst interface.
+
+Results generated during quality control and normalization are propagated to the downstream analysis modules, allowing the complete analysis to be performed within the same application.
+
+## Next step
+
+Continue to the [Input Data](input-data.qmd) section to learn how to prepare and upload data for analysis.

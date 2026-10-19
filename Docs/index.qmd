@@ -1,0 +1,58 @@
+---
+title: "TPP Analyst"
+subtitle: "User Manual"
+---
+
+# Welcome to TPP Analyst
+
+**TPP Analyst** is a free and open-source web application designed for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.
+
+TPP Analyst provides an integrated workflow for processing, exploring, and statistically analyzing thermal proteomics datasets through an interactive graphical interface.
+
+This manual provides step-by-step instructions for using the different modules available in TPP Analyst.
+
+## TPP Analyst workflow
+
+The analysis workflow is organized into the following main stages:
+
+1. **Data input**
+2. **Quality control**
+3. **Normalization**
+4. **Clustering**
+5. **Model fitting**
+6. **Protein plots**
+7. **GO analysis**
+8. **Comparison models**
+
+Each section of this manual corresponds to a major component of the application.
+
+## Getting started
+
+New users should begin with the [Getting Started](getting-started.qmd) section, followed by the [Input Data](input-data.qmd) section to learn how to prepare and upload the required files.
+
+## Analysis modules
+
+### Data processing
+
+- [Quality Control](quality-control.qmd)
+- [Normalization](normalization.qmd)
+
+### Data clustering
+
+- [Clustering](clustering.qmd)
+
+### Protein visualization
+- [Protein Plots](proteinplots.qmd)
+
+### Thermal stability analysis
+
+- [Model Fitting](modelfitting.qmd)
+- [Model Comparison](modelcomparison.qmd)
+
+### Functional analysis
+
+- [Gene Ontology Analysis](GO.qmd)
+
+## About this manual
+
+The manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.

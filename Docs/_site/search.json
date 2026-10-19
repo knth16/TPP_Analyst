@@ -1,0 +1,2131 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "TPP Analyst",
+    "section": "",
+    "text": "TPP Analyst is a free and open-source web application designed for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.\nTPP Analyst provides an integrated workflow for processing, exploring, and statistically analyzing thermal proteomics datasets through an interactive graphical interface.\nThis manual provides step-by-step instructions for using the different modules available in TPP Analyst.\n\n\nThe analysis workflow is organized into the following main stages:\n\nData input\nQuality control\nNormalization\nClustering\nModel fitting\nProtein plots\nGO analysis\nComparison models\n\nEach section of this manual corresponds to a major component of the application.\n\n\n\nNew users should begin with the Getting Started section, followed by the Input Data section to learn how to prepare and upload the required files.\n\n\n\n\n\n\nQuality Control\nNormalization\n\n\n\n\n\nClustering\n\n\n\n\n\nProtein Plots\n\n\n\n\n\nModel Fitting\nModel Comparison\n\n\n\n\n\nGene Ontology Analysis\n\n\n\n\n\nThe manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#tpp-analyst-workflow",
+    "href": "index.html#tpp-analyst-workflow",
+    "title": "TPP Analyst",
+    "section": "",
+    "text": "The analysis workflow is organized into the following main stages:\n\nData input\nQuality control\nNormalization\nClustering\nModel fitting\nProtein plots\nGO analysis\nComparison models\n\nEach section of this manual corresponds to a major component of the application.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#getting-started",
+    "href": "index.html#getting-started",
+    "title": "TPP Analyst",
+    "section": "",
+    "text": "New users should begin with the Getting Started section, followed by the Input Data section to learn how to prepare and upload the required files.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#analysis-modules",
+    "href": "index.html#analysis-modules",
+    "title": "TPP Analyst",
+    "section": "",
+    "text": "Quality Control\nNormalization\n\n\n\n\n\nClustering\n\n\n\n\n\nProtein Plots\n\n\n\n\n\nModel Fitting\nModel Comparison\n\n\n\n\n\nGene Ontology Analysis",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#about-this-manual",
+    "href": "index.html#about-this-manual",
+    "title": "TPP Analyst",
+    "section": "",
+    "text": "The manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "getting-started.html",
+    "href": "getting-started.html",
+    "title": "Getting Started",
+    "section": "",
+    "text": "TPP Analyst provides an integrated workflow for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.\nThis section provides an overview of the analysis workflow and the main steps required to begin an analysis.",
+    "crumbs": [
+      "Home",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "getting-started.html#analysis-workflow",
+    "href": "getting-started.html#analysis-workflow",
+    "title": "Getting Started",
+    "section": "Analysis workflow",
+    "text": "Analysis workflow\nA typical TPP Analyst analysis consists of the following steps:\n\nPrepare and load the input data\nPerform quality control\nNormalize the protein abundance data\nExplore thermal profiles using clustering\nFit linear or sigmoidal models to the data\nVisualize individual protein thermal profiles\nPerform Gene Ontology analysis on clusters and limma results\nCompare thermal stability profiles between experimental conditions using NPARC or TPP R methods\n\nEach analysis module builds upon the processed data generated in the previous stages.",
+    "crumbs": [
+      "Home",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "getting-started.html#starting-an-analysis",
+    "href": "getting-started.html#starting-an-analysis",
+    "title": "Getting Started",
+    "section": "Starting an analysis",
+    "text": "Starting an analysis\nAn analysis begins by providing the protein abundance data together with an experimental design describing the corresponding experimental conditions, temperatures, and replicates.\nThe application supports both single-organism and multi-organism experiments.\nOnce the files have been loaded, TPP Analyst validates their structure and generates the datasets used throughout the downstream analysis.\nDetailed input requirements are described in the Input Data section.",
+    "crumbs": [
+      "Home",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "getting-started.html#example-datasets",
+    "href": "getting-started.html#example-datasets",
+    "title": "Getting Started",
+    "section": "Example datasets",
+    "text": "Example datasets\nTPP Analyst includes the Staurosporine thermal proteome profiling dataset from the landmark study by Savitski et al. (Science, 2014, DOI: 10.1126/science.1255784). as example dataset that can be loaded directly from the application.\nThe dataset allow users to explore the available analysis modules and become familiar with the expected workflow without uploading their own data.",
+    "crumbs": [
+      "Home",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "getting-started.html#navigating-the-application",
+    "href": "getting-started.html#navigating-the-application",
+    "title": "Getting Started",
+    "section": "Navigating the application",
+    "text": "Navigating the application\nThe different analysis modules can be accessed through the TPP Analyst interface.\nResults generated during quality control and normalization are propagated to the downstream analysis modules, allowing the complete analysis to be performed within the same application.",
+    "crumbs": [
+      "Home",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "getting-started.html#next-step",
+    "href": "getting-started.html#next-step",
+    "title": "Getting Started",
+    "section": "Next step",
+    "text": "Next step\nContinue to the Input Data section to learn how to prepare and upload data for analysis.",
+    "crumbs": [
+      "Home",
+      "Getting Started"
+    ]
+  },
+  {
+    "objectID": "input-data.html",
+    "href": "input-data.html",
+    "title": "Input Data",
+    "section": "",
+    "text": "TPP Analyst requires quantitative protein abundance data together with an experimental design describing the structure of the experiment.\nTPP Analyst supports the following file formats:",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#input-files",
+    "href": "input-data.html#input-files",
+    "title": "Input Data",
+    "section": "Input files",
+    "text": "Input files\nTwo complementary datasets are used:\n\nA protein abundance dataset\nAn experimental design\n\nTPP Analyst supports the following file formats:\n\nCSV (.csv)\nTSV (.tsv)\ntext (.txt)\nExcel (.xlsx) or (.xls)",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#protein-abundance-dataset",
+    "href": "input-data.html#protein-abundance-dataset",
+    "title": "Input Data",
+    "section": "Protein abundance dataset",
+    "text": "Protein abundance dataset\nThe protein abundance dataset contains the protein identifiers and quantitative measurements.\nThe required identifier column is:\nAccession\nEach row represents a protein, while the remaining quantitative columns contain the protein abundance measurements associated with the experiment linked to the values of the Experimental Design column: File Name.\n\n\n\n\n\n\nFigure 2: Example structure of a protein abundance dataset.\n\n\n\n\nProtein identifiers\nEach value in the Accession column must be unique.\n\n\n\n\n\n\nTipRecommendation\n\n\n\nUniProt accession identifiers are recommended, particularly when GO analysis will be performed.\n\n\n\n\n\n\n\n\nWarningDuplicate identifiers\n\n\n\nThe Accession column must contain unique identifiers. Duplicated protein identifiers must be resolved before the dataset can be processed.\n\n\n\n\nOrganism column\nFor experiments containing multiple organisms, the protein abundance dataset must additionally contain an Organism column.\nFor single-organism experiments, this column is optional.\nAll remaining columns should contain the quantitative protein abundance measurements corresponding to the samples described in the experimental design.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#experimental-design",
+    "href": "input-data.html#experimental-design",
+    "title": "Input Data",
+    "section": "Experimental design",
+    "text": "Experimental design\nThe experimental design describes how the quantitative measurements are associated with the experiment.\nThe required columns are:\n\nFile Name\nCondition\nTemperature\nReplicate\n\n\n\n\n\n\n\nFigure 1: Example structure of an experimental design.\n\n\n\n\nFile Name\nThe File Name column identifies the quantitative measurement corresponding to the protein abundance dataset.\n\n\nCondition\nThe Condition column identifies the experimental condition associated with each measurement.\nExamples include:\n\nControl\nVehicle\nTreatment\n\n\n\nTemperature\nThe Temperature column contains the experimental temperature associated with each measurement.\nTemperature values must be numeric.\n\n\nReplicate\nThe Replicate column identifies the replicate associated with each measurement.\nEach combination of condition, temperature, and replicate should correspond to the appropriate quantitative measurement in the protein abundance dataset.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#organism-selection",
+    "href": "input-data.html#organism-selection",
+    "title": "Input Data",
+    "section": "Organism selection",
+    "text": "Organism selection\nTPP Analyst supports both single-organism and multi-organism experiments.\n\nSingle-organism experiments\nWhen a single organism is selected, the Organism column in the protein abundance dataset is optional.\nThe selected organism is associated with the processed datasets automatically.\n\n\nMulti-organism experiments\nWhen multiple organisms are selected, the protein abundance dataset must contain an additional column named:\nOrganism\nEach protein must be associated with its corresponding organism.\n\n\n\n\n\n\nImportantMulti-organism datasets\n\n\n\nThe Organism column is required when more than one organism is present in the experiment.\n\n\nTPP Analyst can recognize supported organism names when they occur within longer organism descriptions.\nFor example:\nSulfolobus acidocaldarius DSM 639\ncan be recognized as:\nSulfolobus acidocaldarius\nThis allows organism entries containing additional information, such as strain information, to be associated with the corresponding supported organism.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#condition-to-organism-mapping",
+    "href": "input-data.html#condition-to-organism-mapping",
+    "title": "Input Data",
+    "section": "Condition-to-organism mapping",
+    "text": "Condition-to-organism mapping\nFor multi-organism experiments, TPP Analyst requires the organisms present in each experimental condition to be specified.\nAssign the appropriate organism or organisms to each experimental condition before loading the protein abundance dataset.\n\n\n\n\n\n\nFigure 3: Condition-to-organism mapping for a multi-organism experiment.\n\n\n\nThe condition-to-organism mapping is subsequently used when the processed datasets are separated according to condition and organism.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#other-organisms",
+    "href": "input-data.html#other-organisms",
+    "title": "Input Data",
+    "section": "Other organisms",
+    "text": "Other organisms\nIf the organism being analyzed is not included among the predefined organisms, select Other.\nThe Other option allows custom organisms to be incorporated into the analysis workflow.\nAdditional organism-specific information can subsequently be provided when required for organism-dependent analyses such as Gene Ontology analysis.\n\n\n\n\n\n\nFigure 4: Other organisms and custom GO terms dataset loading.\n\n\n\n\n\n\n\n\n\nNoteCustom organisms\n\n\n\nUse the Other option when the organism is not available among the predefined selections. Ensure that the organism information in the protein dataset correctly identifies the proteins belonging to the custom organism.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#uploading-the-experimental-design",
+    "href": "input-data.html#uploading-the-experimental-design",
+    "title": "Input Data",
+    "section": "Uploading the experimental design",
+    "text": "Uploading the experimental design\nUpload the experimental design using the corresponding file input.\nTPP Analyst checks the uploaded file for the required columns:\nFile Name\nCondition\nTemperature\nReplicate\nIf one or more required columns are missing, the experimental design must be corrected before processing can continue.\n\n\n\n\n\n\nFigure 5: Uploading and previewing the experimental design.\n\n\n\nAfter loading the file, inspect the experimental design preview to ensure that the conditions, temperatures, and replicates were interpreted correctly.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#uploading-the-protein-abundance-dataset",
+    "href": "input-data.html#uploading-the-protein-abundance-dataset",
+    "title": "Input Data",
+    "section": "Uploading the protein abundance dataset",
+    "text": "Uploading the protein abundance dataset\nAfter the experimental design and organism configuration have been completed, upload the protein abundance dataset.\n\n\n\n\n\n\nFigure 6: Uploading the protein abundance dataset.\n\n\n\nTPP Analyst validates the structure of the uploaded protein dataset before it is used for downstream analysis.\nFor single-organism experiments, the required column is:\nAccession\nFor multi-organism experiments, the required columns are:\nAccession\nOrganism\n\n\n\n\n\n\nWarningProtein dataset validation\n\n\n\nData processing will stop if required columns are missing or duplicate protein accession identifiers are detected.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#example-datasets",
+    "href": "input-data.html#example-datasets",
+    "title": "Input Data",
+    "section": "Example datasets",
+    "text": "Example datasets\nTPP Analyst includes the Staurosporine thermal proteome profiling dataset from the landmark study by Savitski et al. (Science, 2014) - DOI: 10.1126/science.1255784 as example datasets that can be loaded directly from the application.\nThe example dataset allow the analysis workflow to be explored without uploading custom files and provide examples of data structures compatible with TPP Analyst.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#dataset-splitting",
+    "href": "input-data.html#dataset-splitting",
+    "title": "Input Data",
+    "section": "Dataset splitting",
+    "text": "Dataset splitting\nAfter the input files have been validated, TPP Analyst organizes the protein abundance measurements according to the experimental design.\nThe available splitting options depend on the number of organisms represented in the experiment.\n\nCondition only\nThe Condition only option generates one analysis dataset for each experimental condition.\nFor example:\nVehicle\nTreatment\nAll proteins associated with an experimental condition remain within the same dataset.\n\n\nCondition + Organism\nFor multi-organism experiments, the Condition + Organism option additionally separates proteins according to organism.\nFor example:\nHuman_Homo sapiens\nMixed_Homo sapiens\nMixed_Sulfolobus acidocaldarius\nSulfolobus_Sulfolobus acidocaldarius\nThis allows proteins belonging to different organisms within the same experimental condition to be analyzed independently.\n\n\n\n\n\n\nFigure 6: Selecting how the processed datasets should be split.\n\n\n\n\n\n\n\n\n\nTipChoosing a splitting strategy\n\n\n\nUse Condition only when all proteins within an experimental condition should remain together.\nUse Condition + Organism when proteins from different organisms within the same experimental condition should be analyzed independently.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "input-data.html#processed-dataset-preview",
+    "href": "input-data.html#processed-dataset-preview",
+    "title": "Input Data",
+    "section": "Processed dataset preview",
+    "text": "Processed dataset preview\nOnce the protein abundance dataset and experimental design have been processed, the generated datasets can be inspected directly in TPP Analyst.\nBefore proceeding to downstream analysis, verify that:\n\nprotein accessions were loaded correctly;\nquantitative measurements were correctly associated with the experimental design;\nexperimental conditions were correctly separated;\ntemperatures were assigned correctly;\nreplicates were assigned correctly;\norganism assignments are correct for multi-organism experiments; and\ncondition and organism splitting produced the expected datasets.\n\n\n\n\n\n\n\nImportantCheck the processed data\n\n\n\nAlways inspect the processed dataset preview before proceeding to the Quality Control section.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  },
+  {
+    "objectID": "quality-control.html",
+    "href": "quality-control.html",
+    "title": "Quality Control",
+    "section": "",
+    "text": "The Quality Control module provides tools for assessing, filtering, and preparing protein abundance data before normalization and downstream analysis.\nQuality control is performed independently for each processed dataset. The module focuses on three main aspects of the data:\nFiltering decisions made in this section determine which proteins are retained for subsequent analysis.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#missing-values",
+    "href": "quality-control.html#missing-values",
+    "title": "Quality Control",
+    "section": "Missing values",
+    "text": "Missing values\nTPP Analyst reports the initial percentage of missing values before missing-value handling is applied.\nThe calculation considers the quantitative measurements and identifies the following values as missing:\n\nNA\nNaN\nInf\n\nThe percentage shown at this stage represents the original level of missing data in the dataset.\n\n\n\n\n\n\nFigure 1: Condition tab selection and initial percentage of missing values.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#handling-missing-values",
+    "href": "quality-control.html#handling-missing-values",
+    "title": "Quality Control",
+    "section": "Handling missing values",
+    "text": "Handling missing values\nTPP Analyst provides three strategies for handling missing values:\n\nRemove all rows with any missing values\nImpute all missing values\nRemove all rows containing only missing values and impute the rest\n\nSelect the desired strategy and then click Apply transformation.\n\n\n\n\n\n\nImportantApply the transformation\n\n\n\nThe selected missing-value strategy is not applied until Apply transformation is clicked.\nThe transformed dataset is then used by the subsequent quality-control steps.\n\n\n\nRemove all rows with any missing values\nThe Remove all rows with any missing values option removes a protein if at least one quantitative measurement for that protein is missing.\nThis represents the most restrictive missing-value strategy because only proteins with complete quantitative profiles are retained.\n\n\n\n\n\n\nWarningComplete-case filtering\n\n\n\nThis option can remove a substantial number of proteins from datasets containing frequent missing measurements. Check the resulting number of retained proteins before continuing.\n\n\n\n\nImpute all missing values\nThe Impute all missing values option retains proteins and replaces missing quantitative measurements using the selected imputation method.\nTPP Analyst provides four imputation methods:\n\nAll to 0\nmin\nknn\nMLE\n\n\n\nRemove all rows containing only missing values and impute the rest\nThe Remove all rows containing only missing values and impute the rest option combines filtering and imputation.\nProteins containing no observed quantitative measurements are removed first.\nRemaining proteins containing both observed and missing measurements are retained, and their missing values are estimated using the selected imputation method.\nThis option can be useful when completely unobserved proteins should be excluded while partially observed proteins should remain available for subsequent analysis.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#imputation-methods",
+    "href": "quality-control.html#imputation-methods",
+    "title": "Quality Control",
+    "section": "Imputation methods",
+    "text": "Imputation methods\nWhen Impute all missing values or Remove all rows containing only missing values and impute the rest is selected, an imputation method must also be chosen.\n\nAll to 0\nThe All to 0 method replaces each missing quantitative measurement with zero.\nThis approach does not estimate a value from other proteins or measurements. Instead, missing observations are explicitly represented as zero.\nBecause zero values can subsequently be examined and filtered within the QC module, the effect of this transformation can be assessed using the zero-value visualizations and filters described below.\n\n\nMinimum-value imputation\nThe min method replaces missing measurements using the minimum observed value within the corresponding quantitative column.\nThis retains proteins containing missing measurements while assigning those observations a low abundance value based on the observed data.\n\n\nK-nearest neighbour imputation\nThe knn option performs K-nearest neighbour imputation.\nTPP Analyst uses the available quantitative profiles to estimate missing measurements from similar proteins.\nProteins containing only missing quantitative values cannot contribute useful information to this procedure and are removed when necessary before KNN imputation is performed.\n\n\nMaximum-likelihood estimation\nThe MLE option uses maximum-likelihood-based imputation to estimate missing quantitative measurements.\nNegative values produced during the imputation procedure are converted to zero before the transformed dataset is used downstream.\n\n\n\n\n\n\nWarningMLE and large datasets\n\n\n\nMLE imputation is disabled when the quantitative dataset contains more than 3,000 proteins.\nFor datasets above this threshold, select another imputation method.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#zero-values",
+    "href": "quality-control.html#zero-values",
+    "title": "Quality Control",
+    "section": "Zero values",
+    "text": "Zero values\nAfter missing-value handling has been applied, TPP Analyst evaluates zero values in the transformed dataset.\nThe Percentage of Zero Values indicator reports the percentage of quantitative measurements equal to zero in the current filtered dataset.\nUnlike the initial missing-value percentage, this value can change when QC filters are adjusted.\n\n\n\n\n\n\nNoteMissing values and zero values are treated separately\n\n\n\nMissing-value handling is performed first. Zero values are subsequently evaluated and filtered using the transformed dataset.\nFor example, selecting All to 0 during imputation converts missing observations into zero values, which can then be inspected and filtered in the zero-value QC section.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#filtering-proteins-by-zero-values",
+    "href": "quality-control.html#filtering-proteins-by-zero-values",
+    "title": "Quality Control",
+    "section": "Filtering proteins by zero values",
+    "text": "Filtering proteins by zero values\nWhen zero values are present, TPP Analyst provides a slider for controlling how many zero measurements can be present in an individual protein profile.\nThe control is labelled:\nFilter out proteins with number of zero values &gt;= to:\nReducing the threshold progressively removes proteins containing larger numbers of zero measurements.\nThis provides a direct way to exclude sparsely quantified proteins before normalization and downstream analysis.\nIf the dataset contains no zero values, this filter is not displayed.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#filtering-proteins-by-average-intensity",
+    "href": "quality-control.html#filtering-proteins-by-average-intensity",
+    "title": "Quality Control",
+    "section": "Filtering proteins by average intensity",
+    "text": "Filtering proteins by average intensity\nTPP Analyst also provides an average-intensity range filter.\nThe intensity for each protein is calculated using its positive quantitative measurements. Zero measurements are excluded when calculating the protein average.\nThe label of the filter depends on the preprocessing state of the dataset:\n\nAverage log2 intensity for data that have not already been scaled;\nAverage intensity for data already provided on a log2 scale;\nAverage normalized abundance for data that have already been normalized.\n\nBoth the lower and upper limits can be adjusted.\nProteins with average values outside the selected range are removed from the current filtered dataset.\n\n\n\n\n\n\nFigure 2: Zero values percentage and slider filters.\n\n\n\n\n\n\n\n\n\nTipIntensity filtering\n\n\n\nThe intensity range can be used to exclude very low- or very high-abundance proteins when these proteins are not appropriate for the intended downstream analysis.\nAdjust the range while inspecting the QC visualizations and the number of retained proteins.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#filter-summary",
+    "href": "quality-control.html#filter-summary",
+    "title": "Quality Control",
+    "section": "Filter summary",
+    "text": "Filter summary\nBelow the filtering controls, TPP Analyst reports:\n\nProteins retained\nProteins removed\n\nThe number of retained proteins is updated according to the current zero-value and intensity filters.\nUse this information to assess how strongly the selected QC thresholds affect the size of the dataset.\n\n\n\n\n\n\nImportantCheck protein retention\n\n\n\nBefore proceeding to normalization, verify that the selected QC thresholds have not unintentionally removed a large proportion of the proteins required for the analysis.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#distribution-of-zero-values",
+    "href": "quality-control.html#distribution-of-zero-values",
+    "title": "Quality Control",
+    "section": "Distribution of zero values",
+    "text": "Distribution of zero values\nThe Distribution of zero values heatmap provides an overview of protein abundance patterns and the distribution of zero measurements across the dataset.\nEach row represents a protein and each column represents a quantitative measurement.\nAbundance is represented using a color scale ranging from low to high protein intensity.\n\n\n\n\n\n\nFigure 3: Distribution of zero values heatmap.\n\n\n\nThe display can be customized using several controls.\n\nDisplay mode\nTwo display modes are available:\n\nClustered\nPer replicate\n\nThese options change how the quantitative columns are arranged in the heatmap.\nClustered organizes the measurements primarily according to temperature.\nPer replicate organizes measurements primarily according to replicate and then temperature.\nThis allows the same dataset to be inspected from complementary perspectives.\n\n\nProtein ordering\nProteins can be ordered using:\n\nClustering\nAverage intensity\n\nWhen Clustering is selected, proteins are ordered according to similarities in their abundance profiles.\nWhen Average intensity is selected, proteins are ordered according to their average abundance, calculated from non-zero measurements.\nThe average-intensity view also displays an intensity reference alongside the heatmap.\n\n\nShow only proteins with zero values\nThe Show only proteins with zero values option restricts the heatmap to proteins containing at least one zero measurement.\nThis option is enabled by default and focuses the visualization specifically on proteins affected by zero values.\nDisable the option to include proteins without zero measurements in the heatmap.\n\n\n\n\n\n\nTipInspecting zero-value patterns\n\n\n\nThe heatmap is particularly useful for determining whether zero values are distributed broadly across the experiment or concentrated in particular proteins, temperatures, or replicates.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#density-plots-of-average-intensity",
+    "href": "quality-control.html#density-plots-of-average-intensity",
+    "title": "Quality Control",
+    "section": "Density plots of average intensity",
+    "text": "Density plots of average intensity\nThe Density plots of average intensity visualization shows the distribution of protein abundance in the currently filtered dataset.\nThe abundance scale depends on the preprocessing state of the input data.\nFor unscaled datasets, abundance is displayed on a log2 scale. Data already marked as log2 transformed or normalized are displayed using their existing scale.\nThe density plot updates when the zero-value or average-intensity filters are changed.\nThis plot can help assess how the selected filtering thresholds affect the overall abundance distribution and is particullarly useful to compare the intensity distribution of proteins containing zero values with the distribution of proteins without zero values.\n\n\n\n\n\n\nFigure 4: Density plots of average intensity.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#average-number-of-zero-values-per-temperature",
+    "href": "quality-control.html#average-number-of-zero-values-per-temperature",
+    "title": "Quality Control",
+    "section": "Average number of zero values per temperature",
+    "text": "Average number of zero values per temperature\nThe Average number of zero values per temperature plot summarizes the occurrence of zero values across the thermal gradient.\nFor each temperature, the plot displays the average number of zero measurements together with their variation.\nThis visualization can be used to identify temperatures at which zero measurements are more frequent.\nSuch patterns may be particularly relevant at higher temperatures, where protein abundance can decrease as thermal destabilization progresses.\n\n\n\n\n\n\nFigure 5: Average number of zero values per temperature.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#total-abundance-plot",
+    "href": "quality-control.html#total-abundance-plot",
+    "title": "Quality Control",
+    "section": "Total abundance plot",
+    "text": "Total abundance plot\nThe Total abundance plot summarizes the total measured protein abundance at each temperature.\nQuantitative measurements are combined by temperature, and the resulting total abundance is displayed across the thermal gradient.\nThis provides a dataset-level view of how the overall quantitative signal changes with temperature.\n\n\n\n\n\n\nFigure 6: Total abundance plot.\n\n\n\n\n\n\n\n\n\nNoteInterpreting QC plots together\n\n\n\nNo single QC visualization should be considered in isolation.\nThe zero-value percentage, heatmap, intensity distribution, zero values per temperature, total abundance profile, and number of retained proteins provide complementary information about the effect of the selected QC settings.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#updating-the-qc-filters",
+    "href": "quality-control.html#updating-the-qc-filters",
+    "title": "Quality Control",
+    "section": "Updating the QC filters",
+    "text": "Updating the QC filters\nThe zero-value and intensity filters are interactive.\nAfter a filter is adjusted, TPP Analyst updates the filtered dataset and the associated QC summaries and visualizations.\nA short delay is applied while adjusting the sliders so that computationally intensive visualizations are not repeatedly regenerated during continuous slider movement.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#downloading-qc-figures",
+    "href": "quality-control.html#downloading-qc-figures",
+    "title": "Quality Control",
+    "section": "Downloading QC figures",
+    "text": "Downloading QC figures\nThe QC visualizations can be downloaded directly from the application.\nDownload options are available for:\n\nthe zero-value distribution heatmap;\nthe average-intensity density plot;\nthe average number of zero values per temperature plot; and\nthe total abundance plot.\n\nThe downloaded figures reflect the current filtered dataset and visualization settings.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#recommended-qc-workflow",
+    "href": "quality-control.html#recommended-qc-workflow",
+    "title": "Quality Control",
+    "section": "Recommended QC workflow",
+    "text": "Recommended QC workflow\nA typical quality-control workflow in TPP Analyst is:\n\nInspect the initial percentage of missing values.\nChoose how missing values should be handled.\nSelect an imputation method when required.\nClick Apply transformation.\nInspect the resulting percentage of zero values.\nExamine the zero-value heatmap and density distribution.\nInspect zero values across temperatures and the total abundance profile.\nAdjust the zero-value threshold if necessary.\nAdjust the average-intensity range if necessary.\nCheck how many proteins are retained and removed.\nReassess the QC visualizations after filtering.\nProceed to normalization when the filtered dataset is satisfactory.\n\n\n\n\n\n\n\nImportantQC decisions affect downstream analysis\n\n\n\nProteins removed by the QC filters are excluded from subsequent processing. Review the retained protein count and QC visualizations before continuing.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "quality-control.html#next-step",
+    "href": "quality-control.html#next-step",
+    "title": "Quality Control",
+    "section": "Next step",
+    "text": "Next step\nOnce missing values have been handled and the quality-control filters have been reviewed, continue to Normalization.",
+    "crumbs": [
+      "Home",
+      "Quality Control"
+    ]
+  },
+  {
+    "objectID": "normalization.html",
+    "href": "normalization.html",
+    "title": "Normalization",
+    "section": "",
+    "text": "The Normalization module prepares the quality-controlled protein abundance data for downstream analysis.\nTPP Analyst provides several normalization strategies that can be applied individually or in combination. The module also provides diagnostic visualizations for assessing sample distributions, global protein trends, sample similarity, potential outliers, and replicate variability.\nThe main steps of the normalization workflow are:",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#normalization-settings",
+    "href": "normalization.html#normalization-settings",
+    "title": "Normalization",
+    "section": "Normalization settings",
+    "text": "Normalization settings\nTPP Analyst provides four normalization options:\n\nlog2 transformation\nWithin replicate median normalization\nReference protein normalization\nNormalize to lowest temperature\n\nOne or more methods can be selected before clicking Apply selected normalization.\n\n\n\n\n\n\nFigure 1: Normalization settings.\n\n\n\nIf no normalization method is selected, the quality-controlled dataset is retained without additional normalization.\n\n\n\n\n\n\nImportantApplying normalization\n\n\n\nSelecting a normalization method does not immediately modify the dataset.\nAfter selecting the desired methods, click Apply selected normalization to apply the transformations and update the dataset used by the downstream analysis modules.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#log2-transformation",
+    "href": "normalization.html#log2-transformation",
+    "title": "Normalization",
+    "section": "log2 transformation",
+    "text": "log2 transformation\nThe log2 transformation converts quantitative intensity measurements to the log2 scale.\nThis transformation compresses the range of protein intensities and can reduce the influence of very large abundance measurements.\nNon-finite values generated during transformation are replaced with zero.\n\n\n\n\n\n\nNoteZero values\n\n\n\nBecause log2(0) is not finite, zero-valued measurements remain represented as zero after the transformation rather than as negative infinity.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#within-replicate-median-normalization",
+    "href": "normalization.html#within-replicate-median-normalization",
+    "title": "Normalization",
+    "section": "Within replicate median normalization",
+    "text": "Within replicate median normalization\nThe Within replicate median normalization option adjusts measurements according to the median abundance observed for each temperature and replicate.\nFor each temperature, TPP Analyst calculates the overall median abundance across finite, non-zero measurements. The median for each replicate at the same temperature is then compared with this overall value.\nThe difference between the replicate-specific median and the overall median is used to adjust the corresponding measurements.\nZero values remain zero during this normalization.\nThis procedure can reduce systematic abundance differences between replicates while maintaining the temperature-dependent structure of the dataset.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#normalize-to-lowest-temperature",
+    "href": "normalization.html#normalize-to-lowest-temperature",
+    "title": "Normalization",
+    "section": "Normalize to lowest temperature",
+    "text": "Normalize to lowest temperature\nThe Normalize to lowest temperature option expresses the thermal profile of each protein relative to its abundance at the lowest measured temperature.\nNormalization is performed independently for each replicate.\nFor each protein and replicate:\n\nThe lowest experimental temperature is identified.\nThe abundance measured at that temperature is used as the reference value.\nAll temperature points within the same replicate are divided by this reference value.\n\nConsequently, the lowest-temperature measurement becomes the reference point for each thermal profile.\nFor example, if a replicate contains measurements at:\n40°C\n43°C\n46°C\n49°C\n52°C\nthe abundance at 40°C is used as the denominator for the measurements belonging to that replicate.\n\n\n\n\n\n\nImportantInvalid reference measurements\n\n\n\nIf the lowest-temperature reference measurement for a protein is zero or missing, the corresponding normalized measurements for that replicate cannot be calculated and are returned as missing values.\n\n\n\n\n\n\n\n\nTipThermal profile normalization\n\n\n\nNormalization to the lowest temperature is particularly useful when the downstream analysis focuses on relative changes in protein abundance across the thermal gradient rather than differences in absolute protein abundance.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#reference-protein-normalization",
+    "href": "normalization.html#reference-protein-normalization",
+    "title": "Normalization",
+    "section": "Reference protein normalization",
+    "text": "Reference protein normalization\nThe Reference protein normalization option expresses quantitative measurements relative to a selected reference protein.\nTwo approaches are available:\n\nManually select\nProgram estimation\n\n\nManual reference protein selection\nSelect Manually select and enter the protein accession to use as the reference.\nTPP Analyst searches for the specified accession in the current dataset.\nFor every quantitative measurement, protein abundances are divided by the corresponding abundance of the selected reference protein.\nIf the specified accession cannot be found, TPP Analyst reports that the reference protein is not present in the dataset.\n\n\n\n\n\n\nWarningReference protein selection\n\n\n\nThe manually entered protein identifier must correspond to an accession present in the current dataset.\n\n\n\n\nAutomatic reference protein estimation\nSelect Program estimation to allow TPP Analyst to identify a reference protein automatically.\nThe application calculates the standard deviation of each protein profile across the quantitative measurements and selects the protein with the lowest standard deviation as the reference.\nThis selects the protein displaying the most stable quantitative profile according to this criterion.\n\n\nReference protein information\nAfter reference protein normalization has been applied, TPP Analyst displays the accession of the reference protein used.\nWhen the corresponding organism annotation is available, the application can additionally display:\n\nthe protein name;\nthe gene name.\n\n\n\n\n\n\n\nNoteReference protein removal\n\n\n\nThe reference protein itself is removed from the normalized dataset after reference protein normalization has been applied.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#combining-normalization-methods",
+    "href": "normalization.html#combining-normalization-methods",
+    "title": "Normalization",
+    "section": "Combining normalization methods",
+    "text": "Combining normalization methods\nMultiple normalization methods can be selected simultaneously.\nWhen multiple methods are selected, TPP Analyst applies the selected transformations sequentially.\nAccording to the current workflow, selected methods are evaluated in the following order:\n\nlog2 transformation\nWithin replicate median normalization\nNormalize to lowest temperature\nReference protein normalization\n\n\n\n\n\n\n\nImportantOrder of transformations\n\n\n\nWhen combining normalization methods, the transformations are not independent. Each selected method operates on the dataset produced by the preceding normalization step.\nThe order of the selected transformations should therefore be considered when configuring the analysis.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#intensity-distribution-across-samples",
+    "href": "normalization.html#intensity-distribution-across-samples",
+    "title": "Normalization",
+    "section": "Intensity distribution across samples",
+    "text": "Intensity distribution across samples\nThe Intensity distribution across samples plot provides a sample-level overview of the quantitative values after the current normalization settings have been applied.\nEach boxplot represents one temperature-replicate combination.\nSamples are shown along the X-axis, while the Y-axis represents the corresponding protein intensity or transformed intensity.\nThe sample boxes are colored according to temperature.\n\n\n\n\n\n\nFigure 2: Intensity distribution across samples.\n\n\n\nThis plot can be used to inspect whether systematic differences remain between temperatures or replicates after normalization.\n\nIncluding zero values\nBy default, zero values are excluded from the intensity distribution plot.\nEnable:\nInclude zero values in the plot\nto include zero-valued measurements in the displayed distributions.\n\n\n\n\n\n\nTipEvaluating normalization\n\n\n\nCompare the distributions across samples after normalization. Large systematic differences between comparable samples may indicate that additional inspection of the data or normalization strategy is required.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#global-intensity-distribution",
+    "href": "normalization.html#global-intensity-distribution",
+    "title": "Normalization",
+    "section": "Global intensity distribution",
+    "text": "Global intensity distribution\nThe Global intensity distribution plot compares individual protein thermal profiles with the overall average profile of the dataset.\nEach colored line represents the mean thermal profile of an individual protein across replicates.\nThe thick black line represents the average abundance profile across all proteins.\n\nDistance from the global profile\nFor each protein, TPP Analyst calculates its distance from the global average thermal profile across the measured temperatures.\nThe distance is based on the squared differences between the individual protein profile and the global average profile.\nProtein lines are visually weighted according to their similarity to the global profile.\nProteins that closely follow the overall thermal trend are visually emphasized, while proteins showing profiles that differ more strongly from the global trend are displayed less prominently.\n\n\n\n\n\n\nFigure 3: Global intensity distribution.\n\n\n\nThis visualization can help distinguish the dominant thermal response of the dataset from proteins displaying atypical abundance profiles.\n\n\nIncluding zero values\nBy default, zero measurements are excluded when calculating the protein-level mean profiles used in this visualization.\nEnable:\nInclude zero values in mean calculation\nto include zero measurements when calculating the displayed protein trends.\n\n\n\n\n\n\nNoteZero-value handling\n\n\n\nThe zero-value controls for the intensity distribution boxplot and the global intensity distribution are independent.\nChanging these display options does not itself alter the underlying normalized dataset.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#sample-clustering-and-outlier-detection",
+    "href": "normalization.html#sample-clustering-and-outlier-detection",
+    "title": "Normalization",
+    "section": "Sample clustering and outlier detection",
+    "text": "Sample clustering and outlier detection\nTPP Analyst uses Principal Component Analysis (PCA) to examine similarities between samples and identify measurements that may behave differently from the rest of the experiment.\nTwo PCA modes are available:\n\nBy sample\nBy condition\n\nThe percentage of variance explained by PC1 and PC2 is displayed directly in the corresponding axis labels.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#pca-by-sample",
+    "href": "normalization.html#pca-by-sample",
+    "title": "Normalization",
+    "section": "PCA by sample",
+    "text": "PCA by sample\nThe By sample mode performs PCA on the current dataset.\n\n\n\n\n\n\nFigure 4: PCA by sample.\n\n\n\nEach point represents a temperature-replicate sample.\nPoints are:\n\ncolored according to temperature;\nassociated with replicate information.\n\nHovering over a point displays the corresponding replicate and temperature.\nThe PCA can be used to assess whether samples with similar experimental characteristics occupy similar regions of the reduced-dimensional space and to identify potential sample-level outliers.\n\n\n\n\n\n\nTipPCA interpretation\n\n\n\nSamples positioned far from otherwise comparable samples may warrant further inspection. Potential outliers should be evaluated in the context of the experimental design and the other QC diagnostics before being removed.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#pca-by-condition",
+    "href": "normalization.html#pca-by-condition",
+    "title": "Normalization",
+    "section": "PCA by condition",
+    "text": "PCA by condition\nThe By condition mode compares samples across multiple experimental datasets.\n\n\n\n\n\n\nFigure 5: PCA by condition.\n\n\n\nEach point represents a sample associated with an experimental condition, temperature, and replicate.\nPoints are colored according to condition.\nThis view can be used to investigate the relationships between experimental conditions and determine whether condition-associated structure contributes to the major sources of variation in the dataset.\n\n\n\n\n\n\nNoteMultiple datasets required\n\n\n\nThe By condition PCA requires more than one dataset to perform the comparison.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#variance-decomposition",
+    "href": "normalization.html#variance-decomposition",
+    "title": "Normalization",
+    "section": "Variance decomposition",
+    "text": "Variance decomposition\nEnable:\nShow variance decomposition\nto replace the standard PCA visualization with a summary of the sources of variance associated with the principal components.\nFor PCA by sample, the visualization separates the variance into:\n\nBatch variance, based on replicate;\nResidual variance.\n\nFor PCA by condition, the visualization separates variance into:\n\nBatch variance, based on replicate;\nCondition variance;\nResidual variance.\n\nThe variance decomposition is shown for up to the first 10 principal components.\nThis visualization can help determine whether major components of variation are associated with replicate structure, experimental condition, or other unexplained variation.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#selecting-samples-from-the-pca",
+    "href": "normalization.html#selecting-samples-from-the-pca",
+    "title": "Normalization",
+    "section": "Selecting samples from the PCA",
+    "text": "Selecting samples from the PCA\nThe PCA visualization is interactive.\nClick a sample directly in the PCA plot to add it to the Samples to remove table.\nSelected samples remain in this table until they are removed or the selection is changed.\nClick:\nRemove selected\nto exclude selected samples from the working dataset.\nRemoved samples are displayed in the Removed samples table.\n\n\n\n\n\n\nWarningRemoving samples\n\n\n\nRemoving a sample changes the quantitative dataset used for normalization and downstream analyses.\nSample removal should therefore be based on the experimental design and supporting evidence rather than PCA position alone.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#restoring-removed-samples",
+    "href": "normalization.html#restoring-removed-samples",
+    "title": "Normalization",
+    "section": "Restoring removed samples",
+    "text": "Restoring removed samples\nSamples that have been removed are retained in the Removed samples table.\nSelect the desired sample and click:\nRestore selected\nto return the sample to the analysis.\nThis allows sample removal decisions to be reversed without restarting the complete analysis workflow.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#reapplying-normalization-after-removing-or-restoring-samples",
+    "href": "normalization.html#reapplying-normalization-after-removing-or-restoring-samples",
+    "title": "Normalization",
+    "section": "Reapplying normalization after removing or restoring samples",
+    "text": "Reapplying normalization after removing or restoring samples\nWhenever samples are removed or restored, the previously calculated normalization is no longer considered current.\nTPP Analyst displays a warning:\nSamples were removed or restored in the PCA section.\nPlease click 'Apply selected normalization' again to recompute all normalization steps.\nAfter changing the sample set, click Apply selected normalization again.\nThis recalculates the normalization using the updated dataset.\n\n\n\n\n\n\nImportantReapply normalization after changing samples\n\n\n\nAlways click Apply selected normalization after removing or restoring samples.\nThis ensures that the normalization and downstream analyses are based on the current set of samples.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#coefficient-of-variation",
+    "href": "normalization.html#coefficient-of-variation",
+    "title": "Normalization",
+    "section": "Coefficient of variation",
+    "text": "Coefficient of variation\nThe Coefficient of variation plot summarizes variability between replicates at each temperature.\n\n\n\n\n\n\nFigure 6: Coefficient of variation plot.\n\n\n\nFor each protein and temperature, the coefficient of variation is calculated from the available replicate measurements.\nZero measurements are excluded from the CV calculation.\nAt least two non-zero replicate measurements are required for a protein to contribute a CV value at a particular temperature.\nFor data on the standard abundance scale, the coefficient of variation is calculated from the standard deviation relative to the mean abundance.\nThe resulting CV distributions are displayed as boxplots for each temperature.\n\nInterpreting CV values\nLower CV values indicate closer agreement between replicate measurements, while higher values indicate greater replicate-to-replicate variability.\nComparing distributions across temperatures can help identify regions of the thermal gradient associated with increased experimental variability.\n\n\n\n\n\n\nTipReplicate consistency\n\n\n\nUse the CV plot together with PCA and the sample intensity distributions. A sample or temperature displaying unusual behavior across several complementary diagnostics may warrant closer inspection.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#downloading-normalization-figures",
+    "href": "normalization.html#downloading-normalization-figures",
+    "title": "Normalization",
+    "section": "Downloading normalization figures",
+    "text": "Downloading normalization figures\nThe main normalization diagnostic plots can be downloaded directly from TPP Analyst.\nDownload options are available for:\n\nIntensity distribution across samples\nGlobal intensity distribution\nCoefficient of variation plot\n\nDownloaded figures reflect the current normalization, filtering, sample selection, and visualization settings.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#recommended-normalization-workflow",
+    "href": "normalization.html#recommended-normalization-workflow",
+    "title": "Normalization",
+    "section": "Recommended normalization workflow",
+    "text": "Recommended normalization workflow\nA typical normalization workflow in TPP Analyst is:\n\nReview the quality-controlled dataset.\nSelect the desired normalization method or combination of methods.\nConfigure the reference protein if reference normalization is selected.\nClick Apply selected normalization.\nInspect the intensity distributions across samples.\nInspect the global intensity distribution.\nExamine PCA by sample.\nInspect the variance decomposition when useful.\nUse PCA by condition when comparing multiple datasets.\nInspect the coefficient of variation across temperatures.\nInvestigate potential problematic samples using the available diagnostics.\nRemove a sample only when supported by the experimental context and QC evidence.\nReapply normalization if samples are removed or restored.\nReassess the diagnostic plots after normalization has been recalculated.\nProceed to clustering when the normalized dataset is satisfactory.\n\n\n\n\n\n\n\nImportantNormalized data are used downstream\n\n\n\nThe current normalized dataset is passed to subsequent TPP Analyst modules. Normalization settings and sample-removal decisions can therefore affect clustering, model fitting, protein-level visualization, and downstream statistical analyses.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "normalization.html#next-step",
+    "href": "normalization.html#next-step",
+    "title": "Normalization",
+    "section": "Next step",
+    "text": "Next step\nOnce normalization has been applied and the diagnostic visualizations have been reviewed, continue to Clustering.",
+    "crumbs": [
+      "Home",
+      "Normalization"
+    ]
+  },
+  {
+    "objectID": "clustering.html",
+    "href": "clustering.html",
+    "title": "Clustering",
+    "section": "",
+    "text": "The Clustering module groups proteins according to similarities in their thermal abundance profiles across the temperature gradient.\nClustering can be performed on an individual experimental condition or across multiple conditions. TPP Analyst also provides silhouette-based guidance for selecting the number of clusters and allows individual clusters to be further divided using sub-clustering.\nThe main steps of the clustering workflow are:",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#clustering-controls",
+    "href": "clustering.html#clustering-controls",
+    "title": "Clustering",
+    "section": "Clustering controls",
+    "text": "Clustering controls\n\n\n\n\n\n\nFigure 1: Clustering controls.\n\n\n\nClustering is based on similarities between protein thermal profiles.\nTPP Analyst calculates the correlation between protein profiles and uses the resulting correlation-based dissimilarities to perform hierarchical clustering.\nTwo clustering modes are available:\n\nIndividual condition\nCondition comparison",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#individual-condition",
+    "href": "clustering.html#individual-condition",
+    "title": "Clustering",
+    "section": "Individual condition",
+    "text": "Individual condition\nThe Individual condition mode performs clustering using the thermal profiles from the current dataset.\nEach protein is represented by its measurements across temperatures and replicates.\nProteins displaying similar thermal abundance patterns are grouped into the same cluster.\nThis mode is useful for exploring the major thermal-profile patterns present within a single experimental condition.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#condition-comparison",
+    "href": "clustering.html#condition-comparison",
+    "title": "Clustering",
+    "section": "Condition comparison",
+    "text": "Condition comparison\nThe Condition comparison mode allows protein profiles from multiple datasets to be considered simultaneously.\nSelect the datasets to include using:\nSelect datasets for comparison\nThe measurements belonging to the same protein across the selected datasets are combined into a single profile before the correlation between proteins is calculated.\nThis allows proteins to be clustered according to their collective behavior across multiple experimental conditions.\n\n\n\n\n\n\nTipIndividual versus comparison clustering\n\n\n\nUse Individual condition to identify groups of proteins with similar thermal profiles within one dataset.\nUse Condition comparison when you want clustering to consider how proteins behave across several experimental conditions simultaneously.\n\n\n\nCombining proteins across datasets\nIn comparison mode, datasets are matched using the protein accession.\nThe quantitative measurements from the selected datasets are then combined before clustering.\nThis allows the clustering result to reflect protein behavior across all included datasets rather than evaluating the datasets independently.\n\n\n\n\n\n\nNoteProtein identifiers\n\n\n\nComparison clustering relies on the protein accession to associate protein measurements between datasets. Consistent protein identifiers are therefore important when comparing conditions.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#correlation-method",
+    "href": "clustering.html#correlation-method",
+    "title": "Clustering",
+    "section": "Correlation method",
+    "text": "Correlation method\nTPP Analyst provides two correlation methods:\n\nPearson\nSpearman\n\nThe selected correlation method determines how similarity between protein thermal profiles is calculated.\n\nPearson correlation\nPearson correlation measures the linear relationship between two protein profiles.\nProteins with similar quantitative patterns across the thermal gradient will have stronger positive correlations.\n\n\nSpearman correlation\nSpearman correlation compares the ranked values of the protein profiles.\nBecause it is based on ranks, Spearman correlation focuses more strongly on the overall ordering and shape of the abundance profiles rather than requiring a linear relationship between their absolute values.\nSpearman correlation is selected by default in TPP Analyst.\n\n\n\n\n\n\nTipChoosing a correlation method\n\n\n\nUse Pearson when similarity in the quantitative shape and magnitude of the profiles is important.\nUse Spearman when the relative pattern across temperatures is more important and you want the clustering to be less dependent on the exact quantitative relationship between profiles.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#number-of-clusters",
+    "href": "clustering.html#number-of-clusters",
+    "title": "Clustering",
+    "section": "Number of clusters",
+    "text": "Number of clusters\nThe Select number of clusters (k) control specifies how many groups will be generated.\nTPP Analyst allows values between:\n2 and 10\nThe default value is:\nk = 4\nAfter selecting the desired number of clusters and correlation method, click:\nRun clustering\nThe selected number of clusters is used to divide the hierarchical clustering tree into the requested groups.\n\n\n\n\n\n\nNoteChoosing k\n\n\n\nThe manually selected value of k determines the clustering result.\nTPP Analyst also calculates a silhouette-based recommendation after clustering has been run to help evaluate whether another value of k may provide better separation.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#cluster-recommendation",
+    "href": "clustering.html#cluster-recommendation",
+    "title": "Clustering",
+    "section": "Cluster recommendation",
+    "text": "Cluster recommendation\nAfter clustering has been performed, TPP Analyst evaluates alternative numbers of clusters using silhouette analysis.\n\n\n\n\n\n\nFigure 2: Silhouette analysis plot.\n\n\n\nThe silhouette score measures how well each protein matches its assigned cluster relative to neighboring clusters.\nHigher average silhouette scores indicate stronger separation between the resulting clusters.\nTPP Analyst evaluates candidate values of k from 2 up to a maximum of 10, depending on the number of proteins available in the dataset.\nThe application reports:\n\nthe recommended number of clusters;\nthe corresponding average silhouette score.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#cluster-quality-assessment-plot",
+    "href": "clustering.html#cluster-quality-assessment-plot",
+    "title": "Clustering",
+    "section": "Cluster quality assessment plot",
+    "text": "Cluster quality assessment plot\nThe cluster quality assessment plot displays the average silhouette score as a function of the number of clusters.\nThe X-axis represents:\nNumber of clusters (k)\nand the Y-axis represents:\nAverage silhouette score\nThe recommended value of k is indicated by a red dashed line.\n\n\n\n\n\n\nImportantRecommendation versus selected k\n\n\n\nThe silhouette result is a recommendation and does not automatically replace the value of k selected by the user.\nIf the recommended value differs from the current clustering solution, change the number of clusters and click Run clustering again to generate the corresponding result.\n\n\n\n\n\n\n\n\nTipUsing the silhouette recommendation\n\n\n\nThe highest silhouette score provides a useful statistical criterion for selecting k, but clustering should also be evaluated biologically.\nInspect the resulting thermal-profile trends, cluster sizes, and heatmap before deciding which clustering solution is most informative for the experiment.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#clustered-data",
+    "href": "clustering.html#clustered-data",
+    "title": "Clustering",
+    "section": "Clustered data",
+    "text": "Clustered data\nAfter clustering has been performed, TPP Analyst generates a thermal-profile visualization for each cluster.\nEach cluster is displayed in a separate panel.\n\n\n\n\n\n\nFigure 3: Clustered data visualization.\n\n\n\nThe visualization includes:\n\nindividual protein thermal profiles;\nthe average thermal profile of the cluster;\nthe cluster identifier;\nthe number of proteins assigned to the cluster.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#individual-protein-trends",
+    "href": "clustering.html#individual-protein-trends",
+    "title": "Clustering",
+    "section": "Individual protein trends",
+    "text": "Individual protein trends\nIndividual protein profiles are displayed as thin lines.\nFor each protein, replicate measurements are summarized at each temperature to generate its thermal abundance profile.\nThese individual profiles provide an overview of the variability among proteins assigned to the same cluster.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#average-cluster-trend",
+    "href": "clustering.html#average-cluster-trend",
+    "title": "Clustering",
+    "section": "Average cluster trend",
+    "text": "Average cluster trend\nA stronger line represents the average thermal profile of all proteins assigned to the corresponding cluster.\nThe average trend provides a concise representation of the dominant thermal behavior of each group.\nThe number of proteins assigned to each cluster is displayed as:\nn = number of proteins\nThis allows both the shape and size of each cluster to be assessed.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#missing-and-zero-values-in-trend-plots",
+    "href": "clustering.html#missing-and-zero-values-in-trend-plots",
+    "title": "Clustering",
+    "section": "Missing and zero values in trend plots",
+    "text": "Missing and zero values in trend plots\nThe cluster visualization provides the option:\nShow missing values as zero\nWhen this option is disabled, zero-valued measurements are omitted from the calculation of the displayed thermal trends.\nWhen the option is enabled, zero measurements are retained in the visualization.\n\n\n\n\n\n\nImportantVisualization versus clustering\n\n\n\nThe Show missing values as zero setting controls how zero values are represented in the cluster trend visualization.\nChanging this checkbox does not rerun the clustering or alter the existing cluster assignments.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#custom-y-axis-range",
+    "href": "clustering.html#custom-y-axis-range",
+    "title": "Clustering",
+    "section": "Custom Y-axis range",
+    "text": "Custom Y-axis range\nEnable:\nSet custom Y-axis range\nto manually control the displayed Y-axis of the cluster trend plots.\nTwo values can then be specified:\n\nY-axis minimum\nY-axis maximum\n\nThis can be useful when a small number of proteins have unusually large abundance values that expand the plot range and make the dominant cluster trends difficult to inspect.\n\n\n\n\n\n\nTipAdjusting the Y-axis\n\n\n\nChanging the Y-axis range affects only the displayed portion of the cluster trend plot.\nIt does not remove proteins, modify their abundance values, or recalculate the clustering result.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#condition-comparison-visualization",
+    "href": "clustering.html#condition-comparison-visualization",
+    "title": "Clustering",
+    "section": "Condition comparison visualization",
+    "text": "Condition comparison visualization\nWhen clustering is performed using Condition comparison, each cluster shows the profiles of the datasets included in the comparison.\n\n\n\n\n\n\nFigure 4: Clustered data for condition comparison mode.\n\n\n\nIndividual protein profiles are displayed together with stronger average profiles representing the general thermal trend for each dataset.\nThe dataset-specific trends are distinguished using color.\nThis visualization can be used to investigate whether proteins assigned to the same cluster show similar or contrasting behavior between experimental conditions.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#cluster-heatmap",
+    "href": "clustering.html#cluster-heatmap",
+    "title": "Clustering",
+    "section": "Cluster heatmap",
+    "text": "Cluster heatmap\nTPP Analyst generates a heatmap containing the proteins used in the clustering analysis.\n\n\n\n\n\n\nFigure 5: Clustered data heatmap.\n\n\n\nEach row represents a protein and each column represents a quantitative measurement.\nProtein abundance is represented by the heatmap color scale.\nProteins are organized according to their assigned cluster and the hierarchical clustering structure.\nA cluster annotation identifies the cluster associated with each protein.\n\n\n\n\n\n\nNoteConsistent cluster colors\n\n\n\nCluster colors are shared between the cluster trend visualization and the cluster heatmap.\nThe same color therefore identifies the same cluster across the two visualizations.\n\n\n\nHeatmap organization\nMeasurement columns are arranged according to:\n\ndataset;\ntemperature;\nreplicate.\n\nIn comparison mode, dataset names are displayed above their corresponding groups of measurements.\nThis organization makes it easier to compare thermal patterns between temperatures, replicates, and experimental datasets.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#sub-clustering",
+    "href": "clustering.html#sub-clustering",
+    "title": "Clustering",
+    "section": "Sub-clustering",
+    "text": "Sub-clustering\nTPP Analyst allows an existing cluster to be subjected to a second clustering analysis.\nThis functionality can be useful when a broad cluster contains several more specific thermal response patterns that are not resolved in the initial clustering result.\nExpand the:\nSub-cluster data\nsection to access the sub-clustering controls.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#selecting-a-cluster-to-sub-cluster",
+    "href": "clustering.html#selecting-a-cluster-to-sub-cluster",
+    "title": "Clustering",
+    "section": "Selecting a cluster to sub-cluster",
+    "text": "Selecting a cluster to sub-cluster\nUse:\nSelect cluster to sub-cluster (1 to k)\nto specify which cluster from the original clustering result should be analyzed further.\nOnly the proteins assigned to the selected cluster are included in the sub-clustering analysis.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#number-of-sub-clusters",
+    "href": "clustering.html#number-of-sub-clusters",
+    "title": "Clustering",
+    "section": "Number of sub-clusters",
+    "text": "Number of sub-clusters\nUse:\nSelect number of clusters for sub-clustering\nto specify how many new groups should be generated within the selected original cluster.\nThe available range is:\n2 to 10\nThe selected original cluster must contain enough proteins to support the requested number of sub-clusters.\nClick:\nRun Sub-clustering\nto generate the new clustering solution.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#sub-cluster-recommendation",
+    "href": "clustering.html#sub-cluster-recommendation",
+    "title": "Clustering",
+    "section": "Sub-cluster recommendation",
+    "text": "Sub-cluster recommendation\nTPP Analyst also performs silhouette analysis within the selected original cluster.\nThe procedure evaluates alternative values for the number of sub-clusters and identifies the value associated with the highest average silhouette score.\nFor the recommendation to be calculated, the selected original cluster must contain at least five proteins.\nThe application reports:\n\nthe recommended number of sub-clusters;\nthe corresponding average silhouette score.\n\nA sub-cluster quality assessment plot displays the silhouette scores across the candidate values of k.\n\n\n\n\n\n\nNoteSub-cluster recommendation\n\n\n\nSub-cluster silhouette analysis is performed only on the proteins belonging to the selected original cluster.\nThe recommendation may therefore differ substantially from the optimal number of clusters for the complete dataset.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#sub-clustered-trend-plot",
+    "href": "clustering.html#sub-clustered-trend-plot",
+    "title": "Clustering",
+    "section": "Sub-clustered trend plot",
+    "text": "Sub-clustered trend plot\nAfter sub-clustering, TPP Analyst generates a separate thermal-profile panel for each resulting sub-cluster.\nAs in the main clustering visualization, the plot contains:\n\nindividual protein thermal profiles;\nan average sub-cluster thermal profile;\nthe sub-cluster identifier;\nthe number of proteins assigned to each sub-cluster.\n\nWhen the original clustering was performed in comparison mode, the sub-cluster visualization retains the dataset-specific thermal profiles.\nThis allows smaller condition-dependent patterns to be investigated within a broader original cluster.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#missing-and-zero-values-in-sub-cluster-plots",
+    "href": "clustering.html#missing-and-zero-values-in-sub-cluster-plots",
+    "title": "Clustering",
+    "section": "Missing and zero values in sub-cluster plots",
+    "text": "Missing and zero values in sub-cluster plots\nThe sub-cluster visualization has its own independent control:\nShow missing values as zero (sub-clustering plot)\nWhen disabled, zero-valued measurements are omitted from the displayed trends.\nWhen enabled, zero measurements are retained in the visualization.\nThis control affects the sub-cluster trend display independently of the corresponding setting in the main clustering plot.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#custom-y-axis-range-for-sub-clusters",
+    "href": "clustering.html#custom-y-axis-range-for-sub-clusters",
+    "title": "Clustering",
+    "section": "Custom Y-axis range for sub-clusters",
+    "text": "Custom Y-axis range for sub-clusters\nThe sub-cluster visualization also provides:\nSet custom Y-axis range\nWhen enabled, specify:\n\nY-axis minimum\nY-axis maximum\n\nThis allows the displayed abundance range to be adjusted independently for the sub-cluster visualization.\n\n\n\n\n\n\nNoteIndependent visualization settings\n\n\n\nThe main clustering and sub-clustering trend plots have separate controls for zero-value display and Y-axis limits.\nChanging the settings of one visualization does not modify the corresponding settings of the other.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#sub-cluster-heatmap",
+    "href": "clustering.html#sub-cluster-heatmap",
+    "title": "Clustering",
+    "section": "Sub-cluster heatmap",
+    "text": "Sub-cluster heatmap\nTPP Analyst generates a heatmap containing only proteins belonging to the selected original cluster.\nProteins are ordered according to their new sub-cluster assignments and hierarchical clustering structure.\nA colored annotation identifies the sub-cluster assigned to each protein.\nFor comparison analyses, samples remain organized by dataset, temperature, and replicate.\n\n\n\n\n\n\nNoteConsistent sub-cluster colors\n\n\n\nSub-cluster colors are shared between the sub-cluster trend plot and the sub-cluster heatmap.\nA given color therefore represents the same sub-cluster across both visualizations.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#downloading-clustering-figures",
+    "href": "clustering.html#downloading-clustering-figures",
+    "title": "Clustering",
+    "section": "Downloading clustering figures",
+    "text": "Downloading clustering figures\nThe main clustering and sub-clustering figures can be downloaded directly from TPP Analyst.\nDownload options are available for:\n\nCluster trend plot\nCluster heatmap\nSub-cluster trend plot\nSub-cluster heatmap\n\nDownloaded trend plots reflect the current visualization settings, including the selected Y-axis range.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#recommended-clustering-workflow",
+    "href": "clustering.html#recommended-clustering-workflow",
+    "title": "Clustering",
+    "section": "Recommended clustering workflow",
+    "text": "Recommended clustering workflow\nA typical clustering analysis in TPP Analyst is:\n\nDecide whether the analysis should use an individual condition or compare multiple conditions.\nSelect the datasets when using condition comparison.\nSelect Pearson or Spearman correlation.\nChoose an initial number of clusters.\nClick Run clustering.\nInspect the silhouette recommendation and cluster quality plot.\nIf appropriate, change k and rerun the clustering.\nInspect the individual protein profiles and average trend within each cluster.\nCheck the number of proteins assigned to each cluster.\nAdjust the zero-value display if needed.\nAdjust the Y-axis range if extreme values obscure the main trends.\nInspect the cluster heatmap.\nIdentify clusters containing potentially distinct internal thermal patterns.\nSelect an original cluster for sub-clustering when additional resolution is required.\nInspect the sub-cluster silhouette recommendation.\nSelect the desired number of sub-clusters and run the analysis.\nInspect the sub-cluster trends and heatmap.\nExport the relevant visualizations.\n\n\n\n\n\n\n\nImportantInterpret clusters as patterns\n\n\n\nClustering is an exploratory analysis. Cluster assignments identify groups of proteins with similar quantitative thermal profiles under the selected clustering settings.\nThe resulting groups should be interpreted together with the experimental design, cluster sizes, thermal trends, and downstream biological analyses.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "clustering.html#next-step",
+    "href": "clustering.html#next-step",
+    "title": "Clustering",
+    "section": "Next step",
+    "text": "Next step\nAfter identifying and examining the major thermal-profile patterns in the dataset, continue to Model Fitting.",
+    "crumbs": [
+      "Home",
+      "Clustering"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html",
+    "href": "modelfitting.html",
+    "title": "Model Fitting",
+    "section": "",
+    "text": "The Model Fitting module provides complementary approaches for investigating temperature-dependent protein abundance profiles.\nTwo analyses are available:\nThese approaches provide different perspectives on protein thermal behavior and can be used independently depending on the objectives of the analysis.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#selecting-the-null-hypothesis",
+    "href": "modelfitting.html#selecting-the-null-hypothesis",
+    "title": "Model Fitting",
+    "section": "Selecting the null hypothesis",
+    "text": "Selecting the null hypothesis\nThe Select the Null hypothesis to test control determines the type of thermal behavior evaluated by the analysis.\n\n\n\n\n\n\nFigure 1: Null hypothesis selection.\n\n\n\n\nSlope significantly different from zero\nSelect:\nIs the slope of the proteins significantly different from 0?\nto identify proteins whose abundance changes significantly with temperature.\nUnder this model, temperature is used to estimate the direction and magnitude of the abundance trend for each protein.\nProteins with statistically significant slopes display evidence of systematic changes in abundance across the thermal gradient.\n\n\nSlope significantly different from the average trend\nSelect:\nIs the slope of the proteins significantly different from the average trend?\nto identify proteins whose thermal behavior differs from the overall proteome-wide response.\nBefore statistical testing, the average abundance profile across proteins is calculated and removed from the individual protein measurements.\nThe analysis therefore focuses on proteins whose temperature-dependent behavior departs from the dominant trend of the dataset.\n\n\n\n\n\n\nTipChoosing the hypothesis\n\n\n\nUse slope different from zero when the objective is to identify proteins showing a significant temperature-dependent abundance change.\nUse slope different from the average trend when the objective is to identify proteins whose thermal behavior is unusual relative to the overall proteome response.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#limma-results",
+    "href": "modelfitting.html#limma-results",
+    "title": "Model Fitting",
+    "section": "Limma results",
+    "text": "Limma results\nThe Limma results table summarizes the statistical analysis for each protein.\nThe results include the estimated temperature-associated effect together with the corresponding statistical significance.\nAdjusted p-values are calculated to account for multiple testing.\n\n\n\n\n\n\nNoteSelecting proteins from the results table\n\n\n\nSelecting proteins in the Limma results table highlights the corresponding proteins in the volcano plot.\nThis provides a convenient way to investigate proteins of interest directly from the statistical results.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#limma-volcano-plot",
+    "href": "modelfitting.html#limma-volcano-plot",
+    "title": "Model Fitting",
+    "section": "Limma volcano plot",
+    "text": "Limma volcano plot\nThe volcano plot summarizes the magnitude and statistical significance of the temperature-associated effects.\n\n\n\n\n\n\nFigure 2: Volcano plot.\n\n\n\nThe X-axis represents:\nlogFC\nand the Y-axis represents:\n-log10(adjusted p-value)\nA horizontal dashed line indicates an adjusted p-value threshold of:\n0.05\nProteins with stronger statistical evidence appear higher on the plot.\nThe position along the X-axis represents the direction and magnitude of the estimated temperature-associated effect.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#quantile-cutoff",
+    "href": "modelfitting.html#quantile-cutoff",
+    "title": "Model Fitting",
+    "section": "Quantile cutoff",
+    "text": "Quantile cutoff\nThe quantile cutoff percentage determines the lower and upper logFC thresholds used to classify proteins in the volcano plot.\nFor example, with the default setting:\n5%\nthe lower threshold corresponds to the 5th percentile of the logFC distribution and the upper threshold corresponds to the 95th percentile.\nProteins are classified as:\n\nDownregulated when their logFC is below the lower cutoff and adjusted p-value is below 0.05;\nUpregulated when their logFC is above the upper cutoff and adjusted p-value is below 0.05;\nNo significant otherwise.\n\nThe quantile cutoff can be adjusted between 0 and 50%.\n\n\n\n\n\n\nNoteQuantile-based classification\n\n\n\nThe quantile cutoff controls the visual classification of proteins in the volcano plot.\nThe significance classification therefore depends on both the adjusted p-value and the position of the protein within the observed logFC distribution.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#protein-labels",
+    "href": "modelfitting.html#protein-labels",
+    "title": "Model Fitting",
+    "section": "Protein labels",
+    "text": "Protein labels\nThe Number of top proteins to label (by logFC) control determines how many proteins are automatically labelled at each extreme of the significant logFC distribution.\nFor example, the default value:\n10\nlabels up to 10 proteins with the highest significant logFC values and up to 10 proteins with the lowest significant logFC values.\nThis facilitates rapid identification of proteins showing the largest temperature-associated effects.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#highlighting-clusters-in-the-volcano-plot",
+    "href": "modelfitting.html#highlighting-clusters-in-the-volcano-plot",
+    "title": "Model Fitting",
+    "section": "Highlighting clusters in the volcano plot",
+    "text": "Highlighting clusters in the volcano plot\nIf clustering has previously been performed, TPP Analyst can integrate the clustering results into the Limma volcano plot.\n\n\n\n\n\n\nFigure 3: Clustering integration.\n\n\n\nThree options may be available:\n\nNone\nClusters\nSub-clusters\n\nThe available options depend on whether clustering or sub-clustering results have already been generated.\n\nNone\nWith None selected, proteins are colored according to their volcano-plot classification:\n\nupregulated;\ndownregulated;\nnot significant.\n\n\n\nClusters\nSelect Clusters to color proteins according to the cluster assignments generated in the Clustering module.\nThis allows statistical results from Limma to be interpreted in the context of the thermal-profile groups identified during clustering.\n\n\nSub-clusters\nSelect Sub-clusters to highlight proteins according to their sub-cluster assignments.\nProteins that do not belong to the available sub-cluster result are displayed separately.\n\n\n\n\n\n\nTipIntegrating clustering and Limma\n\n\n\nCluster highlighting can help determine whether proteins displaying significant temperature-associated effects are concentrated within particular thermal-profile clusters identified during exploratory analysis.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#highlighting-selected-proteins",
+    "href": "modelfitting.html#highlighting-selected-proteins",
+    "title": "Model Fitting",
+    "section": "Highlighting selected proteins",
+    "text": "Highlighting selected proteins\nProteins manually selected in the Limma results table are emphasized in the volcano plot.\nSelected proteins are shown as larger orange points and are labelled using their protein accession.\nThis highlighting is independent of the general volcano-plot color scheme and can therefore be used together with cluster or significance coloring.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#downloading-the-limma-volcano-plot",
+    "href": "modelfitting.html#downloading-the-limma-volcano-plot",
+    "title": "Model Fitting",
+    "section": "Downloading the Limma volcano plot",
+    "text": "Downloading the Limma volcano plot\nThe Limma volcano plot can be downloaded directly from the application.\nThe downloaded figure reflects the current:\n\nnull hypothesis;\nquantile cutoff;\nnumber of protein labels;\ncluster highlighting mode; and\nmanually selected proteins.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#requirement-normalization-to-the-lowest-temperature",
+    "href": "modelfitting.html#requirement-normalization-to-the-lowest-temperature",
+    "title": "Model Fitting",
+    "section": "Requirement: normalization to the lowest temperature",
+    "text": "Requirement: normalization to the lowest temperature\nMelting curve fitting requires the datasets to be normalized to their lowest-temperature measurements.\nBefore running the analysis, ensure that:\nNormalize to lowest temperature\nhas been applied in the Normalization module.\nFor analyses involving multiple datasets, lowest-temperature normalization must have been applied to all datasets.\n\n\n\n\n\n\nImportantLowest-temperature normalization is required\n\n\n\nTPP Analyst does not run the melting curve analysis if the datasets have not been normalized to the lowest temperature.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#complete-protein-profiles",
+    "href": "modelfitting.html#complete-protein-profiles",
+    "title": "Model Fitting",
+    "section": "Complete protein profiles",
+    "text": "Complete protein profiles\nMelting curves are fitted using proteins with complete quantitative profiles.\nProteins containing missing measurements in the input used for curve fitting are excluded before model fitting.\n\n\n\n\n\n\nNoteMissing measurements\n\n\n\nThe availability of proteins for melting curve fitting depends on the QC and normalization decisions made in previous sections.\nReview missing-value handling and filtering before fitting the curves if a large number of proteins are unavailable.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#sigmoidal-melting-model",
+    "href": "modelfitting.html#sigmoidal-melting-model",
+    "title": "Model Fitting",
+    "section": "Sigmoidal melting model",
+    "text": "Sigmoidal melting model\nTPP Analyst fits a sigmoidal curve that describes the change in relative protein abundance across the temperature gradient.\nThe fitted parameters characterize different aspects of the thermal profile.\n\nMelting temperature (Tm)\nThe melting temperature (Tm) represents the estimated midpoint of the fitted thermal transition.\nTm is one of the principal parameters used in classical thermal proteome profiling analysis.\n\n\nk\nThe k parameter controls the shape and steepness of the fitted transition.\nIt contributes to the calculation of the curve slope.\n\n\nPlateau (p)\nThe plateau (p) parameter represents the lower asymptotic abundance of the fitted melting curve.\n\n\nR²\nR² describes how closely the fitted sigmoidal curve represents the observed protein measurements.\nHigher R² values indicate closer agreement between the fitted model and the observed thermal profile.\n\n\nSlope\nThe slope provides a measure of the steepness of the fitted melting transition.\n\n\nArea under the curve\nThe AUC summarizes the observed protein abundance across the measured temperature range.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#initial-values-for-nonlinear-fitting",
+    "href": "modelfitting.html#initial-values-for-nonlinear-fitting",
+    "title": "Model Fitting",
+    "section": "Initial values for nonlinear fitting",
+    "text": "Initial values for nonlinear fitting\nNonlinear model fitting requires initial estimates for the model parameters.\nTPP Analyst provides two approaches:\n\nProgram estimation\nManually specified",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#program-estimation",
+    "href": "modelfitting.html#program-estimation",
+    "title": "Model Fitting",
+    "section": "Program estimation",
+    "text": "Program estimation\nProgram estimation automatically determines starting values from each protein profile.\nThe initial estimates are based on the measured abundance values and are used as starting points for nonlinear optimization.\nThe program-estimated starting values include:\n\nTm estimated from the temperature associated with an abundance close to the median profile value;\nk initialized according to the variability of the abundance measurements;\nplateau initialized from the minimum observed abundance.\n\n\n\n\n\n\n\nNoteStarting values are not final fitted values\n\n\n\nThe automatically estimated values are used only to initialize nonlinear curve fitting. The final Tm, k, and plateau values are determined by the fitted model.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#manually-specified-starting-values",
+    "href": "modelfitting.html#manually-specified-starting-values",
+    "title": "Model Fitting",
+    "section": "Manually specified starting values",
+    "text": "Manually specified starting values\nSelect:\nManually specified\nto provide custom initial values for:\n\nTm\nk\np (plateau)\n\n\n\n\n\n\n\nFigure 5: Manual starting values.\n\n\n\nThese values are used as starting guesses for the nonlinear fit.\nThey do not constrain the final fitted parameters to the manually supplied values.\n\n\n\n\n\n\nTipManual starting values\n\n\n\nManual initialization can be useful when automatic starting values do not provide satisfactory convergence for a dataset with unusual thermal profiles.\nFor most datasets, program estimation provides a convenient starting point.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#running-melting-curve-fitting",
+    "href": "modelfitting.html#running-melting-curve-fitting",
+    "title": "Model Fitting",
+    "section": "Running melting curve fitting",
+    "text": "Running melting curve fitting\nAfter configuring the starting-value method and quality filters, click:\nRun melting curve fitting\nTPP Analyst fits the sigmoidal model to the protein profiles and calculates the corresponding fitting parameters.\nThe fitting process is performed independently for each protein.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#curve-quality-filters",
+    "href": "modelfitting.html#curve-quality-filters",
+    "title": "Model Fitting",
+    "section": "Curve quality filters",
+    "text": "Curve quality filters\nAfter curve fitting, proteins are filtered using five user-defined criteria:\n\nR²\nSlope\nPlateau\nMinimum Tm\nMaximum Tm\n\nOnly proteins satisfying all selected criteria are retained in the melting curve results table and downstream Tm summaries.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#r²-threshold",
+    "href": "modelfitting.html#r²-threshold",
+    "title": "Model Fitting",
+    "section": "R² threshold",
+    "text": "R² threshold\nThe:\nFilter: R² ≥\ncontrol defines the minimum fit quality accepted by TPP Analyst.\nThe default value is:\n0.7\nOnly proteins with an R² value equal to or greater than this threshold are retained.\nIncreasing the threshold applies a more stringent curve-quality requirement.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#slope-threshold",
+    "href": "modelfitting.html#slope-threshold",
+    "title": "Model Fitting",
+    "section": "Slope threshold",
+    "text": "Slope threshold\nThe:\nFilter: slope ≤\ncontrol defines the maximum accepted fitted slope.\nThe default value is:\n-0.06\nOnly proteins satisfying the selected slope threshold are retained.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#plateau-threshold",
+    "href": "modelfitting.html#plateau-threshold",
+    "title": "Model Fitting",
+    "section": "Plateau threshold",
+    "text": "Plateau threshold\nThe:\nFilter p ≤\ncontrol limits the maximum accepted plateau value.\nThe default value is:\n0.2\nProteins with fitted plateau values above the selected threshold are excluded from the displayed results.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#tm-range",
+    "href": "modelfitting.html#tm-range",
+    "title": "Model Fitting",
+    "section": "Tm range",
+    "text": "Tm range\nThe estimated melting temperature can be restricted using:\nFilter: Tm ≥\nand:\nFilter: Tm ≤\nThe default range is:\n30°C to 95°C\nOnly fitted proteins with Tm estimates inside the selected interval are retained.\n\n\n\n\n\n\nTipQuality filters\n\n\n\nR², slope, plateau, and Tm filters should be considered together.\nThese filters allow poorly fitted or biologically implausible thermal profiles to be excluded before Tm estimates are used in downstream comparisons.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#updating-curve-filters",
+    "href": "modelfitting.html#updating-curve-filters",
+    "title": "Model Fitting",
+    "section": "Updating curve filters",
+    "text": "Updating curve filters\nCurve-fitting filters are interactive.\nAfter the filtering controls are changed, TPP Analyst updates the accepted protein set without requiring all melting curves to be fitted again.\nA short delay is applied after changing filter settings before the displayed results are updated.\n\n\n\n\n\n\nNoteFitting versus filtering\n\n\n\nRun melting curve fitting performs the computationally intensive curve-fitting step.\nChanging the R², slope, plateau, or Tm thresholds subsequently changes which fitted proteins are retained without requiring the original nonlinear fitting procedure to be repeated.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#melting-curve-results-table",
+    "href": "modelfitting.html#melting-curve-results-table",
+    "title": "Model Fitting",
+    "section": "Melting curve results table",
+    "text": "Melting curve results table\nThe Melting curve fitting results table displays the proteins passing the currently selected filters.\nThe table contains:\nProtein\nTm\nk\np\nR2\nAUC\nslope\nNumerical values are rounded for display.\nIf no protein satisfies the selected criteria, TPP Analyst reports:\nNo proteins pass the current filters.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#selecting-an-individual-protein",
+    "href": "modelfitting.html#selecting-an-individual-protein",
+    "title": "Model Fitting",
+    "section": "Selecting an individual protein",
+    "text": "Selecting an individual protein\nSelect a protein directly from the melting curve results table to display its thermal profile.\nOnly one protein is selected at a time.\nThe selected protein is displayed in the Melting curve plot.\n\n\n\n\n\n\nFigure 6: Melting curve plot.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#melting-curve-plot",
+    "href": "modelfitting.html#melting-curve-plot",
+    "title": "Model Fitting",
+    "section": "Melting curve plot",
+    "text": "Melting curve plot\nThe melting curve plot displays the experimental measurements for the selected protein together with its fitted sigmoidal curve.\nIndividual replicate measurements are distinguished using different point shapes and colors.\nThe X-axis represents:\nTemperature (°C)\nand the Y-axis represents protein:\nIntensity\nThe fitted sigmoidal curve provides a visual representation of how well the model describes the measured thermal profile.\n\n\n\n\n\n\nTipInspect individual fits\n\n\n\nSummary parameters such as R² are useful for automated filtering, but individual melting curves should also be visually inspected when evaluating proteins of particular biological interest.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#melting-temperature-distribution",
+    "href": "modelfitting.html#melting-temperature-distribution",
+    "title": "Model Fitting",
+    "section": "Melting temperature distribution",
+    "text": "Melting temperature distribution\nThe Melting temperature distribution plot compares the accepted Tm estimates across the available datasets.\n\n\n\n\n\n\nFigure 7: Melting temperature distribution.\n\n\n\nFor each dataset, individual protein Tm values are displayed together with a boxplot summarizing their distribution.\nOnly proteins whose fitted curves satisfy the currently selected R², slope, plateau, and Tm filters contribute to the distribution.\nThis visualization provides a global overview of protein thermal stability across the analyzed datasets.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#shared-proteins",
+    "href": "modelfitting.html#shared-proteins",
+    "title": "Model Fitting",
+    "section": "Shared proteins",
+    "text": "Shared proteins\nEnable:\nShow only shared proteins\nto restrict the Tm distribution to proteins with accepted curve fits shared across the relevant datasets.\nThis provides a more directly comparable set of protein Tm estimates when examining multiple experimental conditions.\n\n\n\n\n\n\nNoteQuality filters and shared proteins\n\n\n\nA protein must first pass the current melting-curve quality criteria to be included in the Tm distribution.\nThe shared-protein option further restricts the visualization to proteins represented across the compared datasets.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#interpreting-tm-distributions",
+    "href": "modelfitting.html#interpreting-tm-distributions",
+    "title": "Model Fitting",
+    "section": "Interpreting Tm distributions",
+    "text": "Interpreting Tm distributions\nDifferences in the overall Tm distributions can provide an overview of thermal stability across datasets.\nHowever, global Tm distributions do not by themselves identify statistically significant protein-specific thermal stability changes.\nProtein-level comparisons between experimental conditions are performed in the downstream comparison analyses.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#downloading-model-fitting-figures",
+    "href": "modelfitting.html#downloading-model-fitting-figures",
+    "title": "Model Fitting",
+    "section": "Downloading model-fitting figures",
+    "text": "Downloading model-fitting figures\nModel Fitting visualizations can be downloaded directly from TPP Analyst.\nDownload options are available for:\n\nLimma volcano plot\nIndividual melting curve plot\nTm distribution plot\n\nThe downloaded figures reflect the current analysis and visualization settings.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#recommended-limma-workflow",
+    "href": "modelfitting.html#recommended-limma-workflow",
+    "title": "Model Fitting",
+    "section": "Recommended Limma workflow",
+    "text": "Recommended Limma workflow\nA typical Limma analysis is:\n\nSelect the desired null hypothesis.\nReview the Limma results table.\nInspect the adjusted p-values and estimated effects.\nSet the desired quantile cutoff for volcano-plot classification.\nChoose how many proteins should be labelled.\nHighlight clusters or sub-clusters when previous clustering results are available.\nSelect proteins of interest directly from the results table when needed.\nInspect the corresponding highlighted proteins in the volcano plot.\nDownload the volcano plot when required.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#recommended-melting-curve-workflow",
+    "href": "modelfitting.html#recommended-melting-curve-workflow",
+    "title": "Model Fitting",
+    "section": "Recommended melting curve workflow",
+    "text": "Recommended melting curve workflow\nA typical melting curve fitting workflow is:\n\nEnsure all relevant datasets have been normalized to the lowest temperature.\nSelect program-estimated or manually specified starting values.\nChoose the initial R², slope, plateau, and Tm filtering criteria.\nClick Run melting curve fitting.\nReview the number of proteins passing the selected quality filters.\nInspect the fitted parameter values in the results table.\nAdjust the quality filters if necessary.\nSelect proteins of interest and inspect their individual fitted curves.\nInspect the Tm distribution across datasets.\nEnable shared proteins when a directly comparable protein set is required.\nDownload relevant plots for reporting or further interpretation.\n\n\n\n\n\n\n\nImportantModel fitting and downstream analyses\n\n\n\nThe quality of fitted thermal profiles directly affects the interpretation of the estimated melting temperatures.\nUse the available fit-quality parameters together with visual inspection of representative protein curves before interpreting Tm values or using fitted proteins in downstream comparisons.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "modelfitting.html#next-step",
+    "href": "modelfitting.html#next-step",
+    "title": "Model Fitting",
+    "section": "Next step",
+    "text": "Next step\nAfter fitting and evaluating protein thermal profiles, continue to Protein Plots for detailed visualization of individual proteins.",
+    "crumbs": [
+      "Home",
+      "Model Fitting"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html",
+    "href": "proteinplots.html",
+    "title": "Protein Plots",
+    "section": "",
+    "text": "The Protein Plots section allows individual proteins to be selected for detailed visualization of their thermal abundance profiles.\nProtein selection is performed independently for each dataset, allowing proteins from different experimental conditions to be selected and subsequently compared.\nThe main steps are:",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#protein-selection",
+    "href": "proteinplots.html#protein-selection",
+    "title": "Protein Plots",
+    "section": "Protein selection",
+    "text": "Protein selection\nThe Protein Selection table displays the proteins available in the currently active dataset.\n\n\n\n\n\n\nFigure 1: Protein Selection table.\n\n\n\nEach row represents a protein.\nThe first column contains the protein identifier, while the remaining columns contain the quantitative measurements associated with the different temperatures and replicates.\nWhen clustering information is available, the table also contains the cluster assigned to each protein.\n\n\n\n\n\n\nNoteData source\n\n\n\nIf clustering has not been performed, the Protein Selection table uses the current normalized dataset.\nIf clustering results are available, the corresponding cluster assignments are incorporated into the protein table.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#protein-abundance-measurements",
+    "href": "proteinplots.html#protein-abundance-measurements",
+    "title": "Protein Plots",
+    "section": "Protein abundance measurements",
+    "text": "Protein abundance measurements\nThe quantitative columns are organized according to:\n\nTemperature\nReplicate\n\nFor example, measurements may be displayed in an order such as:\n40_REP1\n40_REP2\n43_REP1\n43_REP2\n46_REP1\n46_REP2\nThis arrangement facilitates comparison of replicate measurements at the same temperature.\n\n\n\n\n\n\nTipUsing cluster assignments\n\n\n\nWhen clustering has already been performed, use the Cluster column to identify proteins belonging to a thermal-profile group of interest before generating individual protein plots.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#cluster-information",
+    "href": "proteinplots.html#cluster-information",
+    "title": "Protein Plots",
+    "section": "Cluster information",
+    "text": "Cluster information\nIf proteins have previously been clustered, a Cluster column is displayed immediately after the protein identifier.\nFor example:\nAccession    Cluster    40_REP1    40_REP2    43_REP1    43_REP2\nP12345       1          ...        ...        ...        ...\nP67890       3          ...        ...        ...        ...\nThis allows proteins to be selected not only according to their accession or abundance values, but also according to the thermal-profile groups identified in the Clustering module.\n\n\n\n\n\n\nTipUsing cluster assignments\n\n\n\nWhen clustering has already been performed, use the Cluster column to identify proteins belonging to a thermal-profile group of interest before generating individual protein plots.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#condition-specific-protein-tables",
+    "href": "proteinplots.html#condition-specific-protein-tables",
+    "title": "Protein Plots",
+    "section": "Condition-specific protein tables",
+    "text": "Condition-specific protein tables\nProtein selection is performed within the currently active condition or dataset.\nSwitching to another condition displays the protein table corresponding to that condition.\nThis allows proteins to be selected independently across experimental conditions.\n\n\n\n\n\n\nImportantSelections are condition-specific\n\n\n\nProtein selections in the Protein Plots workflow are associated with the active condition.\nThis makes it possible to select proteins from one condition, switch to another condition, and make additional selections for comparison.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#comparison-clustering-results",
+    "href": "proteinplots.html#comparison-clustering-results",
+    "title": "Protein Plots",
+    "section": "Comparison clustering results",
+    "text": "Comparison clustering results\nWhen the Clustering module has been used in Condition comparison mode, the clustering result can contain measurements from multiple datasets.\nIn the Protein Selection interface, TPP Analyst displays the measurements corresponding to the relevant active dataset while retaining the cluster assignment obtained from the comparison analysis.\nThis makes it possible to inspect a protein within an individual condition while retaining information about the cluster assigned from its combined multi-condition thermal profile.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#searching-and-filtering-the-protein-table",
+    "href": "proteinplots.html#searching-and-filtering-the-protein-table",
+    "title": "Protein Plots",
+    "section": "Searching and filtering the protein table",
+    "text": "Searching and filtering the protein table\nThe Protein Selection table provides column-specific filters.\nThese filters can be used to restrict the displayed proteins according to identifiers, cluster assignments, or quantitative measurements.\n\nFiltering protein identifiers\nText columns can be searched using character matching.\nThis is particularly useful for locating specific protein accessions.\nFor example, entering a protein accession in the corresponding filter field restricts the displayed table to matching proteins.\n\n\nFiltering by cluster\nWhen a Cluster column is present, the table can be filtered to proteins belonging to a particular cluster.\nThis provides a convenient way to inspect and select individual members of a thermal-profile group identified during clustering.\n\n\nFiltering quantitative measurements\nNumeric columns can be filtered using numeric values or comparison operators.\nSupported comparisons include:\n&gt;value\n&gt;=value\n&lt;value\n&lt;=value\n!=value\nFor example:\n&gt;1\ncan be used to restrict a quantitative column to proteins with measurements greater than 1.\nSimilarly:\n&lt;=0.5\nrestricts the table to proteins with measurements equal to or below 0.5 in the selected column.\n\n\n\n\n\n\nTipCombining table filters\n\n\n\nFilters can be applied to multiple columns to progressively narrow the table to proteins matching the desired characteristics.\nFor example, cluster membership can be combined with quantitative filters to identify proteins from a specific cluster that display particular abundance values.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#selecting-proteins",
+    "href": "proteinplots.html#selecting-proteins",
+    "title": "Protein Plots",
+    "section": "Selecting proteins",
+    "text": "Selecting proteins\nOne or more proteins can be selected directly from the table.\nClick the desired rows to add them to the current selection.\nMultiple rows can be selected simultaneously.\nAfter selecting the proteins of interest, click:\nPlot selected proteins\n\n\n\n\n\n\nFigure 2: Protein plotting.\n\n\n\n\n\n\n\n\n\nTipSelecting multiple proteins\n\n\n\nSelecting several proteins at once is useful when comparing proteins displaying related thermal behaviors, proteins assigned to the same cluster, or a set of proteins of biological interest.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#plot-selected-proteins",
+    "href": "proteinplots.html#plot-selected-proteins",
+    "title": "Protein Plots",
+    "section": "Plot selected proteins",
+    "text": "Plot selected proteins\nThe:\nPlot selected proteins\nbutton triggers visualization of the proteins currently selected from the active dataset.\nProtein selections from different conditions can be combined through the broader Protein Plots workflow, allowing thermal abundance profiles to be compared across datasets.\n\n\n\n\n\n\nFigure 3: Protein plotting comparison between conditions.\n\n\n\nThe protein-selection table itself therefore serves as the interface between the processed datasets and the downstream protein-level visualization.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#clearing-the-current-selection",
+    "href": "proteinplots.html#clearing-the-current-selection",
+    "title": "Protein Plots",
+    "section": "Clearing the current selection",
+    "text": "Clearing the current selection\nClick:\nClear selection\nto remove the currently selected proteins from the active protein table.\nThis clears the selection without modifying the underlying protein dataset.\n\n\n\n\n\n\nNoteClear selection\n\n\n\nClear selection affects only the current protein selection.\nThe function does not remove proteins from the normalized dataset, clustering results, or any previous analysis step.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#switching-between-datasets",
+    "href": "proteinplots.html#switching-between-datasets",
+    "title": "Protein Plots",
+    "section": "Switching between datasets",
+    "text": "Switching between datasets\nWhen the available data source changes, TPP Analyst updates the protein table to reflect the appropriate dataset.\nFor example, the table may use:\n\nthe normalized protein dataset before clustering;\nthe clustered dataset after clustering has been performed.\n\nSelections that no longer correspond to the active data source are cleared automatically to prevent mismatched protein selections.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#downloading-the-protein-table",
+    "href": "proteinplots.html#downloading-the-protein-table",
+    "title": "Protein Plots",
+    "section": "Downloading the protein table",
+    "text": "Downloading the protein table\nClick:\nDownload table\nto export the protein table for the currently active condition as a CSV file.\nThe export corresponds to the condition currently displayed in the Protein Selection interface.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#using-the-table-as-an-export-tool",
+    "href": "proteinplots.html#using-the-table-as-an-export-tool",
+    "title": "Protein Plots",
+    "section": "Using the table as an export tool",
+    "text": "Using the table as an export tool\nThe interactive filtering functionality can also be used independently of protein plotting.\nFor example, users can:\n\nfilter by a protein accession;\nrestrict proteins to a specific cluster;\napply quantitative thresholds to individual measurements;\ncombine several filters;\ndownload the resulting filtered table.\n\nThis provides a simple way to export targeted protein subsets directly from TPP Analyst.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#recommended-protein-selection-workflow",
+    "href": "proteinplots.html#recommended-protein-selection-workflow",
+    "title": "Protein Plots",
+    "section": "Recommended protein-selection workflow",
+    "text": "Recommended protein-selection workflow\nA typical Protein Plots workflow is:\n\nSelect the experimental condition of interest.\nInspect the available protein table.\nUse the accession filter to locate specific proteins when required.\nUse the Cluster column when clustering information is available.\nApply quantitative filters if a specific abundance pattern is of interest.\nSelect one or more proteins from the table.\nClick Plot selected proteins.\nSwitch to another condition when a cross-condition comparison is required.\nSelect additional proteins from that condition.\nGenerate the desired protein-level visualization.\nUse Clear selection when the current active-condition selection should be reset.\nDownload the filtered protein table when required.\n\n\n\n\n\n\n\nTipLinking clustering and protein-level inspection\n\n\n\nA useful workflow is to first identify interesting thermal-profile groups in the Clustering module and then use the Cluster column in Protein Plots to inspect individual proteins belonging to those groups.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#interpreting-protein-level-profiles",
+    "href": "proteinplots.html#interpreting-protein-level-profiles",
+    "title": "Protein Plots",
+    "section": "Interpreting protein-level profiles",
+    "text": "Interpreting protein-level profiles\nProtein-level visualization provides a more detailed view than global summaries or clustering averages.\nIndividual profiles can be useful for examining:\n\nreplicate consistency;\ntemperature-dependent abundance changes;\ndifferences between experimental conditions;\nprofiles contributing to a particular cluster;\nunusual measurements that may not be apparent from dataset-level summaries.\n\nProtein-level plots should be interpreted together with the quality-control, normalization, clustering, and model-fitting results.\n\n\n\n\n\n\nImportantProtein plots are exploratory visualizations\n\n\n\nVisual differences between protein profiles do not by themselves establish statistical significance.\nUse the statistical analyses available in TPP Analyst when evaluating significant changes in thermal behavior between experimental conditions.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "proteinplots.html#next-step",
+    "href": "proteinplots.html#next-step",
+    "title": "Protein Plots",
+    "section": "Next step",
+    "text": "Next step\nAfter inspecting individual protein profiles, continue to GO Analysis for functional interpretation of selected protein groups.",
+    "crumbs": [
+      "Home",
+      "Protein Plots"
+    ]
+  },
+  {
+    "objectID": "GO.html",
+    "href": "GO.html",
+    "title": "GO Analysis",
+    "section": "",
+    "text": "The GO Analysis section provides tools for investigating the biological functions associated with proteins identified during TPP analysis.\nTPP Analyst provides two complementary Gene Ontology enrichment approaches:\nORA evaluates whether particular Gene Ontology terms are represented more frequently within protein clusters than expected from the background protein set.\nGSEA instead evaluates whether proteins associated with particular GO terms tend to occur toward the top or bottom of a ranked protein list.\nThe two approaches therefore answer related but different biological questions.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#organism-annotations",
+    "href": "GO.html#organism-annotations",
+    "title": "GO Analysis",
+    "section": "Organism annotations",
+    "text": "Organism annotations\nWhen organism annotation data are already available in TPP Analyst, the application uses these annotations directly to associate proteins with GO terms.\nProtein-to-GO associations are extracted from the available Biological Process, Cellular Component, and Molecular Function annotations.\nThe corresponding GO identifiers and GO term descriptions are then used to construct the enrichment database.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#fetching-uniprot-annotations",
+    "href": "GO.html#fetching-uniprot-annotations",
+    "title": "GO Analysis",
+    "section": "Fetching UniProt annotations",
+    "text": "Fetching UniProt annotations\nWhen organism annotation data are not already available, TPP Analyst can retrieve GO information for the proteins in the clustered dataset.\nClick:\nFetch data\n\n\n\n\n\n\nFigure 1: Fetching annotations\n\n\n\nto retrieve the required protein annotation information.\nThe protein accessions from the current clustered dataset are used for this process.\n\n\n\n\n\n\nNoteAnnotation retrieval\n\n\n\nFetching GO information is required only when the corresponding organism annotation data are not already available to the application or not provided by the user when loading the datasets.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#requirement-clustering",
+    "href": "GO.html#requirement-clustering",
+    "title": "GO Analysis",
+    "section": "Requirement: clustering",
+    "text": "Requirement: clustering\nORA requires protein cluster assignments.\nBefore running ORA, first complete the Clustering analysis.\nThe proteins assigned to each cluster are used as the target protein sets for enrichment analysis.\n\n\n\n\n\n\nImportantClustering is required\n\n\n\nRun the Clustering section before performing ORA.\nORA uses the protein clusters generated during clustering as the groups tested for functional enrichment.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#background-protein-set",
+    "href": "GO.html#background-protein-set",
+    "title": "GO Analysis",
+    "section": "Background protein set",
+    "text": "Background protein set\nThe background for ORA consists of the unique protein accessions available in the clustered dataset.\nEach individual cluster is then compared against this background.\nThis allows enrichment results to be interpreted relative to the proteins available in the analyzed experiment.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#selecting-a-cluster",
+    "href": "GO.html#selecting-a-cluster",
+    "title": "GO Analysis",
+    "section": "Selecting a cluster",
+    "text": "Selecting a cluster\nUse:\nSelect cluster to analyze\nto choose the cluster whose ORA results should be displayed.\nAvailable choices depend on the number of clusters generated during clustering.\nFor example:\nCluster 1\nCluster 2\nCluster 3\nCluster 4\nThe enrichment analysis is calculated for the available clusters, while the selector determines which cluster is displayed in the result table and plots.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#running-ora",
+    "href": "GO.html#running-ora",
+    "title": "GO Analysis",
+    "section": "Running ORA",
+    "text": "Running ORA\nAfter clustering and GO annotations are available, click:\nRun ORA\nto perform enrichment analysis.\n\n\n\n\n\n\nFigure 2: Running ORA\n\n\n\nThe proteins belonging to each cluster are tested against the GO annotation database using the configured statistical parameters.\nResults are then available for individual clusters through the cluster selector.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#multiple-testing-correction",
+    "href": "GO.html#multiple-testing-correction",
+    "title": "GO Analysis",
+    "section": "Multiple-testing correction",
+    "text": "Multiple-testing correction\nThe:\np-value adjustment method\ndetermines how p-values are corrected for multiple hypothesis testing.\nAvailable options include:\nBH\nholm\nhochberg\nhommel\nbonferroni\nBY\nfdr\nnone\nThe default method is:\nBH\n\n\n\n\n\n\nNoteMultiple GO terms are tested\n\n\n\nGO enrichment analysis evaluates many terms simultaneously. Multiple-testing correction helps control the statistical error associated with performing many enrichment tests.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#minimum-gene-set-size",
+    "href": "GO.html#minimum-gene-set-size",
+    "title": "GO Analysis",
+    "section": "Minimum gene set size",
+    "text": "Minimum gene set size\nThe:\nMinimum gene set size\ndetermines the minimum number of annotated proteins required for a GO term to be considered during enrichment analysis.\nThe default value is:\n10\nGO terms containing fewer proteins than this threshold are excluded.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#maximum-gene-set-size",
+    "href": "GO.html#maximum-gene-set-size",
+    "title": "GO Analysis",
+    "section": "Maximum gene set size",
+    "text": "Maximum gene set size\nThe:\nMaximum gene set size\ndefines the maximum number of annotated proteins allowed for a GO term.\nThe default value is:\n500\nTerms exceeding this limit are excluded from the enrichment analysis.\nThese minimum and maximum thresholds can be used to avoid testing gene sets that are either very small or extremely broad.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#p-value-cutoff",
+    "href": "GO.html#p-value-cutoff",
+    "title": "GO Analysis",
+    "section": "P-value cutoff",
+    "text": "P-value cutoff\nThe:\np-value cutoff\ndefines the significance threshold used during ORA.\nThe default value is:\n0.05",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#q-value-cutoff",
+    "href": "GO.html#q-value-cutoff",
+    "title": "GO Analysis",
+    "section": "Q-value cutoff",
+    "text": "Q-value cutoff\nThe:\nq-value cutoff\nprovides an additional significance threshold for enrichment results.\nThe default value is:\n0.2",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#expand-go-hierarchy",
+    "href": "GO.html#expand-go-hierarchy",
+    "title": "GO Analysis",
+    "section": "Expand GO hierarchy",
+    "text": "Expand GO hierarchy\nThe:\nExpand GO hierarchy (buildGOmap)\noption is enabled by default.\nWhen enabled, TPP Analyst expands the protein-to-GO associations through the Gene Ontology hierarchy.\nThis propagates annotations to related parent GO terms, increasing the coverage of the enrichment database.\n\n\n\n\n\n\nTipGO hierarchy expansion\n\n\n\nEnable Expand GO hierarchy when enrichment should consider the hierarchical relationships between GO terms.\nBecause parent GO categories are generally broader than their descendant terms, hierarchy expansion can increase annotation coverage while also producing broader functional enrichment results.\nThis option will considerably increase the loading time for the enrichment database, especially for organisms with large annotation sets.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#go-ontology-categories",
+    "href": "GO.html#go-ontology-categories",
+    "title": "GO Analysis",
+    "section": "GO ontology categories",
+    "text": "GO ontology categories\nTPP Analyst determines whether enriched terms belong to:\n\nBP: Biological Process\nCC: Cellular Component\nMF: Molecular Function\n\nThe GO description associated with each identifier is retrieved from the Gene Ontology annotation resources used by the application.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#ora-dotplot",
+    "href": "GO.html#ora-dotplot",
+    "title": "GO Analysis",
+    "section": "ORA dotplot",
+    "text": "ORA dotplot\nThe Dotplot summarizes the enriched GO terms identified for the selected cluster.\n\n\n\n\n\n\nFigure 3: ORA Dotplot\n\n\n\nThe plot provides a compact overview of significant functional categories and their enrichment characteristics.\nOnly results containing GO terms with adjusted p-values below:\n0.05\nare displayed.\nIf no terms satisfy this criterion, TPP Analyst displays:\nNo enriched terms found",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#enrichment-map",
+    "href": "GO.html#enrichment-map",
+    "title": "GO Analysis",
+    "section": "Enrichment map",
+    "text": "Enrichment map\nThe Enrichment plot displays relationships between enriched GO terms based on their similarity.\n\n\n\n\n\n\nFigure 4: Enrichment map\n\n\n\nThe enrichment map is useful for identifying groups of related functional categories rather than interpreting every enriched GO term independently.\nAt least three significant GO terms are required to generate the enrichment map.\nIf fewer than three significant terms are available, TPP Analyst displays:\nEnrichment map requires at least 3 significant GO terms.\n\n\n\n\n\n\nTipInterpreting related GO terms\n\n\n\nGO enrichment frequently produces several related or partially overlapping terms.\nThe enrichment map can help reveal broader functional themes represented by groups of related GO categories.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#ora-upset-plot",
+    "href": "GO.html#ora-upset-plot",
+    "title": "GO Analysis",
+    "section": "ORA Upset plot",
+    "text": "ORA Upset plot\nThe Upset plot visualizes overlap between the protein sets associated with enriched GO terms.\n\n\n\n\n\n\nFigure 5: Upset plot\n\n\n\nThis can help identify proteins contributing to multiple enriched biological categories.\nAs with the other ORA visualizations, the plot requires significant enrichment results with adjusted p-values below 0.05.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#ranking-proteins",
+    "href": "GO.html#ranking-proteins",
+    "title": "GO Analysis",
+    "section": "Ranking proteins",
+    "text": "Ranking proteins\nTPP Analyst provides two ranking metrics:\n\nt-statistic\nlogFC\n\nThe ranking statistic determines the order of proteins provided to GSEA.\n\n\n\n\n\n\nFigure 6: Run GSEA",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#t-statistic",
+    "href": "GO.html#t-statistic",
+    "title": "GO Analysis",
+    "section": "t-statistic",
+    "text": "t-statistic\nThe:\nt-statistic\noption ranks proteins according to the t-statistic obtained from the Limma analysis.\nThis is the recommended ranking method in the interface.\nBecause the t-statistic incorporates both effect magnitude and its estimated variability, it provides a statistical ranking of the temperature-associated protein responses.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#logfc",
+    "href": "GO.html#logfc",
+    "title": "GO Analysis",
+    "section": "logFC",
+    "text": "logFC\nThe:\nlogFC\noption ranks proteins according to the estimated effect generated by the Limma analysis.\nThis option is intended for appropriately normalized or transformed data.\n\n\n\n\n\n\nWarninglogFC and raw intensity data\n\n\n\nWhen logFC values appear to remain on a raw-intensity scale, TPP Analyst displays a warning recommending either:\n\nt-statistic ranking; or\nnormalization/log transformation before using logFC.\n\nFor this reason, t-statistic is the recommended default ranking method.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#running-gsea",
+    "href": "GO.html#running-gsea",
+    "title": "GO Analysis",
+    "section": "Running GSEA",
+    "text": "Running GSEA\nAfter selecting the ranking statistic, click:\nRun GSEA\nTPP Analyst:\n\nobtains the protein ranking from the Limma results;\nconstructs the protein-to-GO mappings;\noptionally expands the GO hierarchy;\nperforms the enrichment analysis using the ranked protein list.\n\nProteins with missing ranking values are excluded from the ranked list.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#gsea-p-value-adjustment-method",
+    "href": "GO.html#gsea-p-value-adjustment-method",
+    "title": "GO Analysis",
+    "section": "GSEA p-value adjustment method",
+    "text": "GSEA p-value adjustment method\nAvailable multiple-testing correction methods include:\nBH\nholm\nhochberg\nhommel\nbonferroni\nBY\nfdr\nnone\nThe default method is:\nBH",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#minimum-gene-set-size-1",
+    "href": "GO.html#minimum-gene-set-size-1",
+    "title": "GO Analysis",
+    "section": "Minimum gene set size",
+    "text": "Minimum gene set size\nThe default minimum gene set size is:\n5\nGO sets containing fewer mapped proteins are excluded from the analysis.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#maximum-gene-set-size-1",
+    "href": "GO.html#maximum-gene-set-size-1",
+    "title": "GO Analysis",
+    "section": "Maximum gene set size",
+    "text": "Maximum gene set size\nThe default maximum gene set size is:\n500\nGO sets larger than this threshold are excluded.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#gsea-p-value-cutoff",
+    "href": "GO.html#gsea-p-value-cutoff",
+    "title": "GO Analysis",
+    "section": "GSEA p-value cutoff",
+    "text": "GSEA p-value cutoff\nThe default p-value cutoff is:\n0.05",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#exponent",
+    "href": "GO.html#exponent",
+    "title": "GO Analysis",
+    "section": "Exponent",
+    "text": "Exponent\nThe Exponent controls the weighting applied to the ranked protein list during enrichment score calculation.\nThe default value is:\n1\nThe interface allows values from 0 to 5.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#number-of-permutations",
+    "href": "GO.html#number-of-permutations",
+    "title": "GO Analysis",
+    "section": "Number of permutations",
+    "text": "Number of permutations\nThe number of permutations controls the permutation-based estimation performed during GSEA.\nThe default value is:\n10,000\nThe application allows values from:\n10,000 to 500,000\nin increments of:\n10,000\n\n\n\n\n\n\nWarningNumber of permutations\n\n\n\nIncreasing the number of permutations can increase computation time considerably.\nUse larger values when additional statistical stability is required and the additional computational cost is acceptable.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#gsea-go-hierarchy-expansion",
+    "href": "GO.html#gsea-go-hierarchy-expansion",
+    "title": "GO Analysis",
+    "section": "GSEA GO hierarchy expansion",
+    "text": "GSEA GO hierarchy expansion\nThe:\nExpand GO hierarchy (buildGOmap)\noption determines whether protein annotations are propagated through the GO hierarchy before GSEA.\nThe option is enabled by default.\nAs in ORA, hierarchy expansion can increase annotation coverage while also introducing broader parent GO categories into the analysis.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#gsea-upset-plot",
+    "href": "GO.html#gsea-upset-plot",
+    "title": "GO Analysis",
+    "section": "GSEA Upset plot",
+    "text": "GSEA Upset plot\nThe Upset plot summarizes overlap among proteins associated with enriched GO terms.\n\n\n\n\n\n\nFigure 7: GSEA Upset plot.\n\n\n\nThis helps identify proteins contributing to several functionally enriched categories.\nIf no terms have an adjusted p-value below 0.05, the application reports:\nNo enriched terms found",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#ridge-line-plot",
+    "href": "GO.html#ridge-line-plot",
+    "title": "GO Analysis",
+    "section": "Ridge line plot",
+    "text": "Ridge line plot\nThe Ridge line plot displays the distribution of ranked protein values associated with enriched GO terms.\n\n\n\n\n\n\nFigure 8: GSEA Ridge line plot.\n\n\n\nThe plot provides a comparative overview of where proteins belonging to different functional categories occur within the ranked protein list.\nThis can help distinguish GO terms whose associated proteins show different distributions across the ranking statistic.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#running-score-and-preranked-list-plot",
+    "href": "GO.html#running-score-and-preranked-list-plot",
+    "title": "GO Analysis",
+    "section": "Running score and preranked list plot",
+    "text": "Running score and preranked list plot\nThe Running score and preranked list plot provides a detailed visualization of individual GSEA results.\n\n\n\n\n\n\nFigure 9: GSEA Running score and preranked list plot.\n\n\n\nAfter GSEA has been performed, significant GO terms become available in:\nSelect term(s) to display\nThe selector can be searched using the GO term description.\nMultiple significant terms can be selected simultaneously.\nThe resulting plot displays the enrichment running score across the ranked protein list for the selected GO sets.\n\n\n\n\n\n\nTipExamining individual GO terms\n\n\n\nUse the running-score plot when a particular biological process, molecular function, or cellular component is of special interest.\nThe searchable term selector makes it possible to move from the global enrichment overview to individual GO terms.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#significant-terms-available-for-plotting",
+    "href": "GO.html#significant-terms-available-for-plotting",
+    "title": "GO Analysis",
+    "section": "Significant terms available for plotting",
+    "text": "Significant terms available for plotting\nThe term selector contains GO terms with adjusted p-values below:\n0.05\nGO descriptions are displayed in the selector when available, while the corresponding GO identifiers are used internally for plotting.\nThis allows enriched terms to be located using their biological descriptions rather than GO identifiers alone.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "GO.html#next-step",
+    "href": "GO.html#next-step",
+    "title": "GO Analysis",
+    "section": "Next step",
+    "text": "Next step\nAfter functional enrichment analysis, continue to Comparison Models to statistically compare thermal stability profiles between experimental conditions.",
+    "crumbs": [
+      "Home",
+      "GO Analysis"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html",
+    "href": "modelcomparison.html",
+    "title": "Comparison Models",
+    "section": "",
+    "text": "The Comparison Models section provides statistical approaches for identifying proteins whose thermal stability differs between experimental conditions.\nTPP Analyst provides two complementary comparison methods:\nThe TPP approach is centered on melting-temperature shifts, whereas NPARC evaluates differences across the complete thermal profile and can therefore identify changes that are not necessarily characterized by a large shift in Tm.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#selecting-conditions",
+    "href": "modelcomparison.html#selecting-conditions",
+    "title": "Comparison Models",
+    "section": "Selecting conditions",
+    "text": "Selecting conditions\nSelect the two datasets to compare using:\n\nVehicle condition\nTreatment condition\n\nAlthough these controls are labelled Vehicle and Treatment, they represent the two experimental datasets that will be compared.\n\n\n\n\n\n\nFigure 1: TPP control panel\n\n\n\nThe selected datasets should correspond to biologically meaningful comparison groups.\nFor example:\nVehicle\nTreatment\nor:\nControl\nDrug",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#replicate-comparisons",
+    "href": "modelcomparison.html#replicate-comparisons",
+    "title": "Comparison Models",
+    "section": "Replicate comparisons",
+    "text": "Replicate comparisons\nTPP Analyst identifies the replicate structure of the selected datasets and creates corresponding comparisons between the two conditions.\nFor example:\nVehicle replicate 1\n        vs\nTreatment replicate 1\n\nVehicle replicate 2\n        vs\nTreatment replicate 2\nMelting curves are fitted for each protein within these replicate comparisons.\nThe resulting Tm differences and statistical results are subsequently combined in the TPP output.\n\n\n\n\n\n\nNoteReplicate structure\n\n\n\nTPP comparison assumes corresponding replicate structures between the two selected datasets.\nReview the experimental design before running the analysis to ensure that the replicate assignments accurately represent the intended comparison.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#minimum-r²",
+    "href": "modelcomparison.html#minimum-r²",
+    "title": "Comparison Models",
+    "section": "Minimum R²",
+    "text": "Minimum R²\nThe:\nMinimum R²\ncontrol defines the minimum accepted curve-fit quality.\nThe default value is:\n0.8\nIncreasing the threshold applies a more stringent curve-quality criterion.\nProteins with fitted curves below the selected R² threshold do not pass the corresponding replicate filter.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#maximum-plateau",
+    "href": "modelcomparison.html#maximum-plateau",
+    "title": "Comparison Models",
+    "section": "Maximum Plateau",
+    "text": "Maximum Plateau\nThe:\nMaximum Plateau\ncontrol specifies the highest accepted fitted plateau value.\nThe default value is:\n0.3\nProteins whose fitted curves exceed this plateau threshold do not pass the corresponding replicate quality filter.\n\n\n\n\n\n\nTipCurve-quality filtering\n\n\n\nR² and plateau thresholds should be chosen to retain reliable thermal profiles while avoiding overly stringent filtering that removes large portions of the dataset.\nUse the result summary and individual protein curves to assess the effect of the selected thresholds.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#running-tpp-analysis",
+    "href": "modelcomparison.html#running-tpp-analysis",
+    "title": "Comparison Models",
+    "section": "Running TPP analysis",
+    "text": "Running TPP analysis\nAfter selecting the two conditions and setting the quality thresholds, click:\nRun TPP analysis\nTPP Analyst then:\n\nprepares the selected condition datasets;\nidentifies the replicate structure and temperature points;\nfits protein melting curves;\napplies the selected R² and plateau quality filters;\ncalculates replicate-wise melting-temperature differences;\nperforms the statistical analysis;\ngenerates the TPP result table and summary statistics.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#mean-δtm",
+    "href": "modelcomparison.html#mean-δtm",
+    "title": "Comparison Models",
+    "section": "Mean ΔTm",
+    "text": "Mean ΔTm\nMean_DeltaTm represents the average melting-temperature difference across the available replicate comparisons for a protein.\nA positive ΔTm indicates that the estimated melting temperature is higher in the treatment condition relative to the vehicle condition.\nA negative ΔTm indicates that the estimated melting temperature is lower in the treatment condition.\n\n\n\n\n\n\nNoteInterpreting ΔTm\n\n\n\nΔTm describes the direction and magnitude of the estimated thermal stability shift.\nThe statistical significance, replicate consistency, and curve quality should also be considered when interpreting an individual protein.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#sd-of-δtm",
+    "href": "modelcomparison.html#sd-of-δtm",
+    "title": "Comparison Models",
+    "section": "SD of ΔTm",
+    "text": "SD of ΔTm\nSD_DeltaTm summarizes the variability of the ΔTm estimates across replicate comparisons.\nLower variability indicates greater agreement between replicate-specific thermal shifts.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#minimum-adjusted-p-value",
+    "href": "modelcomparison.html#minimum-adjusted-p-value",
+    "title": "Comparison Models",
+    "section": "Minimum adjusted p-value",
+    "text": "Minimum adjusted p-value\nMin_Adjusted_P reports the smallest adjusted p-value observed across the available replicate comparisons for the protein.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#replicates-passing",
+    "href": "modelcomparison.html#replicates-passing",
+    "title": "Comparison Models",
+    "section": "Replicates passing",
+    "text": "Replicates passing\nReplicates_Passing reports how many replicate comparisons satisfy the selected TPP curve-quality criteria.\nThis provides a direct indication of the replicate support available for the reported protein result.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#show-only-proteins-passing-all-replicate-comparisons",
+    "href": "modelcomparison.html#show-only-proteins-passing-all-replicate-comparisons",
+    "title": "Comparison Models",
+    "section": "Show only proteins passing all replicate comparisons",
+    "text": "Show only proteins passing all replicate comparisons\nEnable:\nShow only proteins passing all replicate comparisons\nto restrict the results to proteins that pass the selected curve-quality filters in every replicate comparison.\nThis provides a more stringent result set supported by all available replicate comparisons.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#show-only-proteins-with-δtm-calculated",
+    "href": "modelcomparison.html#show-only-proteins-with-δtm-calculated",
+    "title": "Comparison Models",
+    "section": "Show only proteins with ΔTm calculated",
+    "text": "Show only proteins with ΔTm calculated\nEnable:\nShow only proteins with ΔTm calculated in at least one replicate\nto restrict the displayed table to proteins for which a finite ΔTm result is available in at least one replicate comparison.\n\n\n\n\n\n\nTipFiltering TPP results\n\n\n\nUse these options to move between a broad overview of the analysis and a more stringent set of proteins with stronger replicate and curve-quality support.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#adjusted-p-value-distribution",
+    "href": "modelcomparison.html#adjusted-p-value-distribution",
+    "title": "Comparison Models",
+    "section": "Adjusted p-value distribution",
+    "text": "Adjusted p-value distribution\nThe Adjusted p-value distribution histogram displays the adjusted p-values generated across replicate comparisons.\nThis provides a global view of the statistical significance landscape of the TPP analysis.\nAn accumulation of small adjusted p-values indicates a larger number of proteins with statistical evidence for thermal stability differences.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#δtm-distribution",
+    "href": "modelcomparison.html#δtm-distribution",
+    "title": "Comparison Models",
+    "section": "ΔTm distribution",
+    "text": "ΔTm distribution\nThe Delta Tm distribution histogram summarizes the melting-temperature differences observed across the replicate comparisons.\nThe distribution provides an overview of:\n\nthe direction of thermal shifts;\ntheir overall magnitude;\nthe presence of proteins with unusually large positive or negative ΔTm values.\n\n\n\n\n\n\n\nNoteGlobal distributions\n\n\n\nThe adjusted p-value and ΔTm distributions are diagnostic summaries of the complete analysis.\nProtein-level conclusions should be based on the individual statistical results together with replicate support and inspection of the corresponding melting curves.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#empirical-method",
+    "href": "modelcomparison.html#empirical-method",
+    "title": "Comparison Models",
+    "section": "Empirical method",
+    "text": "Empirical method\nThe empirical option uses the empirical NPARC approach for determining the F-test statistics and corresponding significance estimates.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#theoretical-method",
+    "href": "modelcomparison.html#theoretical-method",
+    "title": "Comparison Models",
+    "section": "Theoretical method",
+    "text": "Theoretical method\nThe theoretical option uses the theoretical F-distribution-based approach.\n\n\n\n\n\n\nTipComparing F-statistic methods\n\n\n\nBecause both methods are calculated during the same model-comparison run, the selector can be used to inspect how the resulting statistical evidence changes between the empirical and theoretical approaches.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#minimum-rss-difference",
+    "href": "modelcomparison.html#minimum-rss-difference",
+    "title": "Comparison Models",
+    "section": "Minimum RSS difference",
+    "text": "Minimum RSS difference\nThe:\nMinimum RSS difference\ncontrol allows the result table to be further restricted according to the magnitude of model-fit improvement.\nThe default value is:\n0\nIncreasing this threshold restricts the table to proteins showing progressively larger improvements when condition-specific models are fitted.\n\n\n\n\n\n\nTipCombining statistical significance and model improvement\n\n\n\nThe adjusted p-value and RSS-difference filters provide complementary criteria.\nThe adjusted p-value reflects statistical evidence, while the RSS difference reflects the magnitude by which the alternative model improves the fit relative to the null model.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#rss_null",
+    "href": "modelcomparison.html#rss_null",
+    "title": "Comparison Models",
+    "section": "rss_null",
+    "text": "rss_null\nrss_null is the residual sum of squares obtained from the shared null model.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#rss_alt",
+    "href": "modelcomparison.html#rss_alt",
+    "title": "Comparison Models",
+    "section": "rss_alt",
+    "text": "rss_alt\nrss_alt represents the residual sum of squares obtained from the condition-specific alternative model or models.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#rss_diff",
+    "href": "modelcomparison.html#rss_diff",
+    "title": "Comparison Models",
+    "section": "rss_diff",
+    "text": "rss_diff\nrss_diff is calculated as:\nrss_null - rss_alt\nLarger positive values indicate a greater reduction in residual error when separate condition-specific curves are used.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#f-statistic",
+    "href": "modelcomparison.html#f-statistic",
+    "title": "Comparison Models",
+    "section": "F statistic",
+    "text": "F statistic\nfStat describes the improvement in model fit relative to the additional flexibility introduced by the alternative model.\nLarger F statistics indicate stronger evidence that the condition-specific model provides a better description of the protein thermal profiles.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#p-value",
+    "href": "modelcomparison.html#p-value",
+    "title": "Comparison Models",
+    "section": "P-value",
+    "text": "P-value\npVal reports the statistical significance associated with the F-test.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#adjusted-p-value",
+    "href": "modelcomparison.html#adjusted-p-value",
+    "title": "Comparison Models",
+    "section": "Adjusted p-value",
+    "text": "Adjusted p-value\npAdj reports the p-value after correction for multiple testing.\nThis value is used by the adjusted p-value filter in the interface.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#p-value-distribution",
+    "href": "modelcomparison.html#p-value-distribution",
+    "title": "Comparison Models",
+    "section": "P-value distribution",
+    "text": "P-value distribution\nThe P-value distribution histogram displays the unadjusted p-values produced by the selected NPARC F-test method.\nThis provides an overview of the statistical significance landscape across the tested proteins.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#f-statistic-distribution",
+    "href": "modelcomparison.html#f-statistic-distribution",
+    "title": "Comparison Models",
+    "section": "F statistic distribution",
+    "text": "F statistic distribution\nThe F statistic distribution displays the observed F statistics.\nTo prevent extreme F statistics from dominating the visualization, the displayed X-axis is restricted to the 99th percentile of the finite F-statistic distribution.\nThis makes the main body of the distribution easier to inspect.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#observed-versus-expected-f-distribution",
+    "href": "modelcomparison.html#observed-versus-expected-f-distribution",
+    "title": "Comparison Models",
+    "section": "Observed versus expected F distribution",
+    "text": "Observed versus expected F distribution\nThe F distribution fit compares the observed F-statistic density with the corresponding theoretical F distribution.\nThe observed distribution is displayed as a density curve, while the theoretical expectation is shown as a red line.\nThe theoretical curve is generated using representative degrees of freedom from the current results.\nThe plot title indicates whether the empirical or theoretical NPARC method is currently selected.\n\n\n\n\n\n\nTipF-distribution diagnostic\n\n\n\nUse this plot to inspect how the observed test statistics compare with the expected theoretical distribution.\nThis diagnostic can help identify deviations in the overall F-statistic distribution that may be relevant when interpreting the model-comparison results.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "modelcomparison.html#rss-difference-distribution",
+    "href": "modelcomparison.html#rss-difference-distribution",
+    "title": "Comparison Models",
+    "section": "RSS difference distribution",
+    "text": "RSS difference distribution\nThe RSS difference distribution displays:\nRSSnull - RSSalt\nacross the tested proteins.\nPositive values indicate that the condition-specific alternative model decreases residual error relative to the shared null model.\nProteins with larger positive RSS differences show greater improvements in fit under the alternative model.",
+    "crumbs": [
+      "Home",
+      "Comparison Models"
+    ]
+  },
+  {
+    "objectID": "input-data.html#custom-organism-go-database",
+    "href": "input-data.html#custom-organism-go-database",
+    "title": "Input Data",
+    "section": "Custom organism GO database",
+    "text": "Custom organism GO database\nTPP Analyst includes built-in annotation databases for the predefined organisms available in the organism selector.\nWhen an organism is not included in the predefined list, select:\nOther\nand provide a name for the custom organism.\nA custom organism annotation file can then be uploaded to provide the protein and Gene Ontology information required for downstream functional enrichment analysis.\n\n\n\n\n\n\nNoteWhen is a custom GO database needed?\n\n\n\nThe custom organism database is not required for the general processing, quality control, normalization, clustering, model fitting, or comparison of TPP datasets.\nHowever, a compatible annotation database should be provided when GO enrichment analysis will be performed for an organism selected as Other.\n\n\n\nObtaining a custom organism database\nCustom organism annotation files can be downloaded from UniProt for the organism of interest.\n\n\n\n\n\n\nFigure 5: Custom organism GO database structure.\n\n\n\nThe downloaded file should contain protein identifiers together with protein, gene, organism, and Gene Ontology annotations.\nTPP Analyst supports custom organism databases in the following formats:\n\nCSV (.csv)\nTSV (.tsv)\ntext (.txt)\nExcel (.xlsx)\nExcel (.xls)\n\n\n\nRequired columns\nThe custom organism database must contain the following columns:\nEntry\nProtein names\nGene Names\nOrganism\nGene Ontology (GO)\nGene Ontology (biological process)\nGene Ontology (cellular component)\nGene Ontology (molecular function)\nGene Ontology IDs\n\n\n\n\n\n\nImportantKeep the UniProt column names unchanged\n\n\n\nThe required column names should be retained exactly as provided by UniProt.\nIf required columns are missing, TPP Analyst will report the custom organism database as invalid and identify the missing columns.\n\n\n\n\nProtein identifiers\nThe Entry column contains the protein identifiers used to associate the custom annotation database with proteins in the experimental dataset.\nFor the most reliable matching, the identifiers in the Accession column of the protein abundance dataset should correspond to the UniProt identifiers provided in the Entry column of the custom organism database.\n\n\n\n\n\n\nTipRecommendation\n\n\n\nWhen using a custom organism database, use UniProt accession identifiers in the protein abundance dataset whenever possible.\nConsistent identifiers between the protein dataset and the custom annotation database improve the matching of proteins to GO annotations.\n\n\n\n\nGO annotation columns\nThe custom database provides several complementary Gene Ontology annotation fields.\nThe following columns provide annotations for the three major GO categories:\nGene Ontology (biological process)\nGene Ontology (cellular component)\nGene Ontology (molecular function)\nThese correspond to:\n\nBiological Process (BP)\nCellular Component (CC)\nMolecular Function (MF)\n\nThe:\nGene Ontology IDs\ncolumn provides the corresponding GO identifiers.\nThese annotations are subsequently used by TPP Analyst to construct the protein-to-GO mappings required for ORA and GSEA.\n\n\nCustom organism name\nFor a single-organism experiment, selecting Other displays a field where the custom organism name can be entered.\nFor example:\nMy custom organism\nThe custom database uploaded for the experiment is associated with this organism name.\nFor multi-organism experiments, custom organism names are specified separately for the experimental conditions in which Other was selected.\n\n\nCustom databases in multi-organism experiments\nA custom organism can also be combined with predefined organisms in a multi-organism experiment.\nFor example, a condition could contain:\nHomo sapiens\nOther\nThe predefined human annotation database is used for Homo sapiens, while the uploaded custom annotation database provides the annotation information for the organism represented by Other.\nWhen Other is assigned to a condition, enter the corresponding custom organism name and upload its organism database.\n\n\n\n\n\n\nTipMixed-proteome experiments\n\n\n\nThe custom organism functionality allows TPP Analyst to analyze mixed-proteome experiments containing both predefined and user-provided organisms.\nThe Organism column in the protein abundance dataset should clearly identify which proteins belong to each organism.\n\n\n\n\nOrganism names in the uploaded database\nAfter a custom organism database is loaded, TPP Analyst associates the uploaded annotations with the custom organism name provided in the interface.\nThis allows the custom organism name used throughout the analysis to remain consistent even when the original UniProt organism annotation contains additional naming information.\n\n\nValidation\nTPP Analyst validates the structure of the custom organism database when it is uploaded.\nIf required columns are missing, an error message identifies the missing fields and the annotation database cannot be used until the required structure is provided.\n\n\n\n\n\n\nWarningCustom database validation\n\n\n\nBefore continuing, ensure that the custom annotation file contains all required UniProt annotation columns.\nAn incomplete database may prevent GO annotation matching and downstream enrichment analysis.\n\n\n\n\nRelationship between the three input files\nWhen a custom organism is used, the input workflow can therefore contain three types of files:\nExperimental design\n        +\nProtein abundance dataset\n        +\nCustom organism GO database\nTheir roles are different:\n\nThe experimental design describes conditions, temperatures, and replicates.\nThe protein abundance dataset provides the quantitative protein measurements.\nThe custom organism GO database provides organism-specific protein and functional annotations for downstream GO analysis.\n\nThe custom GO database does not replace either of the two primary experimental input files.",
+    "crumbs": [
+      "Home",
+      "Input Data"
+    ]
+  }
+]

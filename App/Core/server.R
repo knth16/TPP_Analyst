@@ -703,7 +703,6 @@ tags$div(
         • Protein names<br>
         • Gene Names<br>
         • Organism<br>
-        • Length<br>
         • Gene Ontology (GO)<br>
         • Gene Ontology (biological process)<br>
         • Gene Ontology (cellular component)<br>
@@ -1249,7 +1248,6 @@ observeEvent(
       "Protein names",
       "Gene Names",
       "Organism",
-      "Length",
       "Gene Ontology (GO)",
       "Gene Ontology (biological process)",
       "Gene Ontology (cellular component)",

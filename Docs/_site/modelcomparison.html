@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Comparison Models – TPP Analyst</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-df8525f35ba63c6f0b1065eede4603db.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">TPP Analyst</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./getting-started.html"> 
+<span class="menu-text">Getting Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./input-data.html"> 
+<span class="menu-text">Input Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./quality-control.html"> 
+<span class="menu-text">Quality Control</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./normalization.html"> 
+<span class="menu-text">Normalization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./clustering.html"> 
+<span class="menu-text">Clustering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./modelfitting.html"> 
+<span class="menu-text">Model Fitting</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./proteinplots.html"> 
+<span class="menu-text">Protein Plots</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./GO.html"> 
+<span class="menu-text">GO Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./modelcomparison.html"> 
+<span class="menu-text">Comparison Models</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./modelcomparison.html">Comparison Models</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./input-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Input Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Normalization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelfitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Fitting</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./proteinplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protein Plots</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./GO.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GO Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelcomparison.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Comparison Models</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#analysis-requirements" id="toc-analysis-requirements" class="nav-link active" data-scroll-target="#analysis-requirements">Analysis requirements</a></li>
+  <li><a href="#tpp-analysis" id="toc-tpp-analysis" class="nav-link" data-scroll-target="#tpp-analysis">TPP analysis</a>
+  <ul class="collapse">
+  <li><a href="#selecting-conditions" id="toc-selecting-conditions" class="nav-link" data-scroll-target="#selecting-conditions">Selecting conditions</a></li>
+  <li><a href="#replicate-comparisons" id="toc-replicate-comparisons" class="nav-link" data-scroll-target="#replicate-comparisons">Replicate comparisons</a></li>
+  </ul></li>
+  <li><a href="#tpp-curve-quality-filters" id="toc-tpp-curve-quality-filters" class="nav-link" data-scroll-target="#tpp-curve-quality-filters">TPP curve-quality filters</a>
+  <ul class="collapse">
+  <li><a href="#minimum-r²" id="toc-minimum-r²" class="nav-link" data-scroll-target="#minimum-r²">Minimum R²</a></li>
+  <li><a href="#maximum-plateau" id="toc-maximum-plateau" class="nav-link" data-scroll-target="#maximum-plateau">Maximum Plateau</a></li>
+  <li><a href="#running-tpp-analysis" id="toc-running-tpp-analysis" class="nav-link" data-scroll-target="#running-tpp-analysis">Running TPP analysis</a></li>
+  </ul></li>
+  <li><a href="#tpp-results-table" id="toc-tpp-results-table" class="nav-link" data-scroll-target="#tpp-results-table">TPP results table</a>
+  <ul class="collapse">
+  <li><a href="#mean-δtm" id="toc-mean-δtm" class="nav-link" data-scroll-target="#mean-δtm">Mean ΔTm</a></li>
+  <li><a href="#sd-of-δtm" id="toc-sd-of-δtm" class="nav-link" data-scroll-target="#sd-of-δtm">SD of ΔTm</a></li>
+  <li><a href="#minimum-adjusted-p-value" id="toc-minimum-adjusted-p-value" class="nav-link" data-scroll-target="#minimum-adjusted-p-value">Minimum adjusted p-value</a></li>
+  <li><a href="#replicates-passing" id="toc-replicates-passing" class="nav-link" data-scroll-target="#replicates-passing">Replicates passing</a></li>
+  </ul></li>
+  <li><a href="#filtering-the-tpp-results-table" id="toc-filtering-the-tpp-results-table" class="nav-link" data-scroll-target="#filtering-the-tpp-results-table">Filtering the TPP results table</a>
+  <ul class="collapse">
+  <li><a href="#show-only-proteins-passing-all-replicate-comparisons" id="toc-show-only-proteins-passing-all-replicate-comparisons" class="nav-link" data-scroll-target="#show-only-proteins-passing-all-replicate-comparisons">Show only proteins passing all replicate comparisons</a></li>
+  <li><a href="#show-only-proteins-with-δtm-calculated" id="toc-show-only-proteins-with-δtm-calculated" class="nav-link" data-scroll-target="#show-only-proteins-with-δtm-calculated">Show only proteins with ΔTm calculated</a></li>
+  </ul></li>
+  <li><a href="#tpp-melting-curve-plot" id="toc-tpp-melting-curve-plot" class="nav-link" data-scroll-target="#tpp-melting-curve-plot">TPP melting curve plot</a></li>
+  <li><a href="#tpp-summary" id="toc-tpp-summary" class="nav-link" data-scroll-target="#tpp-summary">TPP summary</a>
+  <ul class="collapse">
+  <li><a href="#adjusted-p-value-distribution" id="toc-adjusted-p-value-distribution" class="nav-link" data-scroll-target="#adjusted-p-value-distribution">Adjusted p-value distribution</a></li>
+  <li><a href="#δtm-distribution" id="toc-δtm-distribution" class="nav-link" data-scroll-target="#δtm-distribution">ΔTm distribution</a></li>
+  </ul></li>
+  <li><a href="#nparc" id="toc-nparc" class="nav-link" data-scroll-target="#nparc">NPARC</a></li>
+  <li><a href="#selecting-conditions-for-nparc" id="toc-selecting-conditions-for-nparc" class="nav-link" data-scroll-target="#selecting-conditions-for-nparc">Selecting conditions for NPARC</a></li>
+  <li><a href="#protein-inclusion-in-nparc" id="toc-protein-inclusion-in-nparc" class="nav-link" data-scroll-target="#protein-inclusion-in-nparc">Protein inclusion in NPARC</a></li>
+  <li><a href="#nparc-model-fitting" id="toc-nparc-model-fitting" class="nav-link" data-scroll-target="#nparc-model-fitting">NPARC model fitting</a></li>
+  <li><a href="#f-statistic-method" id="toc-f-statistic-method" class="nav-link" data-scroll-target="#f-statistic-method">F statistic method</a>
+  <ul class="collapse">
+  <li><a href="#empirical-method" id="toc-empirical-method" class="nav-link" data-scroll-target="#empirical-method">Empirical method</a></li>
+  <li><a href="#theoretical-method" id="toc-theoretical-method" class="nav-link" data-scroll-target="#theoretical-method">Theoretical method</a></li>
+  </ul></li>
+  <li><a href="#adjusted-p-value-filter" id="toc-adjusted-p-value-filter" class="nav-link" data-scroll-target="#adjusted-p-value-filter">Adjusted p-value filter</a></li>
+  <li><a href="#rss-difference" id="toc-rss-difference" class="nav-link" data-scroll-target="#rss-difference">RSS difference</a>
+  <ul class="collapse">
+  <li><a href="#minimum-rss-difference" id="toc-minimum-rss-difference" class="nav-link" data-scroll-target="#minimum-rss-difference">Minimum RSS difference</a></li>
+  </ul></li>
+  <li><a href="#nparc-results-table" id="toc-nparc-results-table" class="nav-link" data-scroll-target="#nparc-results-table">NPARC results table</a>
+  <ul class="collapse">
+  <li><a href="#rss_null" id="toc-rss_null" class="nav-link" data-scroll-target="#rss_null">rss_null</a></li>
+  <li><a href="#rss_alt" id="toc-rss_alt" class="nav-link" data-scroll-target="#rss_alt">rss_alt</a></li>
+  <li><a href="#rss_diff" id="toc-rss_diff" class="nav-link" data-scroll-target="#rss_diff">rss_diff</a></li>
+  <li><a href="#f-statistic" id="toc-f-statistic" class="nav-link" data-scroll-target="#f-statistic">F statistic</a></li>
+  <li><a href="#p-value" id="toc-p-value" class="nav-link" data-scroll-target="#p-value">P-value</a></li>
+  <li><a href="#adjusted-p-value" id="toc-adjusted-p-value" class="nav-link" data-scroll-target="#adjusted-p-value">Adjusted p-value</a></li>
+  </ul></li>
+  <li><a href="#selecting-a-protein" id="toc-selecting-a-protein" class="nav-link" data-scroll-target="#selecting-a-protein">Selecting a protein</a></li>
+  <li><a href="#model-comparison-plot" id="toc-model-comparison-plot" class="nav-link" data-scroll-target="#model-comparison-plot">Model comparison plot</a></li>
+  <li><a href="#nparc-summary" id="toc-nparc-summary" class="nav-link" data-scroll-target="#nparc-summary">NPARC summary</a></li>
+  <li><a href="#nparc-diagnostic-plots" id="toc-nparc-diagnostic-plots" class="nav-link" data-scroll-target="#nparc-diagnostic-plots">NPARC diagnostic plots</a>
+  <ul class="collapse">
+  <li><a href="#p-value-distribution" id="toc-p-value-distribution" class="nav-link" data-scroll-target="#p-value-distribution">P-value distribution</a></li>
+  <li><a href="#f-statistic-distribution" id="toc-f-statistic-distribution" class="nav-link" data-scroll-target="#f-statistic-distribution">F statistic distribution</a></li>
+  <li><a href="#observed-versus-expected-f-distribution" id="toc-observed-versus-expected-f-distribution" class="nav-link" data-scroll-target="#observed-versus-expected-f-distribution">Observed versus expected F distribution</a></li>
+  <li><a href="#rss-difference-distribution" id="toc-rss-difference-distribution" class="nav-link" data-scroll-target="#rss-difference-distribution">RSS difference distribution</a></li>
+  </ul></li>
+  <li><a href="#tpp-and-nparc-provide-complementary-analyses" id="toc-tpp-and-nparc-provide-complementary-analyses" class="nav-link" data-scroll-target="#tpp-and-nparc-provide-complementary-analyses">TPP and NPARC provide complementary analyses</a></li>
+  <li><a href="#recommended-tpp-workflow" id="toc-recommended-tpp-workflow" class="nav-link" data-scroll-target="#recommended-tpp-workflow">Recommended TPP workflow</a></li>
+  <li><a href="#recommended-nparc-workflow" id="toc-recommended-nparc-workflow" class="nav-link" data-scroll-target="#recommended-nparc-workflow">Recommended NPARC workflow</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Comparison Models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The Comparison Models section provides statistical approaches for identifying proteins whose thermal stability differs between experimental conditions.</p>
+<p>TPP Analyst provides two complementary comparison methods:</p>
+<ol type="1">
+<li><strong>TPP analysis</strong>, which evaluates differences in estimated protein melting temperatures (ΔTm) between conditions.</li>
+<li><strong>NPARC</strong>, which compares complete protein thermal response curves between conditions.</li>
+</ol>
+<p>The TPP approach is centered on melting-temperature shifts, whereas NPARC evaluates differences across the complete thermal profile and can therefore identify changes that are not necessarily characterized by a large shift in Tm.</p>
+<section id="analysis-requirements" class="level1">
+<h1>Analysis requirements</h1>
+<p>Both comparison approaches operate on two selected experimental conditions.</p>
+<p>Before running either analysis:</p>
+<ol type="1">
+<li><strong>Quality Control must have been completed for both conditions.</strong></li>
+<li>The datasets must be normalized to the lowest temperature, or the application must be informed that the uploaded data were already normalized to the lowest temperature.</li>
+<li>At least two conditions must be available for comparison.</li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Quality Control is required
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TPP and NPARC cannot be run until Quality Control has been applied to both selected conditions.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Lowest-temperature normalization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Both TPP and NPARC require thermal profiles normalized relative to the lowest temperature.</p>
+<p>This requirement can be satisfied either by applying <strong>Normalize to lowest temperature</strong> in the <a href="./normalization.html">Normalization</a> module or by indicating that the input dataset had already been normalized to its lowest-temperature reference.</p>
+</div>
+</div>
+</section>
+<section id="tpp-analysis" class="level1">
+<h1>TPP analysis</h1>
+<p>The <strong>TPP analysis</strong> workflow compares protein melting temperatures between two experimental conditions.</p>
+<p>The analysis follows a Tm-centric approach in which melting curves are fitted independently to the corresponding replicate profiles and the resulting melting temperatures are compared between conditions.</p>
+<p>This provides an estimate of:</p>
+<pre class="text"><code>ΔTm</code></pre>
+<p>representing the change in protein melting temperature between the selected conditions.</p>
+<section id="selecting-conditions" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-conditions">Selecting conditions</h2>
+<p>Select the two datasets to compare using:</p>
+<ul>
+<li><strong>Vehicle condition</strong></li>
+<li><strong>Treatment condition</strong></li>
+</ul>
+<p>Although these controls are labelled Vehicle and Treatment, they represent the two experimental datasets that will be compared.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/PanelTPP.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: TPP control panel
+</figcaption>
+</figure>
+</div>
+<p>The selected datasets should correspond to biologically meaningful comparison groups.</p>
+<p>For example:</p>
+<pre class="text"><code>Vehicle
+Treatment</code></pre>
+<p>or:</p>
+<pre class="text"><code>Control
+Drug</code></pre>
+</section>
+<section id="replicate-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="replicate-comparisons">Replicate comparisons</h2>
+<p>TPP Analyst identifies the replicate structure of the selected datasets and creates corresponding comparisons between the two conditions.</p>
+<p>For example:</p>
+<pre class="text"><code>Vehicle replicate 1
+        vs
+Treatment replicate 1
+
+Vehicle replicate 2
+        vs
+Treatment replicate 2</code></pre>
+<p>Melting curves are fitted for each protein within these replicate comparisons.</p>
+<p>The resulting Tm differences and statistical results are subsequently combined in the TPP output.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Replicate structure
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>TPP comparison assumes corresponding replicate structures between the two selected datasets.</p>
+<p>Review the experimental design before running the analysis to ensure that the replicate assignments accurately represent the intended comparison.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="tpp-curve-quality-filters" class="level1">
+<h1>TPP curve-quality filters</h1>
+<p>Two principal quality filters are applied during TPP analysis:</p>
+<ul>
+<li><strong>Minimum R²</strong></li>
+<li><strong>Maximum Plateau</strong></li>
+</ul>
+<p>These determine which fitted curves are considered acceptable when calculating the statistical comparison.</p>
+<section id="minimum-r²" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-r²">Minimum R²</h2>
+<p>The:</p>
+<p><strong>Minimum R²</strong></p>
+<p>control defines the minimum accepted curve-fit quality.</p>
+<p>The default value is:</p>
+<pre class="text"><code>0.8</code></pre>
+<p>Increasing the threshold applies a more stringent curve-quality criterion.</p>
+<p>Proteins with fitted curves below the selected R² threshold do not pass the corresponding replicate filter.</p>
+</section>
+<section id="maximum-plateau" class="level2">
+<h2 class="anchored" data-anchor-id="maximum-plateau">Maximum Plateau</h2>
+<p>The:</p>
+<p><strong>Maximum Plateau</strong></p>
+<p>control specifies the highest accepted fitted plateau value.</p>
+<p>The default value is:</p>
+<pre class="text"><code>0.3</code></pre>
+<p>Proteins whose fitted curves exceed this plateau threshold do not pass the corresponding replicate quality filter.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Curve-quality filtering
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>R² and plateau thresholds should be chosen to retain reliable thermal profiles while avoiding overly stringent filtering that removes large portions of the dataset.</p>
+<p>Use the result summary and individual protein curves to assess the effect of the selected thresholds.</p>
+</div>
+</div>
+</section>
+<section id="running-tpp-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="running-tpp-analysis">Running TPP analysis</h2>
+<p>After selecting the two conditions and setting the quality thresholds, click:</p>
+<p><strong>Run TPP analysis</strong></p>
+<p>TPP Analyst then:</p>
+<ol type="1">
+<li>prepares the selected condition datasets;</li>
+<li>identifies the replicate structure and temperature points;</li>
+<li>fits protein melting curves;</li>
+<li>applies the selected R² and plateau quality filters;</li>
+<li>calculates replicate-wise melting-temperature differences;</li>
+<li>performs the statistical analysis;</li>
+<li>generates the TPP result table and summary statistics.</li>
+</ol>
+</section>
+</section>
+<section id="tpp-results-table" class="level1">
+<h1>TPP results table</h1>
+<p>The <strong>TPP output</strong> table summarizes thermal stability changes for the tested proteins.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/TPPtable.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: TPP results table.
+</figcaption>
+</figure>
+</div>
+<p>The table includes summary statistics together with replicate-specific results.</p>
+<p>Important summary columns include:</p>
+<pre class="text"><code>Protein_ID
+Mean_DeltaTm
+SD_DeltaTm
+Min_Adjusted_P
+Replicates_Passing</code></pre>
+<p>The table also retains replicate-specific:</p>
+<ul>
+<li>ΔTm values;</li>
+<li>adjusted p-values;</li>
+<li>pass/fail information from the curve-quality filters.</li>
+</ul>
+<section id="mean-δtm" class="level2">
+<h2 class="anchored" data-anchor-id="mean-δtm">Mean ΔTm</h2>
+<p><strong>Mean_DeltaTm</strong> represents the average melting-temperature difference across the available replicate comparisons for a protein.</p>
+<p>A positive ΔTm indicates that the estimated melting temperature is higher in the treatment condition relative to the vehicle condition.</p>
+<p>A negative ΔTm indicates that the estimated melting temperature is lower in the treatment condition.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Interpreting ΔTm
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>ΔTm describes the direction and magnitude of the estimated thermal stability shift.</p>
+<p>The statistical significance, replicate consistency, and curve quality should also be considered when interpreting an individual protein.</p>
+</div>
+</div>
+</section>
+<section id="sd-of-δtm" class="level2">
+<h2 class="anchored" data-anchor-id="sd-of-δtm">SD of ΔTm</h2>
+<p><strong>SD_DeltaTm</strong> summarizes the variability of the ΔTm estimates across replicate comparisons.</p>
+<p>Lower variability indicates greater agreement between replicate-specific thermal shifts.</p>
+</section>
+<section id="minimum-adjusted-p-value" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-adjusted-p-value">Minimum adjusted p-value</h2>
+<p><strong>Min_Adjusted_P</strong> reports the smallest adjusted p-value observed across the available replicate comparisons for the protein.</p>
+</section>
+<section id="replicates-passing" class="level2">
+<h2 class="anchored" data-anchor-id="replicates-passing">Replicates passing</h2>
+<p><strong>Replicates_Passing</strong> reports how many replicate comparisons satisfy the selected TPP curve-quality criteria.</p>
+<p>This provides a direct indication of the replicate support available for the reported protein result.</p>
+</section>
+</section>
+<section id="filtering-the-tpp-results-table" class="level1">
+<h1>Filtering the TPP results table</h1>
+<p>Two optional filters can be applied to the displayed TPP results.</p>
+<section id="show-only-proteins-passing-all-replicate-comparisons" class="level2">
+<h2 class="anchored" data-anchor-id="show-only-proteins-passing-all-replicate-comparisons">Show only proteins passing all replicate comparisons</h2>
+<p>Enable:</p>
+<p><strong>Show only proteins passing all replicate comparisons</strong></p>
+<p>to restrict the results to proteins that pass the selected curve-quality filters in every replicate comparison.</p>
+<p>This provides a more stringent result set supported by all available replicate comparisons.</p>
+</section>
+<section id="show-only-proteins-with-δtm-calculated" class="level2">
+<h2 class="anchored" data-anchor-id="show-only-proteins-with-δtm-calculated">Show only proteins with ΔTm calculated</h2>
+<p>Enable:</p>
+<p><strong>Show only proteins with ΔTm calculated in at least one replicate</strong></p>
+<p>to restrict the displayed table to proteins for which a finite ΔTm result is available in at least one replicate comparison.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Filtering TPP results
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use these options to move between a broad overview of the analysis and a more stringent set of proteins with stronger replicate and curve-quality support.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="tpp-melting-curve-plot" class="level1">
+<h1>TPP melting curve plot</h1>
+<p>Select a protein from the TPP results table to display its replicate-specific thermal profiles.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/TPPplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: TPP melting curve.
+</figcaption>
+</figure>
+</div>
+<p>The <strong>TPP melting curve</strong> visualization displays:</p>
+<ul>
+<li>observed thermal abundance measurements;</li>
+<li>fitted melting curves;</li>
+<li>experimental conditions;</li>
+<li>replicates.</li>
+</ul>
+<p>Observed measurements are shown as points, while fitted curves are displayed as lines.</p>
+<p>Color distinguishes the experimental conditions and line type or point shape distinguishes individual replicates.</p>
+<p>The X-axis represents:</p>
+<pre class="text"><code>Temperature (°C)</code></pre>
+<p>and the Y-axis represents:</p>
+<pre class="text"><code>Relative abundance</code></pre>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Inspect individual TPP hits
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For proteins of particular interest, inspect the individual melting curves together with the ΔTm values, adjusted p-values, and replicate filter results.</p>
+<p>This helps determine whether a statistically prioritized protein also displays a convincing and reproducible thermal shift.</p>
+</div>
+</div>
+</section>
+<section id="tpp-summary" class="level1">
+<h1>TPP summary</h1>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/TPPsum.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: TPP summary and extra visualization plots.
+</figcaption>
+</figure>
+</div>
+<p>The <strong>TPP summary</strong> provides a global overview of the analysis.</p>
+<p>The summary reports:</p>
+<ul>
+<li><strong>Proteins tested</strong></li>
+<li><strong>Proteins passing all replicate filters</strong></li>
+<li><strong>Proteins with ΔTm calculated</strong></li>
+<li><strong>Proteins passing all filters and with ΔTm calculated</strong></li>
+<li><strong>Significant proteins at adjusted p &lt; 0.05</strong></li>
+<li><strong>Significant proteins at adjusted p &lt; 0.01</strong></li>
+<li><strong>Median ΔTm</strong></li>
+<li><strong>95th percentile of |ΔTm|</strong></li>
+</ul>
+<p>These values provide a rapid overview of the number of usable protein profiles, the statistical results, and the magnitude of thermal stability changes across the experiment.</p>
+<section id="adjusted-p-value-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="adjusted-p-value-distribution">Adjusted p-value distribution</h2>
+<p>The <strong>Adjusted p-value distribution</strong> histogram displays the adjusted p-values generated across replicate comparisons.</p>
+<p>This provides a global view of the statistical significance landscape of the TPP analysis.</p>
+<p>An accumulation of small adjusted p-values indicates a larger number of proteins with statistical evidence for thermal stability differences.</p>
+</section>
+<section id="δtm-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="δtm-distribution">ΔTm distribution</h2>
+<p>The <strong>Delta Tm distribution</strong> histogram summarizes the melting-temperature differences observed across the replicate comparisons.</p>
+<p>The distribution provides an overview of:</p>
+<ul>
+<li>the direction of thermal shifts;</li>
+<li>their overall magnitude;</li>
+<li>the presence of proteins with unusually large positive or negative ΔTm values.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Global distributions
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The adjusted p-value and ΔTm distributions are diagnostic summaries of the complete analysis.</p>
+<p>Protein-level conclusions should be based on the individual statistical results together with replicate support and inspection of the corresponding melting curves.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="nparc" class="level1">
+<h1>NPARC</h1>
+<p>The <strong>NPARC</strong> workflow provides a complementary approach for detecting changes in protein thermal stability.</p>
+<p>Instead of reducing each thermal profile primarily to a melting-temperature estimate, NPARC compares the complete thermal response between conditions.</p>
+<p>For each protein, two models are considered:</p>
+<ul>
+<li>a <strong>null model</strong> representing a shared thermal response;</li>
+<li>an <strong>alternative model</strong> allowing separate thermal responses for the experimental conditions.</li>
+</ul>
+<p>The analysis evaluates whether the condition-specific alternative model provides a sufficiently improved fit compared with the shared null model.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Why use NPARC?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>NPARC can identify condition-dependent changes in the complete thermal response curve, including differences that may not be adequately summarized by a single Tm shift.</p>
+<p>TPP and NPARC can therefore provide complementary evidence for changes in protein thermal stability.</p>
+</div>
+</div>
+</section>
+<section id="selecting-conditions-for-nparc" class="level1">
+<h1>Selecting conditions for NPARC</h1>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/panelNPARC.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: NPARC control panel
+</figcaption>
+</figure>
+</div>
+<p>Select the two datasets to compare using:</p>
+<ul>
+<li><strong>Condition 1</strong></li>
+<li><strong>Condition 2</strong></li>
+</ul>
+<p>At least two conditions must be available before the Model Comparison interface can be used.</p>
+<p>After selecting the desired datasets, click:</p>
+<p><strong>Run model comparison</strong></p>
+<p>TPP Analyst prepares the selected datasets and fits the NPARC models.</p>
+</section>
+<section id="protein-inclusion-in-nparc" class="level1">
+<h1>Protein inclusion in NPARC</h1>
+<p>Before model fitting, TPP Analyst removes missing quantitative observations.</p>
+<p>Proteins are then retained only when they contain complete measurement coverage within the corresponding dataset according to the available experimental structure.</p>
+<p>This ensures that model fitting is performed on proteins with sufficiently complete thermal profiles.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Missing measurements
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The set of proteins available for NPARC depends on the QC, filtering, and normalization decisions made earlier in the workflow.</p>
+<p>If unexpectedly few proteins are available for model comparison, review the upstream data-processing steps.</p>
+</div>
+</div>
+</section>
+<section id="nparc-model-fitting" class="level1">
+<h1>NPARC model fitting</h1>
+<p>For each retained protein, TPP Analyst fits:</p>
+<pre class="text"><code>Null model</code></pre>
+<p>representing the shared thermal profile, and:</p>
+<pre class="text"><code>Alternative model</code></pre>
+<p>allowing condition-specific thermal profiles.</p>
+<p>The goodness of fit of these models is then compared using an F statistic.</p>
+<p>During model fitting, the application displays progress information in the console area of the Model control panel.</p>
+</section>
+<section id="f-statistic-method" class="level1">
+<h1>F statistic method</h1>
+<p>TPP Analyst provides two approaches for estimating the NPARC F-test:</p>
+<ul>
+<li><strong>empirical</strong></li>
+<li><strong>theoretical</strong></li>
+</ul>
+<p>Select the desired approach using:</p>
+<p><strong>F statistic method</strong></p>
+<p>The default selection is:</p>
+<pre class="text"><code>empirical</code></pre>
+<p>Both empirical and theoretical test results are calculated when the model comparison is run, allowing the displayed results to be switched between the two methods without repeating the model-fitting step.</p>
+<section id="empirical-method" class="level2">
+<h2 class="anchored" data-anchor-id="empirical-method">Empirical method</h2>
+<p>The <strong>empirical</strong> option uses the empirical NPARC approach for determining the F-test statistics and corresponding significance estimates.</p>
+</section>
+<section id="theoretical-method" class="level2">
+<h2 class="anchored" data-anchor-id="theoretical-method">Theoretical method</h2>
+<p>The <strong>theoretical</strong> option uses the theoretical F-distribution-based approach.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Comparing F-statistic methods
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because both methods are calculated during the same model-comparison run, the selector can be used to inspect how the resulting statistical evidence changes between the empirical and theoretical approaches.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="adjusted-p-value-filter" class="level1">
+<h1>Adjusted p-value filter</h1>
+<p>The:</p>
+<p><strong>Filter table pAdj values &lt;= to</strong></p>
+<p>control specifies the maximum adjusted p-value displayed in the NPARC result table.</p>
+<p>The default value is:</p>
+<pre class="text"><code>0.01</code></pre>
+<p>Increasing the threshold displays a broader set of proteins.</p>
+<p>Decreasing the threshold restricts the table to proteins with stronger statistical evidence.</p>
+<p>If no proteins satisfy the selected threshold, TPP Analyst reports that no proteins pass the current filter.</p>
+</section>
+<section id="rss-difference" class="level1">
+<h1>RSS difference</h1>
+<p>NPARC additionally reports the difference in residual sum of squares between the null and alternative models:</p>
+<pre class="text"><code>RSS difference = RSSnull - RSSalt</code></pre>
+<p>A positive RSS difference indicates that the alternative condition-specific model reduces the residual error relative to the shared null model.</p>
+<p>Only proteins with positive RSS differences are retained in the displayed results.</p>
+<section id="minimum-rss-difference" class="level2">
+<h2 class="anchored" data-anchor-id="minimum-rss-difference">Minimum RSS difference</h2>
+<p>The:</p>
+<p><strong>Minimum RSS difference</strong></p>
+<p>control allows the result table to be further restricted according to the magnitude of model-fit improvement.</p>
+<p>The default value is:</p>
+<pre class="text"><code>0</code></pre>
+<p>Increasing this threshold restricts the table to proteins showing progressively larger improvements when condition-specific models are fitted.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Combining statistical significance and model improvement
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The adjusted p-value and RSS-difference filters provide complementary criteria.</p>
+<p>The adjusted p-value reflects statistical evidence, while the RSS difference reflects the magnitude by which the alternative model improves the fit relative to the null model.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="nparc-results-table" class="level1">
+<h1>NPARC results table</h1>
+<p>The <strong>Model comparison results</strong> table displays proteins passing the current filtering thresholds.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/NPARCtable.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: NPARC result table
+</figcaption>
+</figure>
+</div>
+<p>The table contains:</p>
+<pre class="text"><code>Protein identifier
+rss_null
+rss_alt
+rss_diff
+fStat
+pVal
+pAdj</code></pre>
+<p>Results are ordered from highest to lowest F statistic.</p>
+<section id="rss_null" class="level2">
+<h2 class="anchored" data-anchor-id="rss_null">rss_null</h2>
+<p><strong>rss_null</strong> is the residual sum of squares obtained from the shared null model.</p>
+</section>
+<section id="rss_alt" class="level2">
+<h2 class="anchored" data-anchor-id="rss_alt">rss_alt</h2>
+<p><strong>rss_alt</strong> represents the residual sum of squares obtained from the condition-specific alternative model or models.</p>
+</section>
+<section id="rss_diff" class="level2">
+<h2 class="anchored" data-anchor-id="rss_diff">rss_diff</h2>
+<p><strong>rss_diff</strong> is calculated as:</p>
+<pre class="text"><code>rss_null - rss_alt</code></pre>
+<p>Larger positive values indicate a greater reduction in residual error when separate condition-specific curves are used.</p>
+</section>
+<section id="f-statistic" class="level2">
+<h2 class="anchored" data-anchor-id="f-statistic">F statistic</h2>
+<p><strong>fStat</strong> describes the improvement in model fit relative to the additional flexibility introduced by the alternative model.</p>
+<p>Larger F statistics indicate stronger evidence that the condition-specific model provides a better description of the protein thermal profiles.</p>
+</section>
+<section id="p-value" class="level2">
+<h2 class="anchored" data-anchor-id="p-value">P-value</h2>
+<p><strong>pVal</strong> reports the statistical significance associated with the F-test.</p>
+</section>
+<section id="adjusted-p-value" class="level2">
+<h2 class="anchored" data-anchor-id="adjusted-p-value">Adjusted p-value</h2>
+<p><strong>pAdj</strong> reports the p-value after correction for multiple testing.</p>
+<p>This value is used by the adjusted p-value filter in the interface.</p>
+</section>
+</section>
+<section id="selecting-a-protein" class="level1">
+<h1>Selecting a protein</h1>
+<p>Select one protein from the NPARC results table to display its model comparison.</p>
+<p>Only one protein is selected at a time.</p>
+<p>The selected protein is then shown in the:</p>
+<p><strong>Model comparison plot</strong></p>
+</section>
+<section id="model-comparison-plot" class="level1">
+<h1>Model comparison plot</h1>
+<p>The NPARC model comparison plot displays the observed thermal profiles together with the fitted null and alternative models.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/NPARCplot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: NPARC comparison plot
+</figcaption>
+</figure>
+</div>
+<p>Observed measurements are displayed as points.</p>
+<p>Experimental conditions are distinguished by color and replicates are distinguished using point shapes.</p>
+<p>Condition-specific alternative curves are displayed using the corresponding condition colors.</p>
+<p>The shared null model is displayed as a dashed black curve.</p>
+<p>The plot title identifies:</p>
+<ul>
+<li>the selected protein;</li>
+<li>the currently selected F-test method.</li>
+</ul>
+<p>The X-axis represents temperature and the Y-axis represents relative protein abundance.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Interpreting the model comparison plot
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When the condition-specific alternative curves provide a substantially better representation of the observed measurements than the shared null curve, the protein may show evidence of condition-dependent thermal behavior.</p>
+<p>Interpret the plot together with the F statistic, adjusted p-value, and RSS difference.</p>
+</div>
+</div>
+</section>
+<section id="nparc-summary" class="level1">
+<h1>NPARC summary</h1>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/modelcomparison/NPARCsum.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: NPARC summary and diagnostic plots
+</figcaption>
+</figure>
+</div>
+<p>The <strong>NPARC summary</strong> provides an overview of the complete model comparison.</p>
+<p>The summary reports:</p>
+<ul>
+<li>selected F-test method;</li>
+<li>number of proteins tested;</li>
+<li>median df1;</li>
+<li>median df2;</li>
+<li>maximum finite F statistic;</li>
+<li>99th percentile of the F statistic;</li>
+<li>number of proteins with adjusted p &lt; 0.05;</li>
+<li>number of proteins with adjusted p &lt; 0.01;</li>
+<li>median RSS difference;</li>
+<li>95th percentile RSS difference;</li>
+<li>number of negative RSS differences.</li>
+</ul>
+<p>These values provide a global overview of the statistical and model-fit characteristics of the analysis.</p>
+</section>
+<section id="nparc-diagnostic-plots" class="level1">
+<h1>NPARC diagnostic plots</h1>
+<p>Four diagnostic visualizations are provided:</p>
+<ol type="1">
+<li><strong>P-value distribution</strong></li>
+<li><strong>F statistic distribution</strong></li>
+<li><strong>Observed versus expected F distribution</strong></li>
+<li><strong>RSS difference distribution</strong></li>
+</ol>
+<p>These plots provide complementary information about the behavior of the model-comparison statistics across all tested proteins.</p>
+<section id="p-value-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="p-value-distribution">P-value distribution</h2>
+<p>The <strong>P-value distribution</strong> histogram displays the unadjusted p-values produced by the selected NPARC F-test method.</p>
+<p>This provides an overview of the statistical significance landscape across the tested proteins.</p>
+</section>
+<section id="f-statistic-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="f-statistic-distribution">F statistic distribution</h2>
+<p>The <strong>F statistic distribution</strong> displays the observed F statistics.</p>
+<p>To prevent extreme F statistics from dominating the visualization, the displayed X-axis is restricted to the 99th percentile of the finite F-statistic distribution.</p>
+<p>This makes the main body of the distribution easier to inspect.</p>
+</section>
+<section id="observed-versus-expected-f-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="observed-versus-expected-f-distribution">Observed versus expected F distribution</h2>
+<p>The <strong>F distribution fit</strong> compares the observed F-statistic density with the corresponding theoretical F distribution.</p>
+<p>The observed distribution is displayed as a density curve, while the theoretical expectation is shown as a red line.</p>
+<p>The theoretical curve is generated using representative degrees of freedom from the current results.</p>
+<p>The plot title indicates whether the empirical or theoretical NPARC method is currently selected.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>F-distribution diagnostic
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use this plot to inspect how the observed test statistics compare with the expected theoretical distribution.</p>
+<p>This diagnostic can help identify deviations in the overall F-statistic distribution that may be relevant when interpreting the model-comparison results.</p>
+</div>
+</div>
+</section>
+<section id="rss-difference-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="rss-difference-distribution">RSS difference distribution</h2>
+<p>The <strong>RSS difference distribution</strong> displays:</p>
+<pre class="text"><code>RSSnull - RSSalt</code></pre>
+<p>across the tested proteins.</p>
+<p>Positive values indicate that the condition-specific alternative model decreases residual error relative to the shared null model.</p>
+<p>Proteins with larger positive RSS differences show greater improvements in fit under the alternative model.</p>
+</section>
+</section>
+<section id="tpp-and-nparc-provide-complementary-analyses" class="level1">
+<h1>TPP and NPARC provide complementary analyses</h1>
+<p>The two comparison workflows evaluate thermal stability from different perspectives.</p>
+<p>A simplified distinction is:</p>
+<pre class="text"><code>TPP
+↓
+Fit melting curves for replicate profiles
+↓
+Estimate melting temperatures
+↓
+Compare Tm between conditions
+↓
+Evaluate ΔTm and statistical significance</code></pre>
+<p>whereas:</p>
+<pre class="text"><code>NPARC
+↓
+Use complete thermal profiles
+↓
+Fit a shared null model
+↓
+Fit condition-specific alternative models
+↓
+Compare model fit
+↓
+Evaluate F statistics, p-values, and RSS differences</code></pre>
+<p>TPP therefore emphasizes <strong>melting-temperature shifts</strong>, while NPARC evaluates <strong>differences across the complete thermal response curve</strong>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Using both approaches
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A protein can display a clear ΔTm shift, a broader difference in curve shape, or both.</p>
+<p>Using TPP and NPARC together can therefore provide complementary evidence when investigating condition-dependent changes in protein thermal stability.</p>
+</div>
+</div>
+</section>
+<section id="recommended-tpp-workflow" class="level1">
+<h1>Recommended TPP workflow</h1>
+<p>A typical TPP comparison is:</p>
+<ol type="1">
+<li><strong>Complete Quality Control for both conditions.</strong></li>
+<li><strong>Ensure both datasets are normalized to the lowest temperature or marked as previously normalized.</strong></li>
+<li><strong>Select the vehicle and treatment conditions.</strong></li>
+<li><strong>Choose the minimum R² threshold.</strong></li>
+<li><strong>Choose the maximum plateau threshold.</strong></li>
+<li><strong>Click Run TPP analysis.</strong></li>
+<li><strong>Review the TPP summary.</strong></li>
+<li><strong>Inspect the ΔTm and adjusted p-value distributions.</strong></li>
+<li><strong>Use the result filters to restrict the table when appropriate.</strong></li>
+<li><strong>Review Mean ΔTm, adjusted p-values, and replicate support.</strong></li>
+<li><strong>Select proteins of interest from the result table.</strong></li>
+<li><strong>Inspect their individual replicate melting curves.</strong></li>
+<li><strong>Download the result table and relevant plots.</strong></li>
+</ol>
+</section>
+<section id="recommended-nparc-workflow" class="level1">
+<h1>Recommended NPARC workflow</h1>
+<p>A typical NPARC comparison is:</p>
+<ol type="1">
+<li><strong>Complete Quality Control for both conditions.</strong></li>
+<li><strong>Ensure both datasets are normalized to the lowest temperature or marked as previously normalized.</strong></li>
+<li><strong>Select Condition 1 and Condition 2.</strong></li>
+<li><strong>Click Run model comparison.</strong></li>
+<li><strong>Review the model-fitting progress information.</strong></li>
+<li><strong>Select the empirical or theoretical F-statistic method.</strong></li>
+<li><strong>Inspect the NPARC summary.</strong></li>
+<li><strong>Review the p-value, F-statistic, observed-versus-expected F, and RSS-difference distributions.</strong></li>
+<li><strong>Set an adjusted p-value threshold.</strong></li>
+<li><strong>Set a minimum RSS-difference threshold when appropriate.</strong></li>
+<li><strong>Review the filtered result table.</strong></li>
+<li><strong>Select individual proteins of interest.</strong></li>
+<li><strong>Compare their observed profiles with the null and condition-specific alternative curves.</strong></li>
+<li><strong>Download the result table and relevant protein plots.</strong></li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Statistical results should be interpreted together with the fitted profiles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A low adjusted p-value alone does not describe the biological nature of a thermal stability change.</p>
+<p>For prioritized proteins, inspect the corresponding fitted curves, replicate consistency, ΔTm or RSS differences, and upstream QC results before drawing biological conclusions.</p>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
