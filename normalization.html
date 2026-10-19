@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.19">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Normalization – TPP Analyst</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-df8525f35ba63c6f0b1065eede4603db.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">TPP Analyst</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./getting-started.html"> 
+<span class="menu-text">Getting Started</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./input-data.html"> 
+<span class="menu-text">Input Data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./quality-control.html"> 
+<span class="menu-text">Quality Control</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./normalization.html"> 
+<span class="menu-text">Normalization</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./clustering.html"> 
+<span class="menu-text">Clustering</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./modelfitting.html"> 
+<span class="menu-text">Model Fitting</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./proteinplots.html"> 
+<span class="menu-text">Protein Plots</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./GO.html"> 
+<span class="menu-text">GO Analysis</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./modelcomparison.html"> 
+<span class="menu-text">Comparison Models</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./normalization.html">Normalization</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Home</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./getting-started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Getting Started</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./input-data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Input Data</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./quality-control.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Quality Control</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./normalization.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Normalization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./clustering.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Clustering</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelfitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Model Fitting</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./proteinplots.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Protein Plots</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./GO.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GO Analysis</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./modelcomparison.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comparison Models</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#normalization-settings" id="toc-normalization-settings" class="nav-link active" data-scroll-target="#normalization-settings">Normalization settings</a></li>
+  <li><a href="#log2-transformation" id="toc-log2-transformation" class="nav-link" data-scroll-target="#log2-transformation">log2 transformation</a></li>
+  <li><a href="#within-replicate-median-normalization" id="toc-within-replicate-median-normalization" class="nav-link" data-scroll-target="#within-replicate-median-normalization">Within replicate median normalization</a></li>
+  <li><a href="#normalize-to-lowest-temperature" id="toc-normalize-to-lowest-temperature" class="nav-link" data-scroll-target="#normalize-to-lowest-temperature">Normalize to lowest temperature</a></li>
+  <li><a href="#reference-protein-normalization" id="toc-reference-protein-normalization" class="nav-link" data-scroll-target="#reference-protein-normalization">Reference protein normalization</a>
+  <ul class="collapse">
+  <li><a href="#manual-reference-protein-selection" id="toc-manual-reference-protein-selection" class="nav-link" data-scroll-target="#manual-reference-protein-selection">Manual reference protein selection</a></li>
+  <li><a href="#automatic-reference-protein-estimation" id="toc-automatic-reference-protein-estimation" class="nav-link" data-scroll-target="#automatic-reference-protein-estimation">Automatic reference protein estimation</a></li>
+  <li><a href="#reference-protein-information" id="toc-reference-protein-information" class="nav-link" data-scroll-target="#reference-protein-information">Reference protein information</a></li>
+  </ul></li>
+  <li><a href="#combining-normalization-methods" id="toc-combining-normalization-methods" class="nav-link" data-scroll-target="#combining-normalization-methods">Combining normalization methods</a></li>
+  <li><a href="#intensity-distribution-across-samples" id="toc-intensity-distribution-across-samples" class="nav-link" data-scroll-target="#intensity-distribution-across-samples">Intensity distribution across samples</a>
+  <ul class="collapse">
+  <li><a href="#including-zero-values" id="toc-including-zero-values" class="nav-link" data-scroll-target="#including-zero-values">Including zero values</a></li>
+  </ul></li>
+  <li><a href="#global-intensity-distribution" id="toc-global-intensity-distribution" class="nav-link" data-scroll-target="#global-intensity-distribution">Global intensity distribution</a>
+  <ul class="collapse">
+  <li><a href="#distance-from-the-global-profile" id="toc-distance-from-the-global-profile" class="nav-link" data-scroll-target="#distance-from-the-global-profile">Distance from the global profile</a></li>
+  <li><a href="#including-zero-values-1" id="toc-including-zero-values-1" class="nav-link" data-scroll-target="#including-zero-values-1">Including zero values</a></li>
+  </ul></li>
+  <li><a href="#sample-clustering-and-outlier-detection" id="toc-sample-clustering-and-outlier-detection" class="nav-link" data-scroll-target="#sample-clustering-and-outlier-detection">Sample clustering and outlier detection</a></li>
+  <li><a href="#pca-by-sample" id="toc-pca-by-sample" class="nav-link" data-scroll-target="#pca-by-sample">PCA by sample</a></li>
+  <li><a href="#pca-by-condition" id="toc-pca-by-condition" class="nav-link" data-scroll-target="#pca-by-condition">PCA by condition</a></li>
+  <li><a href="#variance-decomposition" id="toc-variance-decomposition" class="nav-link" data-scroll-target="#variance-decomposition">Variance decomposition</a></li>
+  <li><a href="#selecting-samples-from-the-pca" id="toc-selecting-samples-from-the-pca" class="nav-link" data-scroll-target="#selecting-samples-from-the-pca">Selecting samples from the PCA</a></li>
+  <li><a href="#restoring-removed-samples" id="toc-restoring-removed-samples" class="nav-link" data-scroll-target="#restoring-removed-samples">Restoring removed samples</a></li>
+  <li><a href="#reapplying-normalization-after-removing-or-restoring-samples" id="toc-reapplying-normalization-after-removing-or-restoring-samples" class="nav-link" data-scroll-target="#reapplying-normalization-after-removing-or-restoring-samples">Reapplying normalization after removing or restoring samples</a></li>
+  <li><a href="#coefficient-of-variation" id="toc-coefficient-of-variation" class="nav-link" data-scroll-target="#coefficient-of-variation">Coefficient of variation</a>
+  <ul class="collapse">
+  <li><a href="#interpreting-cv-values" id="toc-interpreting-cv-values" class="nav-link" data-scroll-target="#interpreting-cv-values">Interpreting CV values</a></li>
+  </ul></li>
+  <li><a href="#recommended-normalization-workflow" id="toc-recommended-normalization-workflow" class="nav-link" data-scroll-target="#recommended-normalization-workflow">Recommended normalization workflow</a></li>
+  <li><a href="#next-step" id="toc-next-step" class="nav-link" data-scroll-target="#next-step">Next step</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Normalization</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>The Normalization module prepares the quality-controlled protein abundance data for downstream analysis.</p>
+<p>TPP Analyst provides several normalization strategies that can be applied individually or in combination. The module also provides diagnostic visualizations for assessing sample distributions, global protein trends, sample similarity, potential outliers, and replicate variability.</p>
+<p>The main steps of the normalization workflow are:</p>
+<ol type="1">
+<li><strong>Select one or more normalization methods</strong></li>
+<li><strong>Apply the selected normalization</strong></li>
+<li><strong>Inspect sample intensity distributions</strong></li>
+<li><strong>Inspect global protein abundance trends</strong></li>
+<li><strong>Assess sample similarity and potential outliers using PCA</strong></li>
+<li><strong>Remove problematic samples if necessary</strong></li>
+<li><strong>Reapply normalization after sample removal</strong></li>
+<li><strong>Evaluate replicate variability using the coefficient of variation</strong></li>
+</ol>
+<section id="normalization-settings" class="level2">
+<h2 class="anchored" data-anchor-id="normalization-settings">Normalization settings</h2>
+<p>TPP Analyst provides four normalization options:</p>
+<ul>
+<li><strong>log2 transformation</strong></li>
+<li><strong>Within replicate median normalization</strong></li>
+<li><strong>Reference protein normalization</strong></li>
+<li><strong>Normalize to lowest temperature</strong></li>
+</ul>
+<p>One or more methods can be selected before clicking <strong>Apply selected normalization</strong>.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/normalization/Normalization-Settings.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Normalization settings.
+</figcaption>
+</figure>
+</div>
+<p>If no normalization method is selected, the quality-controlled dataset is retained without additional normalization.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Applying normalization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Selecting a normalization method does not immediately modify the dataset.</p>
+<p>After selecting the desired methods, click <strong>Apply selected normalization</strong> to apply the transformations and update the dataset used by the downstream analysis modules.</p>
+</div>
+</div>
+</section>
+<section id="log2-transformation" class="level2">
+<h2 class="anchored" data-anchor-id="log2-transformation">log2 transformation</h2>
+<p>The <strong>log2 transformation</strong> converts quantitative intensity measurements to the log2 scale.</p>
+<p>This transformation compresses the range of protein intensities and can reduce the influence of very large abundance measurements.</p>
+<p>Non-finite values generated during transformation are replaced with zero.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Zero values
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Because <code>log2(0)</code> is not finite, zero-valued measurements remain represented as zero after the transformation rather than as negative infinity.</p>
+</div>
+</div>
+</section>
+<section id="within-replicate-median-normalization" class="level2">
+<h2 class="anchored" data-anchor-id="within-replicate-median-normalization">Within replicate median normalization</h2>
+<p>The <strong>Within replicate median normalization</strong> option adjusts measurements according to the median abundance observed for each temperature and replicate.</p>
+<p>For each temperature, TPP Analyst calculates the overall median abundance across finite, non-zero measurements. The median for each replicate at the same temperature is then compared with this overall value.</p>
+<p>The difference between the replicate-specific median and the overall median is used to adjust the corresponding measurements.</p>
+<p>Zero values remain zero during this normalization.</p>
+<p>This procedure can reduce systematic abundance differences between replicates while maintaining the temperature-dependent structure of the dataset.</p>
+</section>
+<section id="normalize-to-lowest-temperature" class="level2">
+<h2 class="anchored" data-anchor-id="normalize-to-lowest-temperature">Normalize to lowest temperature</h2>
+<p>The <strong>Normalize to lowest temperature</strong> option expresses the thermal profile of each protein relative to its abundance at the lowest measured temperature.</p>
+<p>Normalization is performed independently for each replicate.</p>
+<p>For each protein and replicate:</p>
+<ol type="1">
+<li>The lowest experimental temperature is identified.</li>
+<li>The abundance measured at that temperature is used as the reference value.</li>
+<li>All temperature points within the same replicate are divided by this reference value.</li>
+</ol>
+<p>Consequently, the lowest-temperature measurement becomes the reference point for each thermal profile.</p>
+<p>For example, if a replicate contains measurements at:</p>
+<pre class="text"><code>40°C
+43°C
+46°C
+49°C
+52°C</code></pre>
+<p>the abundance at <code>40°C</code> is used as the denominator for the measurements belonging to that replicate.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Invalid reference measurements
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the lowest-temperature reference measurement for a protein is zero or missing, the corresponding normalized measurements for that replicate cannot be calculated and are returned as missing values.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Thermal profile normalization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Normalization to the lowest temperature is particularly useful when the downstream analysis focuses on relative changes in protein abundance across the thermal gradient rather than differences in absolute protein abundance.</p>
+</div>
+</div>
+</section>
+<section id="reference-protein-normalization" class="level2">
+<h2 class="anchored" data-anchor-id="reference-protein-normalization">Reference protein normalization</h2>
+<p>The <strong>Reference protein normalization</strong> option expresses quantitative measurements relative to a selected reference protein.</p>
+<p>Two approaches are available:</p>
+<ul>
+<li><strong>Manually select</strong></li>
+<li><strong>Program estimation</strong></li>
+</ul>
+<section id="manual-reference-protein-selection" class="level3">
+<h3 class="anchored" data-anchor-id="manual-reference-protein-selection">Manual reference protein selection</h3>
+<p>Select <strong>Manually select</strong> and enter the protein accession to use as the reference.</p>
+<p>TPP Analyst searches for the specified accession in the current dataset.</p>
+<p>For every quantitative measurement, protein abundances are divided by the corresponding abundance of the selected reference protein.</p>
+<p>If the specified accession cannot be found, TPP Analyst reports that the reference protein is not present in the dataset.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Reference protein selection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The manually entered protein identifier must correspond to an accession present in the current dataset.</p>
+</div>
+</div>
+</section>
+<section id="automatic-reference-protein-estimation" class="level3">
+<h3 class="anchored" data-anchor-id="automatic-reference-protein-estimation">Automatic reference protein estimation</h3>
+<p>Select <strong>Program estimation</strong> to allow TPP Analyst to identify a reference protein automatically.</p>
+<p>The application calculates the standard deviation of each protein profile across the quantitative measurements and selects the protein with the lowest standard deviation as the reference.</p>
+<p>This selects the protein displaying the most stable quantitative profile according to this criterion.</p>
+</section>
+<section id="reference-protein-information" class="level3">
+<h3 class="anchored" data-anchor-id="reference-protein-information">Reference protein information</h3>
+<p>After reference protein normalization has been applied, TPP Analyst displays the accession of the reference protein used.</p>
+<p>When the corresponding organism annotation is available, the application can additionally display:</p>
+<ul>
+<li>the protein name;</li>
+<li>the gene name.</li>
+</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Reference protein removal
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The reference protein itself is removed from the normalized dataset after reference protein normalization has been applied.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="combining-normalization-methods" class="level2">
+<h2 class="anchored" data-anchor-id="combining-normalization-methods">Combining normalization methods</h2>
+<p>Multiple normalization methods can be selected simultaneously.</p>
+<p>When multiple methods are selected, TPP Analyst applies the selected transformations sequentially.</p>
+<p>According to the current workflow, selected methods are evaluated in the following order:</p>
+<ol type="1">
+<li><strong>log2 transformation</strong></li>
+<li><strong>Within replicate median normalization</strong></li>
+<li><strong>Normalize to lowest temperature</strong></li>
+<li><strong>Reference protein normalization</strong></li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Order of transformations
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When combining normalization methods, the transformations are not independent. Each selected method operates on the dataset produced by the preceding normalization step.</p>
+<p>The order of the selected transformations should therefore be considered when configuring the analysis.</p>
+</div>
+</div>
+</section>
+<section id="intensity-distribution-across-samples" class="level2">
+<h2 class="anchored" data-anchor-id="intensity-distribution-across-samples">Intensity distribution across samples</h2>
+<p>The <strong>Intensity distribution across samples</strong> plot provides a sample-level overview of the quantitative values after the current normalization settings have been applied.</p>
+<p>Each boxplot represents one temperature-replicate combination.</p>
+<p>Samples are shown along the X-axis, while the Y-axis represents the corresponding protein intensity or transformed intensity.</p>
+<p>The sample boxes are colored according to temperature.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/normalization/Intensity-Distribution.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Intensity distribution across samples.
+</figcaption>
+</figure>
+</div>
+<p>This plot can be used to inspect whether systematic differences remain between temperatures or replicates after normalization.</p>
+<section id="including-zero-values" class="level3">
+<h3 class="anchored" data-anchor-id="including-zero-values">Including zero values</h3>
+<p>By default, zero values are excluded from the intensity distribution plot.</p>
+<p>Enable:</p>
+<p><strong>Include zero values in the plot</strong></p>
+<p>to include zero-valued measurements in the displayed distributions.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Evaluating normalization
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Compare the distributions across samples after normalization. Large systematic differences between comparable samples may indicate that additional inspection of the data or normalization strategy is required.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="global-intensity-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="global-intensity-distribution">Global intensity distribution</h2>
+<p>The <strong>Global intensity distribution</strong> plot compares individual protein thermal profiles with the overall average profile of the dataset.</p>
+<p>Each colored line represents the mean thermal profile of an individual protein across replicates.</p>
+<p>The thick black line represents the average abundance profile across all proteins.</p>
+<section id="distance-from-the-global-profile" class="level3">
+<h3 class="anchored" data-anchor-id="distance-from-the-global-profile">Distance from the global profile</h3>
+<p>For each protein, TPP Analyst calculates its distance from the global average thermal profile across the measured temperatures.</p>
+<p>The distance is based on the squared differences between the individual protein profile and the global average profile.</p>
+<p>Protein lines are visually weighted according to their similarity to the global profile.</p>
+<p>Proteins that closely follow the overall thermal trend are visually emphasized, while proteins showing profiles that differ more strongly from the global trend are displayed less prominently.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/normalization/Global-Intensity-Distribution.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Global intensity distribution.
+</figcaption>
+</figure>
+</div>
+<p>This visualization can help distinguish the dominant thermal response of the dataset from proteins displaying atypical abundance profiles.</p>
+</section>
+<section id="including-zero-values-1" class="level3">
+<h3 class="anchored" data-anchor-id="including-zero-values-1">Including zero values</h3>
+<p>By default, zero measurements are excluded when calculating the protein-level mean profiles used in this visualization.</p>
+<p>Enable:</p>
+<p><strong>Include zero values in mean calculation</strong></p>
+<p>to include zero measurements when calculating the displayed protein trends.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Zero-value handling
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The zero-value controls for the intensity distribution boxplot and the global intensity distribution are independent.</p>
+<p>Changing these display options does not itself alter the underlying normalized dataset.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="sample-clustering-and-outlier-detection" class="level2">
+<h2 class="anchored" data-anchor-id="sample-clustering-and-outlier-detection">Sample clustering and outlier detection</h2>
+<p>TPP Analyst uses Principal Component Analysis (PCA) to examine similarities between samples and identify measurements that may behave differently from the rest of the experiment.</p>
+<p>Two PCA modes are available:</p>
+<ul>
+<li><strong>By sample</strong></li>
+<li><strong>By condition</strong></li>
+</ul>
+<p>The percentage of variance explained by PC1 and PC2 is displayed directly in the corresponding axis labels.</p>
+</section>
+<section id="pca-by-sample" class="level2">
+<h2 class="anchored" data-anchor-id="pca-by-sample">PCA by sample</h2>
+<p>The <strong>By sample</strong> mode performs PCA on the current dataset.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/normalization/PCA-By-Sample.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: PCA by sample.
+</figcaption>
+</figure>
+</div>
+<p>Each point represents a temperature-replicate sample.</p>
+<p>Points are:</p>
+<ul>
+<li>colored according to temperature;</li>
+<li>associated with replicate information.</li>
+</ul>
+<p>Hovering over a point displays the corresponding replicate and temperature.</p>
+<p>The PCA can be used to assess whether samples with similar experimental characteristics occupy similar regions of the reduced-dimensional space and to identify potential sample-level outliers.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>PCA interpretation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Samples positioned far from otherwise comparable samples may warrant further inspection. Potential outliers should be evaluated in the context of the experimental design and the other QC diagnostics before being removed.</p>
+</div>
+</div>
+</section>
+<section id="pca-by-condition" class="level2">
+<h2 class="anchored" data-anchor-id="pca-by-condition">PCA by condition</h2>
+<p>The <strong>By condition</strong> mode compares samples across multiple experimental datasets.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/normalization/PCA-By-Condition.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: PCA by condition.
+</figcaption>
+</figure>
+</div>
+<p>Each point represents a sample associated with an experimental condition, temperature, and replicate.</p>
+<p>Points are colored according to condition.</p>
+<p>This view can be used to investigate the relationships between experimental conditions and determine whether condition-associated structure contributes to the major sources of variation in the dataset.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Multiple datasets required
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The <strong>By condition</strong> PCA requires more than one dataset to perform the comparison.</p>
+</div>
+</div>
+</section>
+<section id="variance-decomposition" class="level2">
+<h2 class="anchored" data-anchor-id="variance-decomposition">Variance decomposition</h2>
+<p>Enable:</p>
+<p><strong>Show variance decomposition</strong></p>
+<p>to replace the standard PCA visualization with a summary of the sources of variance associated with the principal components.</p>
+<p>For PCA by sample, the visualization separates the variance into:</p>
+<ul>
+<li><strong>Batch variance</strong>, based on replicate;</li>
+<li><strong>Residual variance</strong>.</li>
+</ul>
+<p>For PCA by condition, the visualization separates variance into:</p>
+<ul>
+<li><strong>Batch variance</strong>, based on replicate;</li>
+<li><strong>Condition variance</strong>;</li>
+<li><strong>Residual variance</strong>.</li>
+</ul>
+<p>The variance decomposition is shown for up to the first 10 principal components.</p>
+<p>This visualization can help determine whether major components of variation are associated with replicate structure, experimental condition, or other unexplained variation.</p>
+</section>
+<section id="selecting-samples-from-the-pca" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-samples-from-the-pca">Selecting samples from the PCA</h2>
+<p>The PCA visualization is interactive.</p>
+<p>Click a sample directly in the PCA plot to add it to the <strong>Samples to remove</strong> table.</p>
+<p>Selected samples remain in this table until they are removed or the selection is changed.</p>
+<p>Click:</p>
+<p><strong>Remove selected</strong></p>
+<p>to exclude selected samples from the working dataset.</p>
+<p>Removed samples are displayed in the <strong>Removed samples</strong> table.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Warning</span>Removing samples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Removing a sample changes the quantitative dataset used for normalization and downstream analyses.</p>
+<p>Sample removal should therefore be based on the experimental design and supporting evidence rather than PCA position alone.</p>
+</div>
+</div>
+</section>
+<section id="restoring-removed-samples" class="level2">
+<h2 class="anchored" data-anchor-id="restoring-removed-samples">Restoring removed samples</h2>
+<p>Samples that have been removed are retained in the <strong>Removed samples</strong> table.</p>
+<p>Select the desired sample and click:</p>
+<p><strong>Restore selected</strong></p>
+<p>to return the sample to the analysis.</p>
+<p>This allows sample removal decisions to be reversed without restarting the complete analysis workflow.</p>
+</section>
+<section id="reapplying-normalization-after-removing-or-restoring-samples" class="level2">
+<h2 class="anchored" data-anchor-id="reapplying-normalization-after-removing-or-restoring-samples">Reapplying normalization after removing or restoring samples</h2>
+<p>Whenever samples are removed or restored, the previously calculated normalization is no longer considered current.</p>
+<p>TPP Analyst displays a warning:</p>
+<pre class="text"><code>Samples were removed or restored in the PCA section.
+Please click 'Apply selected normalization' again to recompute all normalization steps.</code></pre>
+<p>After changing the sample set, click <strong>Apply selected normalization</strong> again.</p>
+<p>This recalculates the normalization using the updated dataset.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Reapply normalization after changing samples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Always click <strong>Apply selected normalization</strong> after removing or restoring samples.</p>
+<p>This ensures that the normalization and downstream analyses are based on the current set of samples.</p>
+</div>
+</div>
+</section>
+<section id="coefficient-of-variation" class="level2">
+<h2 class="anchored" data-anchor-id="coefficient-of-variation">Coefficient of variation</h2>
+<p>The <strong>Coefficient of variation plot</strong> summarizes variability between replicates at each temperature.</p>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/normalization/CV-Plot.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Coefficient of variation plot.
+</figcaption>
+</figure>
+</div>
+<p>For each protein and temperature, the coefficient of variation is calculated from the available replicate measurements.</p>
+<p>Zero measurements are excluded from the CV calculation.</p>
+<p>At least two non-zero replicate measurements are required for a protein to contribute a CV value at a particular temperature.</p>
+<p>For data on the standard abundance scale, the coefficient of variation is calculated from the standard deviation relative to the mean abundance.</p>
+<p>The resulting CV distributions are displayed as boxplots for each temperature.</p>
+<section id="interpreting-cv-values" class="level3">
+<h3 class="anchored" data-anchor-id="interpreting-cv-values">Interpreting CV values</h3>
+<p>Lower CV values indicate closer agreement between replicate measurements, while higher values indicate greater replicate-to-replicate variability.</p>
+<p>Comparing distributions across temperatures can help identify regions of the thermal gradient associated with increased experimental variability.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Replicate consistency
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Use the CV plot together with PCA and the sample intensity distributions. A sample or temperature displaying unusual behavior across several complementary diagnostics may warrant closer inspection.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="recommended-normalization-workflow" class="level2">
+<h2 class="anchored" data-anchor-id="recommended-normalization-workflow">Recommended normalization workflow</h2>
+<p>A typical normalization workflow in TPP Analyst is:</p>
+<ol type="1">
+<li><strong>Review the quality-controlled dataset.</strong></li>
+<li><strong>Select the desired normalization method or combination of methods.</strong></li>
+<li><strong>Configure the reference protein if reference normalization is selected.</strong></li>
+<li><strong>Click Apply selected normalization.</strong></li>
+<li><strong>Inspect the intensity distributions across samples.</strong></li>
+<li><strong>Inspect the global intensity distribution.</strong></li>
+<li><strong>Examine PCA by sample.</strong></li>
+<li><strong>Inspect the variance decomposition when useful.</strong></li>
+<li><strong>Use PCA by condition when comparing multiple datasets.</strong></li>
+<li><strong>Inspect the coefficient of variation across temperatures.</strong></li>
+<li><strong>Investigate potential problematic samples using the available diagnostics.</strong></li>
+<li><strong>Remove a sample only when supported by the experimental context and QC evidence.</strong></li>
+<li><strong>Reapply normalization if samples are removed or restored.</strong></li>
+<li><strong>Reassess the diagnostic plots after normalization has been recalculated.</strong></li>
+<li><strong>Proceed to clustering when the normalized dataset is satisfactory.</strong></li>
+</ol>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Important</span>Normalized data are used downstream
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The current normalized dataset is passed to subsequent TPP Analyst modules. Normalization settings and sample-removal decisions can therefore affect clustering, model fitting, protein-level visualization, and downstream statistical analyses.</p>
+</div>
+</div>
+</section>
+<section id="next-step" class="level2">
+<h2 class="anchored" data-anchor-id="next-step">Next step</h2>
+<p>Once normalization has been applied and the diagnostic visualizations have been reviewed, continue to <a href="./clustering.html">Clustering</a>.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
