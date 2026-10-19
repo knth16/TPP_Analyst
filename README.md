@@ -134,6 +134,10 @@ ComplexHeatmap    2.28.0
 clusterProfiler   4.20.0
 ```
 # User Manual
+## 📖 Documentation
 
-knth16.github.io/TPP_Analyst/
+A complete step-by-step user manual for TPP Analyst is available online:
+
+[**Open the TPP Analyst User Manual**](knth16.github.io/TPP_Analyst/)
+
 
