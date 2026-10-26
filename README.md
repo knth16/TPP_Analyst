@@ -9,7 +9,7 @@ For this and the option 2 you will need to install Docker desktop on your comput
 This is the easiest and most reliable option. The Docker image contains all required R packages, Bioconductor packages, and system dependencies.
 
 ```bash
-docker run -p 3838:3838 <your-docker-image>
+docker run -p 3838:3838 knth16/tppanalyst:latest
 ```
 
 Then open:
