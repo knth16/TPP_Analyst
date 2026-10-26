@@ -644,12 +644,8 @@ selectizeInput(
 })
 output$custom_org_loader_ui <- renderUI({
 
-
-  req(
-  dataset2$data(),
-  input$file,
-  dataset1$data()
-)
+  req(dataset2$data())
+  req(input$organism_mode)
 
 if (
   input$organism_mode == "single" &&
@@ -774,11 +770,11 @@ if(cond == "CUSTOM_SINGLE") {
 
 output$custom_org_mapping_ui <- renderUI({
 
-  req(
-    dataset2$data(),
-    input$file,
-    dataset1$data()
-  )
+  req(dataset2$data())
+  req(input$organism_mode)
+
+
+
 if (
   input$organism_mode == "single"
 ) {
@@ -1313,23 +1309,53 @@ require_protein_organism_column <- reactive({
 })
 
 mapping_complete <- reactive({
+
   if (using_example_data()) {
-  return(TRUE)
-}
+    return(TRUE)
+  }
 
   mapping <- condition_organism_mapping()
 
-all(
-  sapply(
-    mapping,
-    function(x)
-      !is.null(x) &&
-      length(x) > 0 &&
-      !any(x == "Other")
-  )
-)
+  req(length(mapping) > 0)
+
+  for (cond in names(mapping)) {
+
+    vals <- mapping[[cond]]
+
+    # No organism selected
+    if (
+      is.null(vals) ||
+      length(vals) == 0
+    ) {
+      return(FALSE)
+    }
+
+    # Other selected
+    if ("Other" %in% vals) {
+
+      custom_name <- input[[
+        paste0(
+          "custom_organism_name_",
+          make.names(cond)
+        )
+      ]]
+
+      if (
+        is.null(custom_name) ||
+        length(custom_name) == 0 ||
+        trimws(custom_name) == ""
+      ) {
+        return(FALSE)
+      }
+
+    }
+
+  }
+
+  TRUE
 
 })
+
 output$protein_upload_message <- renderUI({
 
   req(dataset2$data())
@@ -2756,41 +2782,49 @@ obs_data <- dplyr::bind_rows(
 curve_data <- dplyr::bind_rows(
   curve_data
 )
-p<- ggplot() +
 
-geom_point(
-  data = obs_data,
-  aes(
-    Temperature,
-    Abundance,
-    color = Condition,
-    shape = Replicate
-  ),
-  size = 3
-) +
+#plot
+p <- ggplot() +
 
-geom_line(
-  data = curve_data,
-  aes(
-    Temperature,
-    Abundance,
-    color = Condition,
-    linetype = Replicate,
-    group = interaction(
-      Condition,
-      Replicate
-    )
-  ),
-  linewidth = 1
-) +
+  geom_point(
+    data = obs_data,
+    aes(
+      Temperature,
+      Abundance,
+      color = Condition,
+      shape = Replicate
+    ),
+    size = 3
+  ) +
 
-  theme_classic() +
+  geom_line(
+    data = curve_data,
+    aes(
+      Temperature,
+      Abundance,
+      color = Condition,
+      linetype = Replicate,
+      group = interaction(
+        Condition,
+        Replicate
+      )
+    ),
+    linewidth = 1
+  ) +
 
   labs(
     title = protein_id,
     x = "Temperature (°C)",
-    y = "Relative abundance"
-  )
+    y = "Relative abundance",
+    color = "Condition",
+    shape = "Replicate",
+    linetype = "Replicate"
+  ) +
+
+  theme_manuscript()
+
+
+  #returnit
 return(p)
 }
 output$tpp_curve_plot <- renderPlot({
@@ -2820,26 +2854,27 @@ output$tpp_padj_hist <- renderPlot({
     is.finite(vals)
   ]
 
-  ggplot(
-    data.frame(
-      pAdj = vals
-    ),
-    aes(x = pAdj)
+ggplot(
+  data.frame(
+    pAdj = vals
+  ),
+  aes(x = pAdj)
+) +
+
+  geom_histogram(
+    bins = 40,
+    fill = "steelblue",
+    color = "black",
+    linewidth = 0.3
   ) +
 
-    geom_histogram(
-      bins = 40,
-      fill = "steelblue",
-      color = "black"
-    ) +
+  labs(
+    title = "Adjusted P-value distribution",
+    x = "Adjusted P-value",
+    y = "Count"
+  ) +
 
-    theme_minimal() +
-
-    labs(
-      title = "Adjusted P-value Distribution",
-      x = "Adjusted P-value",
-      y = "Count"
-    )
+  theme_manuscript()
 
 })
 
@@ -2864,26 +2899,27 @@ output$tpp_dtm_hist <- renderPlot({
     is.finite(vals)
   ]
 
-  ggplot(
-    data.frame(
-      DeltaTm = vals
-    ),
-    aes(x = DeltaTm)
+ggplot(
+  data.frame(
+    DeltaTm = vals
+  ),
+  aes(x = DeltaTm)
+) +
+
+  geom_histogram(
+    bins = 40,
+    fill = "tomato",
+    color = "black",
+    linewidth = 0.3
   ) +
 
-    geom_histogram(
-      bins = 40,
-      fill = "tomato",
-      color = "black"
-    ) +
+  labs(
+    title = expression(Delta * "Tm distribution"),
+    x = expression(Delta * "Tm (°C)"),
+    y = "Count"
+  ) +
 
-    theme_minimal() +
-
-    labs(
-      title = expression(Delta * "Tm Distribution"),
-      x = expression(Delta * "Tm"),
-      y = "Count"
-    )
+  theme_manuscript()
 
 })
 
@@ -4103,24 +4139,30 @@ if(!inherits(null_fit, "try-error")) {
     geom_point(aes(shape = factor(Replicate), color = Dataset), size = 2) +
     labs(
       title = paste(
-      "Model Comparison for Protein:",
-      selected_protein,
-      "|",
-      input$nparc_df_type,
-      "F-test"
-    ),
-      x = "Temperature",
-      y = "Relative Abundance",
-      color = "Dataset"
+        "Model comparison:",
+        selected_protein,
+        "|",
+        input$nparc_df_type,
+        "F-test"
+      ),
+      x = "Temperature (°C)",
+      y = "Relative abundance",
+      color = "Dataset",
+      shape = "Replicate"
     ) +
-    theme_light(base_size = 14) +
-    theme(
-      plot.title = element_text(size = 16, face = "bold"),
-      panel.grid.major.x = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.border = element_rect(color = "grey80", fill = NA, linewidth = 0.5)
-    ) +
-    ylim(0, max_y)
+
+theme_manuscript() +
+
+theme(
+  panel.grid = element_blank(),
+  panel.border = element_blank()
+) +
+
+coord_cartesian(
+  ylim = c(0, max_y)
+)
+
+
 
   # --------------------------------------------------------------------
   # Alternative model curves: one per dataset
@@ -4197,22 +4239,24 @@ req(
 
 ggplot(
   selected_fstats(),
-    aes(x = pVal)
+  aes(x = pVal)
+) +
+
+  geom_histogram(
+    bins = 40,
+    fill = "steelblue",
+    color = "black",
+    linewidth = 0.3
   ) +
 
-    geom_histogram(
-      bins = 40,
-      fill = "steelblue",
-      color = "black"
-    ) +
+  labs(
+    title = "NPARC P-value distribution",
+    x = "P-value",
+    y = "Count"
+  ) +
 
-    theme_minimal() +
+  theme_manuscript()
 
-    labs(
-      title = "NPARC p-value distribution",
-      x = "p-value",
-      y = "Count"
-    )
 
 })
 
@@ -4242,13 +4286,13 @@ ggplot(
       )
     ) +
 
-    theme_minimal() +
+labs(
+  title = "NPARC F-statistic distribution",
+  x = "F statistic",
+  y = "Count"
+) +
 
-    labs(
-      title = "NPARC F statistic distribution",
-      x = "F statistic",
-      y = "Count"
-    )
+theme_manuscript()
 
 })
 output$nparc_fdist_fit <- renderPlot({
@@ -4301,24 +4345,26 @@ xmax <- quantile(
     )
   ) +
 
-    geom_density(
-      aes(y = after_stat(density)),
-      colour = "black",
-      fill = "steelblue",
-      alpha = 0.4,
-      linewidth = 0.8
-    ) +
+geom_density(
+  aes(y = after_stat(density)),
+  colour = "black",
+  fill = "steelblue",
+  alpha = 0.4,
+  linewidth = 0.8
+) +
 
-    geom_line(
-      data = theoretical_df,
-      aes(
-        x = x,
-        y = density
-      ),
-      inherit.aes = FALSE,
-      colour = "red",
-      linewidth = 1.2
-    ) +
+geom_line(
+  data = theoretical_df,
+  aes(
+    x = x,
+    y = density
+  ),
+  inherit.aes = FALSE,
+  colour = "red",
+  linewidth = 1.2
+) +
+
+
 
     coord_cartesian(
       xlim = c(
@@ -4327,18 +4373,17 @@ xmax <- quantile(
       )
     ) +
 
-    theme_minimal() +
+labs(
+  title = paste0(
+    "Observed vs expected F distribution (",
+    input$nparc_df_type,
+    ")"
+  ),
+  x = "F statistic",
+  y = "Density"
+) +
 
-    labs(
-      title = paste(
-        "Observed vs Expected F Distribution",
-        "(",
-        input$nparc_df_type,
-        ")"
-      ),
-      x = "F statistic",
-      y = "Density"
-    )
+theme_manuscript()
 
 })
 #RSS histogram
@@ -4384,19 +4429,20 @@ output$nparc_rssdiff_hist <- renderPlot({
     aes(x = rss_diff)
   ) +
 
-    geom_histogram(
-      bins = 60,
-      fill = "steelblue",
-      color = "black"
-    ) +
+geom_histogram(
+  bins = 60,
+  fill = "steelblue",
+  color = "black",
+  linewidth = 0.3
+) +
 
-    theme_minimal() +
+labs(
+  title = "RSS difference distribution",
+  x = expression(RSS[null] - RSS[alt]),
+  y = "Count"
+) +
 
-    labs(
-      title = "RSS difference distribution",
-      x = "RSSnull - RSSalt",
-      y = "Count"
-    )
+theme_manuscript()
 
 })
 
@@ -4640,12 +4686,14 @@ output$download_model_comparison_plot <- downloadHandler(
   },
   content = function(file) {
     p <- make_model_comparison_plot()
-    ggsave(
+    ggplot2::ggsave(
       filename = file,
       plot = p,
-      width = 10,
-      height = 6,
-      dpi = 300
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
   }
 )
@@ -4715,12 +4763,14 @@ output$download_tpp_curve_plot <- downloadHandler(
 
     p <- make_tpp_curve_plot()
 
-    ggsave(
+    ggplot2::ggsave(
       filename = file,
       plot = p,
-      width = 10,
-      height = 6,
-      dpi = 300
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
 
   }
@@ -5179,17 +5229,19 @@ output$protein_plot <- plotly::renderPlotly({
       )
     ) +
     labs(
-      x = "Temperature",
+      x = "Temperature (°C)",
       y = "Mean Abundance ± SD"
     ) +
     theme_light(base_size = 14) +
     theme(
-      plot.title = element_text(size = 16, face = "bold"),
       panel.grid.major.x = element_blank(),
       panel.grid.minor.x = element_blank(),
       panel.border = element_rect(color = "grey80", fill = NA, linewidth = 0.5)
     ) +
-    ylim(0, max_y)
+    coord_cartesian(
+  ylim = c(0, max_y)
+)
+
 
   # --------------------------
   # LEGEND CONTROL

@@ -39,6 +39,94 @@ library(processx)
 library(TPP)
 
 #####################################################################################
+
+#figure template
+# ============================================================
+# Publication figure settings
+# ============================================================
+
+FIG_WIDTH  <- 7
+FIG_HEIGHT <- 5
+FIG_DPI    <- 300
+
+FIG_FONT <- "Arial"
+
+FIG_BASE_SIZE   <- 11
+FIG_AXIS_TITLE  <- 12
+FIG_AXIS_TEXT   <- 10
+FIG_LEGEND_TEXT <- 10
+FIG_TITLE_SIZE  <- 12
+
+
+# Standard theme for manuscript ggplots
+theme_manuscript <- function() {
+
+  ggplot2::theme_classic(
+    base_size = FIG_BASE_SIZE,
+    base_family = FIG_FONT
+  ) +
+
+    ggplot2::theme(
+
+      # Axis titles
+      axis.title = ggplot2::element_text(
+        size = FIG_AXIS_TITLE,
+        colour = "black"
+      ),
+
+      # Axis tick labels
+      axis.text = ggplot2::element_text(
+        size = FIG_AXIS_TEXT,
+        colour = "black"
+      ),
+
+      # Axis lines
+      axis.line = ggplot2::element_line(
+        colour = "black",
+        linewidth = 0.5
+      ),
+
+      # Tick marks
+      axis.ticks = ggplot2::element_line(
+        colour = "black",
+        linewidth = 0.5
+      ),
+
+      # Legend
+      legend.title = ggplot2::element_text(
+        size = FIG_LEGEND_TEXT
+      ),
+
+      legend.text = ggplot2::element_text(
+        size = FIG_LEGEND_TEXT
+      ),
+
+      # Plot title
+      plot.title = ggplot2::element_text(
+        size = FIG_TITLE_SIZE,
+        face = "bold",
+        hjust = 0
+      ),
+
+      # White publication background
+      panel.background = ggplot2::element_blank(),
+
+      plot.background = ggplot2::element_rect(
+        fill = "white",
+        colour = NA
+      ),
+
+      # Consistent margins
+      plot.margin = ggplot2::margin(
+        8, 8, 8, 8,
+        unit = "pt"
+      )
+    )
+}
+
+
+
+
 #functions
 
 
@@ -2604,7 +2692,7 @@ output$zero_info_card <- renderUI({
           ggplot2::aes(ymin = Mean - SD, ymax = Mean + SD), width = .2
         ) +
         ggplot2::labs(y = "Average number of zero values", x = "Temperature") +
-        ggplot2::theme_minimal() +
+        theme_manuscript() +
         ggplot2::coord_cartesian(ylim = c(0, ylim_limit))
     })
 output$download_zero_values_per_temp <- downloadHandler(
@@ -2614,13 +2702,6 @@ output$download_zero_values_per_temp <- downloadHandler(
   },
 
   content = function(file) {
-
-    png(
-      file,
-      width = 1800,
-      height = 1200,
-      res = 200
-    )
 
     dfm <- safe_df()
     df0 <- zero_stats$filtered()
@@ -2641,7 +2722,11 @@ output$download_zero_values_per_temp <- downloadHandler(
       ) %>%
       dplyr::pull(Max_Mean)
 
-    ylim_limit <- if (is.finite(max_mean)) max_mean + 5 else NA
+    ylim_limit <- if (is.finite(max_mean)) {
+      max_mean + 5
+    } else {
+      NA
+    }
 
     p <- zero_df0 %>%
       dplyr::group_by(temperature) %>%
@@ -2651,7 +2736,10 @@ output$download_zero_values_per_temp <- downloadHandler(
         .groups = "drop"
       ) %>%
       ggplot2::ggplot(
-        ggplot2::aes(temperature, Mean)
+        ggplot2::aes(
+          x = temperature,
+          y = Mean
+        )
       ) +
       ggplot2::geom_col() +
       ggplot2::geom_errorbar(
@@ -2661,14 +2749,24 @@ output$download_zero_values_per_temp <- downloadHandler(
         ),
         width = .2
       ) +
+      ggplot2::labs(
+        x = "Temperature",
+        y = "Average number of zero values"
+      ) +
       ggplot2::coord_cartesian(
         ylim = c(0, ylim_limit)
       ) +
-      ggplot2::theme_minimal()
+      theme_manuscript()
 
-    print(p)
-
-    dev.off()
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
 
   }
 
@@ -2727,7 +2825,8 @@ p <- plot_detect_custom_df(dflog2)
 p <- p +
   ggplot2::labs(
     x = density_label()
-  )
+  ) +
+  theme_manuscript()
 
 
 incProgress(
@@ -2749,47 +2848,45 @@ output$download_missing_values_density <- downloadHandler(
 
   content = function(file) {
 
-    png(
-      file,
-      width = 1800,
-      height = 1200,
-      res = 200
-    )
-
     df0 <- zero_stats$filtered()
 
-if (qc_values_already_scaled()) {
+    if (qc_values_already_scaled()) {
 
-  dflog2 <- df0
+      dflog2 <- df0
 
-} else {
+    } else {
 
-  dflog2 <- df0 %>%
-    mutate(
-      across(
-        where(is.numeric),
-        log2
-      )
-    )
+      dflog2 <- df0 %>%
+        dplyr::mutate(
+          dplyr::across(
+            where(is.numeric),
+            log2
+          )
+        )
 
-  dflog2[dflog2 == -Inf] <- 0
-
-}
-
-    dflog2[dflog2 == -Inf] <- 0
+      dflog2[dflog2 == -Inf] <- 0
+    }
 
     p <- plot_detect_custom_df(dflog2) +
       ggplot2::labs(
         x = density_label()
-      )
+      ) +
+      theme_manuscript()
 
-    print(p)
-
-    dev.off()
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
 
   }
 
 )
+
     # -------------------------------
     # Plot: Missing values pattern heatmap
     # -------------------------------
@@ -3125,14 +3222,27 @@ legend_title <- if (qc_values_already_scaled()) {
             left_annotation = left_annot,
             row_names_max_width = grid::unit(20, "mm"),
           column_names_side = "top",
-          column_names_gp = grid::gpar(fontsize = 8),
+          column_names_gp = grid::gpar(
+          fontsize = FIG_AXIS_TEXT,
+          fontfamily = FIG_FONT
+            ),
           show_row_names = FALSE,
           show_column_names = TRUE,
           name = "Protein intensity heatmap",
           heatmap_legend_param = list(
             title = legend_title,
             direction = "horizontal",
-            title_position = "leftcenter"
+            title_position = "leftcenter",
+
+            title_gp = grid::gpar(
+              fontsize = FIG_LEGEND_TEXT,
+              fontfamily = FIG_FONT
+            ),
+
+            labels_gp = grid::gpar(
+              fontsize = FIG_LEGEND_TEXT,
+              fontfamily = FIG_FONT
+            )
           ),
           cluster_rows =
   input$row_sort_mode == "cluster", # key difference
@@ -3158,14 +3268,27 @@ last_heatmap(ht)
           heatmap_legend_param = list(
             title = legend_title,
             direction = "horizontal",
-            title_position = "leftcenter"
+            title_position = "leftcenter",
+
+            title_gp = grid::gpar(
+              fontsize = FIG_LEGEND_TEXT,
+              fontfamily = FIG_FONT
+            ),
+
+            labels_gp = grid::gpar(
+              fontsize = FIG_LEGEND_TEXT,
+              fontfamily = FIG_FONT
+            )
           ),
 
           column_names_side = "top",
           show_row_names = FALSE,
           show_column_names = TRUE,
           name = "Protein intensity heatmap",
-          column_names_gp = grid::gpar(fontsize = 8),
+          column_names_gp = grid::gpar(
+            fontsize = FIG_AXIS_TEXT,
+            fontfamily = FIG_FONT
+          ),
           cluster_columns = FALSE, 
           use_raster = FALSE,
           cluster_rows =
@@ -3224,10 +3347,10 @@ grid::grid.text(
 
   just = "centre",
 
-  gp = grid::gpar(
-    fontsize = 12,
-    fontface = "bold"
-  )
+gp = grid::gpar(
+  fontsize = FIG_AXIS_TITLE,
+  fontfamily = FIG_FONT
+)
 
 )
 for (i in seq_along(tick_positions)) {
@@ -3269,11 +3392,11 @@ grid::grid.lines(
 
     just = "right",
 
-    gp = grid::gpar(
-      fontsize = 10,
-      fontface = "bold",
-      col = "black"
-    )
+gp = grid::gpar(
+  fontsize = FIG_AXIS_TEXT,
+  fontfamily = FIG_FONT,
+  col = "black"
+)
 
   )
 
@@ -3301,12 +3424,14 @@ output$download_missing_values_pattern <- downloadHandler(
 
     req(last_heatmap())
 
-    png(
-      file,
-      width = 2200,
-      height = 1400,
-      res = 250
-    )
+png(
+  file,
+  width = FIG_WIDTH,
+  height = FIG_HEIGHT,
+  units = "in",
+  res = FIG_DPI,
+  family = FIG_FONT
+)
 tick_positions <- seq(
   0,
   1,
@@ -3340,10 +3465,10 @@ if (input$row_sort_mode == "intensity") {
 
       just = "centre",
 
-      gp = grid::gpar(
-        fontsize = 12,
-        fontface = "bold"
-      )
+gp = grid::gpar(
+  fontsize = FIG_AXIS_TITLE,
+  fontfamily = FIG_FONT
+)
 
     )
 
@@ -3386,11 +3511,11 @@ if (input$row_sort_mode == "intensity") {
 
         just = "right",
 
-        gp = grid::gpar(
-          fontsize = 10,
-          fontface = "bold",
-          col = "black"
-        )
+gp = grid::gpar(
+  fontsize = FIG_AXIS_TEXT,
+  fontfamily = FIG_FONT,
+  col = "black"
+)
 
       )
 
@@ -3477,14 +3602,26 @@ withProgress(
 
 
   # ---- Plot ----
-  ggplot2::ggplot(total_abundance_df, ggplot2::aes(x = temperature, y = Total_Abundance)) +
-    ggplot2::geom_line(group = 1, color = "steelblue4", linewidth = 1) +
-    ggplot2::geom_point(color = "steelblue4") +
-    ggplot2::theme_minimal() +
-    ggplot2::labs(
-      x = "Temperature",
-      y = "Total abundance"
-    )
+ggplot2::ggplot(
+  total_abundance_df,
+  ggplot2::aes(
+    x = temperature,
+    y = Total_Abundance
+  )
+) +
+  ggplot2::geom_line(
+    group = 1,
+    color = "steelblue4",
+    linewidth = 1
+  ) +
+  ggplot2::geom_point(
+    color = "steelblue4"
+  ) +
+  ggplot2::labs(
+    x = "Temperature",
+    y = "Total abundance"
+  ) +
+  theme_manuscript()
 
     
 })
@@ -3496,12 +3633,6 @@ output$download_total_abundance_plot <- downloadHandler(
 
   content = function(file) {
 
-    png(
-      file,
-      width = 1800,
-      height = 1200,
-      res = 200
-    )
 
     df <- zero_stats$filtered()
 
@@ -3524,25 +3655,36 @@ output$download_total_abundance_plot <- downloadHandler(
         .groups = "drop"
       )
 
-    p <- ggplot(
-      total_abundance_df,
-      aes(
-        x = temperature,
-        y = Total_Abundance
-      )
-    ) +
-      geom_line(
-        group = 1,
-        color = "steelblue4"
-      ) +
-      geom_point(
-        color = "steelblue4"
-      ) +
-      theme_minimal()
+p <- ggplot2::ggplot(
+  total_abundance_df,
+  ggplot2::aes(
+    x = temperature,
+    y = Total_Abundance
+  )
+) +
+  ggplot2::geom_line(
+    group = 1,
+    color = "steelblue4",
+    linewidth = 1
+  ) +
+  ggplot2::geom_point(
+    color = "steelblue4"
+  ) +
+  ggplot2::labs(
+    x = "Temperature",
+    y = "Total abundance"
+  ) +
+  theme_manuscript()
 
-    print(p)
-
-    dev.off()
+ggplot2::ggsave(
+  filename = file,
+  plot = p,
+  width = FIG_WIDTH,
+  height = FIG_HEIGHT,
+  units = "in",
+  dpi = FIG_DPI,
+  bg = "white"
+)
 
   }
 
@@ -3884,16 +4026,26 @@ normalizationPanelModuleUI <- function(id, label) {
 
         ),
 
-        plotlyOutput(
-          ns("normalization_pca_plot"),
-          height = "550px"
-        ) %>% withSpinner(
-color = "#0EA5A5"
-),
+      plotlyOutput(
+        ns("normalization_pca_plot"),
+        height = "550px"
+      ) %>% withSpinner(
+        color = "#0EA5A5"
+      ),
 
-        br(),
+      tags$div(
+        style = "height:8px;"
+      ),
 
-fluidRow(
+      downloadButton(
+        ns("download_normalization_pca_plot"),
+        "Download plot"
+      ),
+
+      br(),
+      br(),
+
+      fluidRow(
 
   box(
     title = "Samples to remove",
@@ -4010,7 +4162,11 @@ normalizationPanelModuleServer <- function(id, zero_stats_data, dataset_org_data
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
 
-    ref_protein_name <- reactiveVal(NULL)
+ref_protein_name <- reactiveVal(NULL)
+
+# Store the latest underlying ggplot for publication download
+last_pca_plot <- reactiveVal(NULL)
+
 
     #for removing samples using PCA
 selected_methods <- reactiveVal(character(0))
@@ -4638,14 +4794,32 @@ incProgress(
   0.90,
   detail = "Rendering plot"
 )
-      p <- ggplot(df_long, aes(x = ID, y = Intensity, fill = temperature_num)) +
-        geom_boxplot() +
-        scale_fill_gradient(low = "blue", high = "red", name = "Temperature") +
-        theme_minimal() +
-        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-        ylab(y_label) +
-        xlab("Samples")
-
+    p <- ggplot(
+      df_long,
+      aes(
+        x = ID,
+        y = Intensity,
+        fill = temperature_num
+      )
+    ) +
+      geom_boxplot() +
+      scale_fill_gradient(
+        low = "blue",
+        high = "red",
+        name = "Temperature"
+      ) +
+      labs(
+        x = "Samples",
+        y = y_label
+      ) +
+      theme_manuscript() +
+      theme(
+        axis.text.x = element_text(
+          angle = 90,
+          vjust = 0.5,
+          hjust = 1
+        )
+      )
 
       incProgress(
         1,
@@ -4717,38 +4891,42 @@ output$download_normalized_data_preview <- downloadHandler(
       "Intensity"
     }
 
-    p <- ggplot(
-      df_long,
-      aes(
-        x = ID,
-        y = Intensity,
-        fill = temperature_num
-      )
-    ) +
-      geom_boxplot() +
-      scale_fill_gradient(
-        low = "blue",
-        high = "red",
-        name = "Temperature"
-      ) +
-      theme_minimal() +
-      theme(
-        axis.text.x = element_text(
-          angle = 90,
-          vjust = 0.5,
-          hjust = 1
-        )
-      ) +
-      ylab(y_label) +
-      xlab("Samples")
-
-    ggsave(
-      file,
-      p,
-      width = 12,
-      height = 8,
-      dpi = 300
+p <- ggplot(
+  df_long,
+  aes(
+    x = ID,
+    y = Intensity,
+    fill = temperature_num
+  )
+) +
+  geom_boxplot() +
+  scale_fill_gradient(
+    low = "blue",
+    high = "red",
+    name = "Temperature"
+  ) +
+  labs(
+    x = "Samples",
+    y = y_label
+  ) +
+  theme_manuscript() +
+  theme(
+    axis.text.x = element_text(
+      angle = 90,
+      vjust = 0.5,
+      hjust = 1
     )
+  )
+
+ggplot2::ggsave(
+  filename = file,
+  plot = p,
+  width = FIG_WIDTH,
+  height = FIG_HEIGHT,
+  units = "in",
+  dpi = FIG_DPI,
+  bg = "white"
+)
 
   }
 
@@ -4874,11 +5052,11 @@ guides(
 
   labs(
     x = paste0("PC1 (", pc1_var, "%)"),
-    y = paste0("PC2 (", pc2_var, "%)"),
-    title = "PCA by condition"
+    y = paste0("PC2 (", pc2_var, "%)")
   ) +
 
-  theme_classic()
+  theme_manuscript()
+
 
 
 
@@ -4921,7 +5099,6 @@ var_df_long <- var_df %>%
 
 p_var <- ggplot(var_df_long, aes(x = PC, y = Variance, fill = Component)) +
   geom_col() +
-  theme_classic() +
   scale_fill_manual(
     values = c(
       BatchVariance = "steelblue4",
@@ -4930,7 +5107,14 @@ p_var <- ggplot(var_df_long, aes(x = PC, y = Variance, fill = Component)) +
     ),
     name = "Variance source"
   ) +
-  labs(title = "Variance decomposition per PC")
+  labs(
+  x = "Principal component",
+  y = "Proportion of total variance"
+) +
+theme_manuscript()
+
+
+
 #return both plots
   return(list(
     plot = p,
@@ -5047,10 +5231,9 @@ p_var <- ggplot(var_df_long, aes(x = PC, y = Variance, fill = Component)) +
         scale_color_viridis_c(name = "Temperature") +
         labs(
           x = paste0("PC1 (", pc1_var, "%)"),
-          y = paste0("PC2 (", pc2_var, "%)"),
-          title = "PCA by sample"
+          y = paste0("PC2 (", pc2_var, "%)")
         ) +
-        theme_classic()
+        theme_manuscript()
 
           #  Variance decomposition
 
@@ -5074,17 +5257,23 @@ p_var <- ggplot(var_df_long, aes(x = PC, y = Variance, fill = Component)) +
 
           p_var <- ggplot(var_df_long, aes(x = PC, y = Variance, fill = Component)) +
             geom_col() +
-            theme_classic() +
             scale_fill_manual(
               values = c(BatchVariance = "steelblue4", ResidualVariance = "grey70"),
               name = "Variance source",
               labels = c(BatchVariance = "Batch", ResidualVariance = "Residual")
             ) +
             labs(
-              y = "Proportion of total variance",
-              title = "Variance decomposition per PC"
+              x = "Principal component",
+              y = "Proportion of total variance"
             ) +
-            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+            theme_manuscript() +
+            theme(
+              axis.text.x = element_text(
+                angle = 45,
+                hjust = 1
+              )
+            )
+
 
 
           # ✅ RETURN BOTH
@@ -5147,22 +5336,32 @@ incProgress(
   detail = "Preparing visualization"
 )
 
-        if (show_var) {
+if (show_var) {
 
-          validate(
-            need(!is.null(res$variance_plot), "Variance plot not available")
-          )
+  validate(
+    need(
+      !is.null(res$variance_plot),
+      "Variance plot not available"
+    )
+  )
 
-          # ✅ return ggplot directly
-          return(res$variance_plot)
+  last_pca_plot(res$variance_plot)
 
-        } else {
+  return(
+    plotly::ggplotly(
+      res$variance_plot
+    )
+  )
+
+} else {
 
           
 incProgress(
   0.95,
   detail = "Rendering PCA"
 )
+
+last_pca_plot(res$plot)
 p <- ggplotly(
   res$plot,
   tooltip = "text",
@@ -5233,20 +5432,32 @@ incProgress(
   0.75,
   detail = "Preparing visualization"
 )
-        if (show_var) {
+if (show_var) {
 
-          validate(
-            need(!is.null(res$variance_plot), "Variance plot not available")
-          )
+  validate(
+    need(
+      !is.null(res$variance_plot),
+      "Variance plot not available"
+    )
+  )
 
-          return(res$variance_plot)
+  last_pca_plot(res$variance_plot)
 
-        } else {
+  return(
+    plotly::ggplotly(
+      res$variance_plot
+    )
+  )
+
+} else {
 
        incProgress(
   0.95,
   detail = "Rendering PCA"
 )   
+
+last_pca_plot(res$plot)
+
 p <- plotly::ggplotly(
   res$plot,
   tooltip = "text",
@@ -5268,7 +5479,50 @@ return(p)
 
 })
 
+output$download_normalization_pca_plot <- downloadHandler(
 
+  filename = function() {
+
+    mode_label <- if (
+      input$pca_mode == "sample"
+    ) {
+      "PCA_by_sample"
+    } else {
+      "PCA_by_condition"
+    }
+
+    if (isTRUE(input$show_variance_plot)) {
+      mode_label <- paste0(
+        mode_label,
+        "_variance_decomposition"
+      )
+    }
+
+    paste0(
+      mode_label,
+      "_",
+      Sys.Date(),
+      ".png"
+    )
+  },
+
+  content = function(file) {
+
+    req(last_pca_plot())
+
+    ggplot2::ggsave(
+      filename = file,
+      plot = last_pca_plot(),
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
+
+  }
+
+)
 
 
 # Selected (pending removal)
@@ -5351,17 +5605,20 @@ incProgress(
         geom_line(aes(color = distance, size = inverse_distance), alpha = 0.3) +
         geom_line(data = average_trend, aes(x = temperature, y = Avg_Intensity, group = 1),
                   color = "black", size = 2, linetype = "solid", alpha = 0.5) +
-        scale_color_viridis_c(option = "D") +
-        scale_size_continuous(range = c(0.2, 1.5)) +
-        labs(
-          title = "",
-          x = "Temperature (°C)",
-          y = "Relative Abundance",
-          color = "Distance",
-          size = "Inverse Distance"
-        ) +
-        theme_minimal(base_size = 14) +
-        theme(legend.position = "none")
+                  scale_color_viridis_c(option = "D") +
+                  scale_size_continuous(
+                    range = c(0.2, 1.5)
+                  ) +
+                  labs(
+                    x = "Temperature (°C)",
+                    y = "Relative abundance",
+                    color = "Distance",
+                    size = "Inverse distance"
+                  ) +
+                  theme_manuscript() +
+                  theme(
+                    legend.position = "none"
+                  )
 
 
 incProgress(
@@ -5490,16 +5747,26 @@ output$download_total_density_plot <- downloadHandler(
       scale_size_continuous(
         range = c(0.2, 1.5)
       ) +
-      theme_minimal(base_size = 14) +
-      theme(legend.position = "none")
+      labs(
+        x = "Temperature (°C)",
+        y = "Relative abundance",
+        color = "Distance",
+        size = "Inverse distance"
+      ) +
+      theme_manuscript() +
+      theme(
+        legend.position = "none"
+      )
 
-    ggsave(
-      file,
-      p,
-      width = 12,
-      height = 7,
-      dpi = 300
-    )
+      ggplot2::ggsave(
+        filename = file,
+        plot = p,
+        width = FIG_WIDTH,
+        height = FIG_HEIGHT,
+        units = "in",
+        dpi = FIG_DPI,
+        bg = "white"
+      )
 
   }
 
@@ -5527,6 +5794,7 @@ incProgress(
       df_long <- df %>%
         pivot_longer(cols = -1, names_to = "Replicate", values_to = "Intensity") %>%
         separate(Replicate, into = c("temperature", "Replicate"), sep = "_")
+        
 
       df_split <- df_long %>%
         group_by(temperature) %>%
@@ -5567,18 +5835,44 @@ incProgress(
   detail = "Calculating coefficient of variation"
 )
       cv_all <- map_dfr(df_split, calc_cv_by_temp)
+
+      cv_all <- cv_all %>%
+      dplyr::mutate(
+        temperature_num = as.numeric(
+          stringr::str_extract(
+            temperature,
+            "\\d+\\.?\\d*"
+          )
+        )
+      )
+
 incProgress(
   0.95,
   detail = "Rendering plot"
 )
-      p <- ggplot(cv_all, aes(x = temperature, y = CV)) +
-        geom_boxplot() +
-        labs(
-          title = "",
-          x = "Temperature (°C)",
-          y = ifelse(method == "log2", "Log2 CV", "CV")
-        ) +
-        theme_minimal(base_size = 14)
+    p <- ggplot(
+      cv_all,
+      aes(
+        x = temperature,
+        y = CV,
+        fill = temperature_num
+      )
+    ) +
+      geom_boxplot() +
+      scale_fill_gradient(
+        low = "blue",
+        high = "red",
+        name = "Temperature"
+      ) +
+      labs(
+        x = "Temperature (°C)",
+        y = ifelse(
+          "log2" %in% method,
+          "Log2 CV",
+          "CV"
+        )
+      ) +
+      theme_manuscript()
 
 
 incProgress(
@@ -5622,7 +5916,7 @@ output$download_cv_plot <- downloadHandler(
         group_by(temperature) %>%
         group_split()
 
-      calc_cv_by_temp <- function(df) {
+      calc_cv_by_temp <- function(df, method = "raw") {
 
         wide <- df %>%
           select(1, Replicate, Intensity) %>%
@@ -5644,11 +5938,22 @@ output$download_cv_plot <- downloadHandler(
 
           x_clean <- x[!is.na(x)]
 
-          if (length(x_clean) >= 2) {
+        if (length(x_clean) >= 2) {
 
-            (sd(x_clean) / mean(x_clean)) * 100
+          if ("log2" %in% method) {
+
+            x_log <- log2(x_clean)
+
+            sqrt(
+              exp(sd(x_log)^2) - 1
+            ) * 100
 
           } else {
+
+            (sd(x_clean) / mean(x_clean)) * 100
+          }
+
+        } else {
 
             NA
 
@@ -5666,28 +5971,54 @@ output$download_cv_plot <- downloadHandler(
 
       cv_all <- purrr::map_dfr(
         df_split,
-        calc_cv_by_temp
+        ~ calc_cv_by_temp(.x, method = method)
       )
 
-      ggplot(
-        cv_all,
-        aes(
-          x = temperature,
-          y = CV
-        )
-      ) +
-        geom_boxplot() +
-        theme_minimal(base_size = 14)
+      cv_all <- cv_all %>%
+  dplyr::mutate(
+    temperature_num = as.numeric(
+      stringr::str_extract(
+        temperature,
+        "\\d+\\.?\\d*"
+      )
+    )
+  )
+
+ggplot(
+  cv_all,
+  aes(
+    x = temperature,
+    y = CV,
+    fill = temperature_num
+  )
+) +
+  geom_boxplot() +
+  scale_fill_gradient(
+    low = "blue",
+    high = "red",
+    name = "Temperature"
+  ) +
+  labs(
+    x = "Temperature (°C)",
+    y = ifelse(
+      "log2" %in% method,
+      "Log2 CV",
+      "CV"
+    )
+  ) +
+  theme_manuscript()
 
     })
 
-    ggsave(
-      file,
-      p,
-      width = 10,
-      height = 6,
-      dpi = 300
-    )
+ggplot2::ggsave(
+  filename = file,
+  plot = p,
+  width = FIG_WIDTH,
+  height = FIG_HEIGHT,
+  units = "in",
+  dpi = FIG_DPI,
+  bg = "white"
+)
 
   }
 
@@ -5798,9 +6129,31 @@ clusterPanelModuleUI <- function(id, label) {
         ),
 
         conditionalPanel(
-          condition = sprintf("input['%s'] == 'comparison'", ns("correlation_type")),
+          condition = sprintf(
+            "input['%s'] == 'comparison'",
+            ns("correlation_type")
+          ),
 
-        uiOutput(ns("comparison_dataset_ui"))
+          tagList(
+
+            uiOutput(
+              ns("comparison_dataset_ui")
+            ),
+
+            checkboxInput(
+              inputId = ns("shared_proteins_only"),
+              label = "Use only proteins present in all selected conditions",
+              value = FALSE
+            ),
+
+            helpText(
+              "When enabled, clustering includes only proteins retained after filtering in every compared condition."
+            ),
+            verbatimTextOutput(
+            ns("shared_protein_summary")
+          )
+
+          )
         ),
 
         numericInput(
@@ -6407,13 +6760,14 @@ expand_limits(
   y = max(rec$scores) * 1.15
 ) +
 
-    labs(
-      x = "Number of clusters (k)",
-      y = "Average silhouette score",
-      title = "Cluster quality assessment"
-    ) +
+labs(
+  x = "Number of clusters (k)",
+  y = "Average silhouette score",
+  title = "Cluster quality assessment"
+) +
 
-    theme_minimal() +
+theme_manuscript() +
+
 theme(
   plot.margin = margin(
     t = 10,
@@ -6422,6 +6776,7 @@ theme(
     l = 25
   )
 )
+
 incProgress(
   1,
   detail = "Done"
@@ -6559,15 +6914,47 @@ selected_names <- setdiff(
 # 3. JOIN DATASETS FIRST
 # -----------------------------
 
-df_joined <- Reduce(
-  function(x, y) {
-    dplyr::full_join(
-      x,
-      y,
-      by = "Accession"
-    )
-  },
-  datasets_list
+
+if (isTRUE(input$shared_proteins_only)) {
+
+  # Keep only proteins present in ALL selected conditions
+  df_joined <- Reduce(
+    function(x, y) {
+      dplyr::inner_join(
+        x,
+        y,
+        by = "Accession"
+      )
+    },
+    datasets_list
+  )
+
+} else {
+
+  # Current behaviour:
+  # keep proteins found in any selected condition
+  df_joined <- Reduce(
+    function(x, y) {
+      dplyr::full_join(
+        x,
+        y,
+        by = "Accession"
+      )
+    },
+    datasets_list
+  )
+
+}
+
+validate(
+  need(
+    nrow(df_joined) > 0,
+    if (isTRUE(input$shared_proteins_only)) {
+      "No proteins are shared across all selected conditions after filtering."
+    } else {
+      "No proteins are available for clustering."
+    }
+  )
 )
 incProgress(
   0.40,
@@ -6640,7 +7027,8 @@ return(list(
   mat = mat,
   hc = hc,
   clusters = clusters,
-  df = df_joined
+  df = df_joined,
+  shared_only = isTRUE(input$shared_proteins_only)
 ))
 
 
@@ -6649,7 +7037,42 @@ return(list(
 
 })
 
+output$shared_protein_summary <- renderText({
 
+  req(
+    input$correlation_type == "comparison"
+  )
+
+  res <- clustering_result()
+
+  req(
+    !is.null(res),
+    res$mode == "comparison"
+  )
+
+  if (isTRUE(res$shared_only)) {
+
+    paste0(
+      "Proteins shared across all compared conditions: ",
+      format(
+        nrow(res$df),
+        big.mark = ","
+      )
+    )
+
+  } else {
+
+    paste0(
+      "Proteins included across compared conditions: ",
+      format(
+        nrow(res$df),
+        big.mark = ","
+      )
+    )
+
+  }
+
+})
 
     # Heatmap
 
@@ -6807,7 +7230,8 @@ geom_text(
   ),
   inherit.aes = FALSE,
   fontface = "bold",
-  size = 5
+  family = FIG_FONT,
+  size = FIG_AXIS_TITLE / 2.845
 ) +
   geom_tile(
     data = df_long,
@@ -6831,7 +7255,7 @@ scale_fill_gradientn(
 
   scale_fill_brewer(palette = "Set2", name = "Cluster") +
 
-  theme_minimal() +
+  theme_manuscript() +
 scale_x_discrete(
   labels = function(x) {
     ifelse(
@@ -6847,24 +7271,40 @@ scale_y_continuous(
 coord_cartesian(
   clip = "off"
 ) +
-  theme(
-    axis.text.y = element_blank(),
-    axis.ticks.y = element_blank(),
-    axis.text.x = element_text(
+theme(
+  axis.text.y = element_blank(),
+  axis.ticks.y = element_blank(),
+
+  axis.text.x = element_text(
     angle = 90,
     hjust = 1,
-    vjust = 0
-    ),
-    axis.title.y = element_blank(),
-    panel.grid = element_blank(),
-    axis.title.x = element_blank(),
-    plot.margin = margin(
-  t = 20,
-  r = 5,
-  b = 5,
-  l = 5
-)
+    vjust = 0,
+    size = FIG_AXIS_TEXT,
+    family = FIG_FONT
+  ),
+
+  axis.title.y = element_blank(),
+  axis.title.x = element_blank(),
+
+  panel.grid = element_blank(),
+
+  legend.title = element_text(
+    size = FIG_LEGEND_TEXT,
+    family = FIG_FONT
+  ),
+
+  legend.text = element_text(
+    size = FIG_LEGEND_TEXT,
+    family = FIG_FONT
+  ),
+
+  plot.margin = margin(
+    t = 20,
+    r = 5,
+    b = 5,
+    l = 5
   )
+)
 
 
 incProgress(
@@ -6903,13 +7343,33 @@ output$clustering_heatmap <- renderPlot({
 # Download handler for the heatmap
 # =====================================================================
 output$download_clustering_heatmap <- downloadHandler(
+
   filename = function() {
-    paste0("clustering_heatmap_", Sys.Date(), ".png")
+    paste0(
+      "clustering_heatmap_",
+      Sys.Date(),
+      ".png"
+    )
   },
+
   content = function(file) {
-    # Save heatmap directly to file using pheatmap's filename argument
-    make_clustering_heatmap(filename = file)
+
+    p <- isolate(
+      make_clustering_heatmap()
+    )
+
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
+
   }
+
 )
 
 
@@ -7106,8 +7566,9 @@ geom_text(
   inherit.aes = FALSE,
   hjust = -0.2,
   vjust = 1,
-  size = 4,
+  size = FIG_AXIS_TEXT / 2.845,
   fontface = "bold",
+  family = FIG_FONT,
   colour = "black"
 ) +
 
@@ -7116,33 +7577,38 @@ scale_colour_manual(
   guide = "none"
 ) +
 
-facet_wrap(~ Cluster, nrow = 1) +
-      theme_light(base_size = 14) +
+facet_wrap(
+  ~ Cluster,
+  nrow = 1
+) +
 
-      theme(
-        panel.grid.major.x = element_blank(),
-        panel.grid.minor.x = element_blank(),
+labs(
+  x = "Temperature (°C)",
+  y = "Relative abundance"
+) +
 
-        panel.border = element_rect(
-          color = "grey80",
-          fill = NA
-        ),
+theme_manuscript() +
 
-        strip.background = element_rect(
-          fill = "white",
-          color = NA
-        ),
+theme(
+  panel.grid = element_blank(),
 
-strip.text = element_text(
-  face = "bold",
-  size = 12
+  panel.border = element_rect(
+    color = "grey80",
+    fill = NA,
+    linewidth = 0.5
+  ),
+
+  strip.background = element_rect(
+    fill = "white",
+    color = NA
+  ),
+
+  strip.text = element_text(
+    face = "bold",
+    size = FIG_AXIS_TEXT,
+    family = FIG_FONT
+  )
 )
-      ) +
-      labs(
-        title = "",
-        x = "Temperature (°C)",
-        y = "Relative abundance"
-      )
 
 #y axis control
       if (
@@ -7322,21 +7788,53 @@ scale_colour_manual(
 ) +
     facet_wrap(~ Cluster, nrow = 1, labeller = labeller_fn) +
 
-    labs(
-      title = "Cluster comparison across datasets",
-      x = "Temperature (°C)",
-      y = "Relative abundance"
-    ) +
+labs(
+  x = "Temperature (°C)",
+  y = "Relative abundance"
+) +
 
-    theme_light(base_size = 14) +
-    theme(
-      panel.grid.major.x = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.border = element_rect(
-        color = "grey80",
-        fill = NA
-      )
-    )
+theme_manuscript() +
+
+theme(
+  panel.grid = element_blank(),
+
+  panel.border = element_rect(
+    color = "grey80",
+    fill = NA,
+    linewidth = 0.5
+  ),
+
+  strip.background = element_rect(
+    fill = "white",
+    color = NA
+  ),
+
+  strip.text = element_text(
+    face = "bold",
+    size = FIG_AXIS_TEXT,
+    family = FIG_FONT
+  ),
+
+  # Put condition/dataset legend inside the plot
+  legend.position = c(0.98, 0.98),
+  legend.justification = c(1, 1),
+
+  legend.background = element_rect(
+    fill = scales::alpha("white", 0.85),
+    colour = "grey70",
+    linewidth = 0.3
+  ),
+
+  legend.key = element_rect(
+    fill = "transparent",
+    colour = NA
+  ),
+
+  legend.margin = margin(
+    4, 4, 4, 4,
+    unit = "pt"
+  )
+)
 
 #y axis control
     if (
@@ -7396,12 +7894,14 @@ output$download_clustering_plot <- downloadHandler(
   },
   content = function(file) {
     p <- make_clustering_plot()
-    ggsave(
+    ggplot2::ggsave(
       filename = file,
       plot = p,
-      width = 10,
-      height = 5,
-      dpi = 300
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
   }
 )
@@ -7646,22 +8146,22 @@ output$recluster_recommendation_plot <- renderPlot({
       y = max(rec$scores) * 1.15
     ) +
 
-    labs(
-      x = "Number of clusters (k)",
-      y = "Average silhouette score",
-      title = "Recluster quality assessment"
-    ) +
+labs(
+  x = "Number of clusters (k)",
+  y = "Average silhouette score",
+  title = "Sub-cluster quality assessment"
+) +
 
-    theme_minimal() +
+theme_manuscript() +
 
-    theme(
-      plot.margin = margin(
-        t = 10,
-        r = 25,
-        b = 10,
-        l = 25
-      )
-    )
+theme(
+  plot.margin = margin(
+    t = 10,
+    r = 25,
+    b = 10,
+    l = 25
+  )
+)
 
 })
 
@@ -7852,17 +8352,18 @@ incProgress(
 )
 p <- ggplot() +
 
-    geom_text(
-      data = dataset_label_df,
-      aes(
-        x = x,
-        y = y,
-        label = label
-      ),
-      inherit.aes = FALSE,
-      fontface = "bold",
-      size = 5
-    ) +
+geom_text(
+  data = dataset_label_df,
+  aes(
+    x = x,
+    y = y,
+    label = label
+  ),
+  inherit.aes = FALSE,
+  fontface = "bold",
+  family = FIG_FONT,
+  size = FIG_AXIS_TITLE / 2.845
+) +
 
     geom_tile(
       data = df_long,
@@ -7898,7 +8399,7 @@ p <- ggplot() +
   }
 ) +
 
-theme_minimal() +
+theme_manuscript() +
 
 scale_y_continuous(
   expand = expansion(mult = c(0, 0))
@@ -7915,13 +8416,25 @@ theme(
   axis.text.x = element_text(
     angle = 90,
     hjust = 1,
-    vjust = 0
+    vjust = 0,
+    size = FIG_AXIS_TEXT,
+    family = FIG_FONT
   ),
 
   axis.title.y = element_blank(),
   axis.title.x = element_blank(),
 
   panel.grid = element_blank(),
+
+  legend.title = element_text(
+    size = FIG_LEGEND_TEXT,
+    family = FIG_FONT
+  ),
+
+  legend.text = element_text(
+    size = FIG_LEGEND_TEXT,
+    family = FIG_FONT
+  ),
 
   plot.margin = margin(
     t = 20,
@@ -7980,14 +8493,15 @@ output$download_reclustered_heatmap <- downloadHandler(
 
     p <- isolate(make_reclustered_heatmap(res))
 
-    ggplot2::ggsave(
-      filename = file,
-      plot = p,
-      device = "png",
-      width = 10,
-      height = 8,
-      dpi = 300
-    )
+ggplot2::ggsave(
+  filename = file,
+  plot = p,
+  width = FIG_WIDTH,
+  height = FIG_HEIGHT,
+  units = "in",
+  dpi = FIG_DPI,
+  bg = "white"
+)
   }
 )
 
@@ -8108,18 +8622,21 @@ cluster_colors <- setNames(
   )[seq_along(cluster_levels)],
   as.character(cluster_levels)
 )
-#y asignment responsive to the y acis changes
+#y asignment responsive to the y axis changes
 annotation_y <- if (
-  isTRUE(input$custom_cluster_ylim) &&
-  !is.null(input$cluster_y_max) &&
-  is.finite(input$cluster_y_max)
+  isTRUE(input$custom_recluster_ylim) &&
+  !is.null(input$recluster_y_max) &&
+  is.finite(input$recluster_y_max)
 ) {
 
-  input$cluster_y_max * 0.95
+  input$recluster_y_max * 0.95
 
 } else {
 
-  max(df2$Mean_Intensity, na.rm = TRUE)
+  max(
+    df2$Mean_Intensity,
+    na.rm = TRUE
+  )
 
 }
 
@@ -8179,7 +8696,8 @@ geom_text(
   inherit.aes = FALSE,
   hjust = -0.2,
   vjust = 1,
-  size = 4,
+  size = FIG_AXIS_TEXT / 2.845,
+  family = FIG_FONT,
   fontface = "bold",
   colour = "black"
 ) +
@@ -8189,14 +8707,37 @@ scale_colour_manual(
   guide = "none"
 ) +
 
-facet_wrap(~ Recluster, nrow = 1) +
-
-theme_minimal(base_size = 14) +
+facet_wrap(
+  ~ Recluster,
+  nrow = 1
+) +
 
 labs(
-  title = "Reclustered trends (individual condition)",
   x = "Temperature (°C)",
   y = "Relative abundance"
+) +
+
+theme_manuscript() +
+
+theme(
+  panel.grid = element_blank(),
+
+  panel.border = element_rect(
+    color = "grey80",
+    fill = NA,
+    linewidth = 0.5
+  ),
+
+  strip.background = element_rect(
+    fill = "white",
+    color = NA
+  ),
+
+  strip.text = element_text(
+    face = "bold",
+    size = FIG_AXIS_TEXT,
+    family = FIG_FONT
+  )
 )
 
 #y axis control
@@ -8296,11 +8837,26 @@ cluster_colors <- setNames(
   )[seq_along(cluster_levels)],
   as.character(cluster_levels)
 )
+annotation_y <- if (
+  isTRUE(input$custom_recluster_ylim) &&
+  !is.null(input$recluster_y_max) &&
+  is.finite(input$recluster_y_max)
+) {
 
+  input$recluster_y_max * 0.95
+
+} else {
+
+  max(
+    df_protein$Mean_Intensity,
+    na.rm = TRUE
+  )
+
+}
 facet_color_df <- data.frame(
   Recluster = factor(cluster_levels, levels = cluster_levels),
   x = min(df_protein$temperature, na.rm = TRUE),
-  y = max(df_protein$Mean_Intensity, na.rm = TRUE)
+  y = annotation_y
 )
 
   # colors
@@ -8387,22 +8943,33 @@ facet_wrap(
   labeller = labeller_fn
 ) +
 
-    labs(
-      title = "Reclustered comparison across datasets",
-      x = "Temperature (°C)",
-      y = "Relative abundance"
-    ) +
+labs(
+  x = "Temperature (°C)",
+  y = "Relative abundance"
+) +
 
-    theme_light(base_size = 14) +
-    theme(
-      panel.grid.major.x = element_blank(),
-      panel.grid.minor.x = element_blank(),
-      panel.border = element_rect(
-        color = "grey80",
-        fill = NA,
-        linewidth = 0.5
-      )
-    )
+theme_manuscript() +
+
+theme(
+  panel.grid = element_blank(),
+
+  panel.border = element_rect(
+    color = "grey80",
+    fill = NA,
+    linewidth = 0.5
+  ),
+
+  strip.background = element_rect(
+    fill = "white",
+    color = NA
+  ),
+
+  strip.text = element_text(
+    face = "bold",
+    size = FIG_AXIS_TEXT,
+    family = FIG_FONT
+  )
+)
 #y axis control
 if (
   isTRUE(input$custom_recluster_ylim) &&
@@ -8486,10 +9053,11 @@ output$download_reclustered_plot <- downloadHandler(
     ggplot2::ggsave(
       filename = file,
       plot = p,
-      device = "png",
-      width = 10,
-      height = 5,
-      dpi = 300
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
   }
 )
@@ -9170,18 +9738,43 @@ incProgress(
   detail = "Preparing labels"
 )
   # Base plot
-  p <- ggplot2::ggplot(results, ggplot2::aes(x = logFC, y = negLog10AdjP, color = Cluster)) +
-    ggplot2::geom_point() +
-    ggplot2::geom_hline(yintercept = -log10(0.05), linetype = "dashed", color = "red") +
-    ggplot2::geom_vline(
-  xintercept = c(lower_cutoff, upper_cutoff),
-  color = "black",
-  linetype = "dashed"
+p <- ggplot2::ggplot(
+  results,
+  ggplot2::aes(
+    x = logFC,
+    y = negLog10AdjP,
+    color = Cluster
+  )
 ) +
-    ggplot2::geom_text(data = label_data, ggplot2::aes(label = proteins),
-                       vjust = -1, size = 3, show.legend = FALSE) +
-    ggplot2::labs(x = "logFC", y = "-log10(adj.P.Val)") +
-    ggplot2::theme_minimal()
+  ggplot2::geom_point() +
+  ggplot2::geom_hline(
+    yintercept = -log10(0.05),
+    linetype = "dashed",
+    color = "red"
+  ) +
+  ggplot2::geom_vline(
+    xintercept = c(
+      lower_cutoff,
+      upper_cutoff
+    ),
+    color = "black",
+    linetype = "dashed"
+  ) +
+  ggplot2::geom_text(
+    data = label_data,
+    ggplot2::aes(
+      label = proteins
+    ),
+    vjust = -1,
+    size = FIG_AXIS_TEXT / 2.845,
+    family = FIG_FONT,
+    show.legend = FALSE
+  ) +
+  ggplot2::labs(
+    x = "logFC",
+    y = expression(-log[10]("adjusted P-value"))
+  ) +
+  theme_manuscript()
 incProgress(
   0.90,
   detail = "Generating volcano plot"
@@ -9209,11 +9802,14 @@ if (length(sel) > 0) {
     # Labels using FIRST COLUMN ("proteins")
     ggplot2::geom_text(
       data = highlight_df,
-      ggplot2::aes(label = proteins),
+      ggplot2::aes(
+        label = proteins
+      ),
       vjust = -1,
       color = "#FF8C00",
       fontface = "bold",
-      size = 4,
+      family = FIG_FONT,
+      size = FIG_AXIS_TEXT / 2.845,
       show.legend = FALSE
     )
 }
@@ -9243,12 +9839,14 @@ output$download_limma_volcano_plot <- downloadHandler(
     paste0("volcano_plot_", Sys.Date(), ".png")
   },
   content = function(file) {
-    ggsave(
+    ggplot2::ggsave(
       filename = file,
       plot = make_volcano_plot(),
-      width = 8,
-      height = 6,
-      dpi = 300
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
   }
 )
@@ -9843,16 +10441,38 @@ make_melting_curve_example_plot <- function() {
   # --------------------------------------------------------
   # Final Plot
   # --------------------------------------------------------
-  p <- ggplot(df_temp, aes(x = temp, y = y)) +
-    geom_point(aes(shape = rep, color = rep), size = 3, alpha = 0.8) +
-    geom_line(data = fit_df, aes(x = temp, y = y_pred), size = 1.3) +
-    labs(
-      title = protein_name,
-      x = "Temperature (°C)",
-      y = "Intensity",
-      shape = "Replicate"
+    p <- ggplot(
+      df_temp,
+      aes(
+        x = temp,
+        y = y
+      )
     ) +
-    theme_minimal(base_size = 14)
+      geom_point(
+        aes(
+          shape = rep,
+          color = rep
+        ),
+        size = 3,
+        alpha = 0.8
+      ) +
+      geom_line(
+        data = fit_df,
+        aes(
+          x = temp,
+          y = y_pred
+        ),
+        color = "black",
+        linewidth = 1.3
+      )+
+      labs(
+        title = protein_name,
+        x = "Temperature (°C)",
+        y = "Relative abundance",
+        shape = "Replicate",
+        color = "Replicate"
+      ) +
+      theme_manuscript()
 
   return(p)
 }
@@ -9867,8 +10487,7 @@ output$melting_curve_example_plot <- renderPlot({
 # =====================================================================
 # Tm distribution plot
 # =====================================================================
-
-output$tm_distribution_plot <- renderPlot({
+make_tm_distribution_plot <- function() {
 
   df <- tm_boxplot_data()
 
@@ -9879,7 +10498,7 @@ output$tm_distribution_plot <- renderPlot({
     )
   )
 
-  ggplot(
+  p <- ggplot(
     df,
     aes(
       x = Dataset,
@@ -9900,13 +10519,30 @@ output$tm_distribution_plot <- renderPlot({
       outlier.shape = NA
     ) +
 
-    theme_minimal(base_size = 14) +
-
     labs(
-      title = "Tm Distribution Across Datasets",
       x = NULL,
-      y = "Melting Temperature (Tm)"
+      y = "Melting temperature (°C)"
+    ) +
+
+    theme_manuscript() +
+
+    theme(
+      legend.position = "none",
+
+      axis.text.x = element_text(
+        angle = 45,
+        hjust = 1,
+        vjust = 1
+      )
     )
+
+  return(p)
+}
+
+output$tm_distribution_plot <- renderPlot({
+
+  make_tm_distribution_plot()
+
 })
 
 # =====================================================================
@@ -9918,66 +10554,43 @@ output$download_melting_curve_example_plot <- downloadHandler(
   },
   content = function(file) {
     p <- make_melting_curve_example_plot()
-    ggsave(
+    ggplot2::ggsave(
       filename = file,
       plot = p,
-      width = 8,
-      height = 6,
-      dpi = 300
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
   }
 )
 output$download_tm_distribution <- downloadHandler(
 
   filename = function() {
+
     paste0(
       "Tm_distribution_",
       Sys.Date(),
       ".png"
     )
+
   },
 
   content = function(file) {
 
-    df <- tm_boxplot_data()
+    ggplot2::ggsave(
+      filename = file,
+      plot = make_tm_distribution_plot(),
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
 
-    p <- ggplot(
-      df,
-      aes(
-        x = Dataset,
-        y = Tm,
-        fill = Dataset
-      )
-    ) +
-
-      geom_jitter(
-        width = 0.15,
-        alpha = 0.15,
-        color = "grey40"
-      ) +
-
-      geom_boxplot(
-        width = 0.5,
-        alpha = 0.8,
-        outlier.shape = NA
-      ) +
-
-      theme_minimal(base_size = 14) +
-
-      labs(
-        title = "Tm Distribution Across Datasets",
-        x = NULL,
-        y = "Melting Temperature (Tm)"
-      )
-
-ggsave(
-  filename = file,
-  plot = p,
-  width = 16,
-  height = 8,
-  dpi = 300
-)
   }
+
 )
 
   })
@@ -11258,7 +11871,20 @@ dotplot_reactive <- reactive({
     return(NULL)
   }
 
-  dotplot(result)
+p <- dotplot(result) +
+  theme_manuscript() +
+  theme(
+    plot.margin = margin(
+      t = 8,
+      r = 8,
+      b = 8,
+      l = 12,
+      unit = "pt"
+    )
+  )
+
+
+p
 
 })
     output$GO_dotplot <- renderPlot({
@@ -11304,15 +11930,21 @@ emapplot_reactive <- reactive({
 
   result <- pairwise_termsim(result)
 
-  tryCatch({
+    tryCatch({
 
-    emapplot(result)
+      p <- emapplot(result) +
+        theme_manuscript() +
+        theme(
+          panel.grid = element_blank()
+        )
 
-  }, error = function(e) {
+      p
 
-    NULL
+    }, error = function(e) {
 
-  })
+      NULL
+
+    })
 
 })
 output$GO_enrichment_plot <- renderPlot({
@@ -11400,20 +12032,55 @@ upsetplot_reactive <- reactive({
     return(NULL)
   }
 
-  upsetplot(result)
+  p <- upsetplot(result) +
+    theme_manuscript()
 
+  p
 
 })
-    output$GO_upset_plot <- renderPlot({
-      req(enrichment_results(), input$Select_cluster_ORA)
-      Cluster_selected <- as.numeric(gsub("Cluster ", "", input$Select_cluster_ORA))
-      result <- enrichment_results()[[Cluster_selected]]
-      if (is.null(result) || is.null(result@result) || !any(result@result$p.adjust < 0.05)) {
-        plot.new(); text(0.5, 0.5, "No enriched terms found", cex = 1.5)
-      } else {
-        upsetplot(result)
-      }
-    })
+output$GO_upset_plot <- renderPlot({
+
+  req(
+    enrichment_results(),
+    input$Select_cluster_ORA
+  )
+
+  Cluster_selected <- as.numeric(
+    gsub(
+      "Cluster ",
+      "",
+      input$Select_cluster_ORA
+    )
+  )
+
+  result <- enrichment_results()[[Cluster_selected]]
+
+  if (
+    is.null(result) ||
+    is.null(result@result) ||
+    !any(result@result$p.adjust < 0.05)
+  ) {
+
+    plot.new()
+
+    text(
+      0.5,
+      0.5,
+      "No enriched terms found",
+      cex = 1.5
+    )
+
+  } else {
+
+    p <- upsetplot_reactive()
+
+    req(p)
+
+    print(p)
+
+  }
+
+})
 
     output$GO_results_note <- renderText({
       req(enrichment_results(), input$Select_cluster_ORA)
@@ -11479,18 +12146,24 @@ output$download_go_dotplot <- downloadHandler(
 
   content = function(file) {
 
-ggsave(
-  file,
-  plot = dotplot_reactive(),
-  width = 12,
-  height = 8,
-  dpi = 300
-)
+    p <- dotplot_reactive()
 
+    req(p)
+
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
 
   }
 
 )
+
 output$download_go_enrichment_plot <- downloadHandler(
 
   filename = function() {
@@ -11503,28 +12176,24 @@ output$download_go_enrichment_plot <- downloadHandler(
 
   content = function(file) {
 
-ggsave(
-  file,
-  plot = emapplot_reactive() +
-    theme(
-      panel.background = element_rect(
-        fill = "white",
-        colour = "white"
-      ),
-      plot.background = element_rect(
-        fill = "white",
-        colour = "white"
-      )
-    ),
-  width = 12,
-  height = 8,
-  dpi = 300,
-  bg = "white"
-)
+    p <- emapplot_reactive()
+
+    req(p)
+
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
 
   }
 
 )
+
 output$download_go_upset_plot <- downloadHandler(
 
   filename = function() {
@@ -11537,20 +12206,19 @@ output$download_go_upset_plot <- downloadHandler(
 
   content = function(file) {
 
-png(
-  file,
-  width = 4000,
-  height = 3000,
-  res = 300
-)
+    p <- upsetplot_reactive()
 
-print(
-  upsetplot_reactive()
-)
+    req(p)
 
-dev.off()
-
-    dev.off()
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
+    )
 
   }
 
@@ -12103,41 +12771,177 @@ if (!is.null(gse@result)) {
       })
     }
 
-    # --- upsetplot ---
-    output$upsetplot2 <- renderPlot({
-      result <- gsea_result()
 
-      safePlot(function() {
-        if (is.null(result) || is.null(result@result) ||
-            !any(result@result$p.adjust < 0.05)) {
-          plot.new(); text(0.5, 0.5, "No enriched terms found", cex = 1.5)
-        } else {
-          message("[DEBUG] Rendering upsetplot...")
-          print(upsetplot(result))
-        }
-      }, "Error in upsetplot:")
-    })
+gsea_upsetplot_reactive <- reactive({
+
+  result <- gsea_result()
+
+  req(
+    !is.null(result),
+    !is.null(result@result)
+  )
+
+  if (!any(result@result$p.adjust < 0.05)) {
+    return(NULL)
+  }
+
+  p <- upsetplot(result) +
+    theme_manuscript()
+
+  p
+})
+    # --- upsetplot ---
+output$upsetplot2 <- renderPlot({
+
+  result <- gsea_result()
+
+  safePlot(
+    function() {
+
+      if (
+        is.null(result) ||
+        is.null(result@result) ||
+        !any(result@result$p.adjust < 0.05)
+      ) {
+
+        plot.new()
+
+        text(
+          0.5,
+          0.5,
+          "No enriched terms found",
+          cex = 1.5
+        )
+
+      } else {
+
+        message("[DEBUG] Rendering upsetplot...")
+
+        p <- gsea_upsetplot_reactive()
+
+        req(p)
+
+        print(p)
+      }
+
+    },
+    "Error in upsetplot:"
+  )
+
+})
+
+
+gsea_ridgeplot_reactive <- reactive({
+
+  result <- gsea_result()
+
+  req(
+    !is.null(result),
+    !is.null(result@result)
+  )
+
+  if (!any(result@result$p.adjust < 0.05)) {
+    return(NULL)
+  }
+
+  p <- ridgeplot(result) +
+    theme_manuscript() +
+    theme(
+      axis.text.y = element_text(
+        size = FIG_AXIS_TEXT,
+        family = FIG_FONT
+      )
+    )
+
+  p
+})
+gsea_ridgeplot_download <- reactive({
+
+  result <- gsea_result()
+
+  req(
+    !is.null(result),
+    !is.null(result@result)
+  )
+
+  # Keep significant GO terms only
+  sig_results <- result@result %>%
+    dplyr::filter(
+      !is.na(p.adjust),
+      p.adjust < 0.05
+    ) 
+
+  req(nrow(sig_results) > 0)
+
+  # Select only the top 8 GO terms
+  top_ids <- sig_results %>%
+    dplyr::slice_head(n = 13) %>%
+    dplyr::pull(ID)
+
+  # Make a plotting-only copy of the GSEA result
+  result_plot <- result
+
+  # Restrict the result slot itself to those 8 terms
+  result_plot@result <- result_plot@result[
+    result_plot@result$ID %in% top_ids,
+    ,
+    drop = FALSE
+  ]
+
+  p <- enrichplot::ridgeplot(
+    result_plot,
+    showCategory = 13
+  ) +
+    theme_manuscript() +
+    theme(
+      axis.text.y = element_text(
+        size = FIG_AXIS_TEXT,
+        family = FIG_FONT
+      )
+    )
+
+  p
+})
 
     # --- ridgeplot ---
-    output$ridgeplot <- renderPlot({
-      result <- gsea_result()
-      
+output$ridgeplot <- renderPlot({
 
-      safePlot(function() {
-        if (is.null(result) || is.null(result@result) ||
-            !any(result@result$p.adjust < 0.05)) {
-          plot.new(); text(0.5, 0.5, "No enriched terms found", cex = 1.5)
-        } else {
-          message("[DEBUG] Rendering ridgeplot...")
-          print(
-          ridgeplot(result) +
-            theme(
-              axis.text.y = element_text(size = 8)
-            )
+  result <- gsea_result()
+
+  safePlot(
+    function() {
+
+      if (
+        is.null(result) ||
+        is.null(result@result) ||
+        !any(result@result$p.adjust < 0.05)
+      ) {
+
+        plot.new()
+
+        text(
+          0.5,
+          0.5,
+          "No enriched terms found",
+          cex = 1.5
         )
-        }
-      }, "Error in ridgeplot:")
-    })
+
+      } else {
+
+        message("[DEBUG] Rendering ridgeplot...")
+
+        p <- gsea_ridgeplot_reactive()
+
+        req(p)
+
+        print(p)
+      }
+
+    },
+    "Error in ridgeplot:"
+  )
+
+})
 
     # --- gseaplot2 ---
 
@@ -12194,7 +12998,8 @@ selectizeInput(
 )
 
 })
-output$gseaplot2 <- renderPlot({
+
+gsea_running_score_reactive <- reactive({
 
   req(input$gsea_term)
 
@@ -12205,20 +13010,48 @@ output$gseaplot2 <- renderPlot({
     !is.null(result@result)
   )
 
-  safePlot(function() {
+  valid_terms <- input$gsea_term[
+    input$gsea_term %in%
+      result@result$ID
+  ]
 
-    valid_terms <- input$gsea_term[
-      input$gsea_term %in% result@result$ID
+  req(length(valid_terms) > 0)
+
+  # Maximum number of GO terms displayed simultaneously
+  MAX_GSEA_PLOT_TERMS <- 13
+
+  if (length(valid_terms) > MAX_GSEA_PLOT_TERMS) {
+
+    valid_terms <- valid_terms[
+      seq_len(MAX_GSEA_PLOT_TERMS)
     ]
 
-    req(length(valid_terms) > 0)
+  }
 
-    gseaplot2(
-      result,
-      geneSetID = valid_terms
-    )
+p <- enrichplot::gseaplot2(
+  result,
+  geneSetID = valid_terms,
+  rel_heights = c(1.5, 0.5, 1)
+)
 
-  }, "Error in gseaplot2:")
+
+  p
+})
+
+output$gseaplot2 <- renderPlot({
+
+  safePlot(
+    function() {
+
+      p <- gsea_running_score_reactive()
+
+      req(p)
+
+      print(p)
+
+    },
+    "Error in gseaplot2:"
+  )
 
 })
 output$download_upsetplot2 <- downloadHandler(
@@ -12233,20 +13066,19 @@ output$download_upsetplot2 <- downloadHandler(
 
   content = function(file) {
 
-    png(
-      file,
-      width = 2000,
-      height = 1600,
-      res = 300
+    p <- gsea_upsetplot_reactive()
+
+    req(p)
+
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
-
-    result <- gsea_result()
-
-    print(
-      upsetplot(result)
-    )
-
-    dev.off()
 
   }
 
@@ -12263,20 +13095,19 @@ output$download_ridgeplot <- downloadHandler(
 
   content = function(file) {
 
-    png(
-      file,
-      width = 2000,
-      height = 1600,
-      res = 300
+    p <- gsea_ridgeplot_download()
+
+    req(p)
+
+    ggplot2::ggsave(
+      filename = file,
+      plot = p,
+      width = FIG_WIDTH,
+      height = FIG_HEIGHT,
+      units = "in",
+      dpi = FIG_DPI,
+      bg = "white"
     )
-
-    result <- gsea_result()
-
-    print(
-      ridgeplot(result)
-    )
-
-    dev.off()
 
   }
 
@@ -12293,28 +13124,21 @@ output$download_gseaplot2 <- downloadHandler(
 
   content = function(file) {
 
-    png(
-      file,
-      width = 2200,
-      height = 1800,
-      res = 300
+    p <- gsea_running_score_reactive()
+
+    req(p)
+
+    grDevices::png(
+      filename = file,
+      width = FIG_WIDTH * FIG_DPI,
+      height = FIG_HEIGHT * FIG_DPI,
+      res = FIG_DPI,
+      bg = "white"
     )
 
-    result <- gsea_result()
+    print(p)
 
-    valid_terms <- input$gsea_term[
-      input$gsea_term %in%
-        result@result$ID
-    ]
-
-    print(
-      gseaplot2(
-        result,
-        geneSetID = valid_terms
-      )
-    )
-
-    dev.off()
+    grDevices::dev.off()
 
   }
 
