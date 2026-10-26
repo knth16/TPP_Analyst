@@ -125,7 +125,7 @@ icon("angles-left")
 body <- dashboardBody(
 
 tags$head(
-
+tags$title("TPP Analyst"),
 tags$script(HTML("
 
 $(document).on('click', '#sidebarHandle', function () {
@@ -1780,4 +1780,14 @@ tags$head(
 )
       # JavaScript handler
 
-ui <- dashboardPage(header, sidebar, body)
+ui <- tagList(
+  tags$head(
+    tags$title("TPP Analyst")
+  ),
+
+  dashboardPage(
+    header,
+    sidebar,
+    body
+  )
+)
