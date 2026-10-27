@@ -44,7 +44,7 @@ Click:
 
 **Fetch data**
 
-![Fetching annotations](images/GO/Fetch.png){#fig-experimental-design width=85%}
+![Fetching annotations](images/GO/Fetch.png){#fig-experimental-design width=55%}
 
 to retrieve the required protein annotation information.
 
@@ -386,7 +386,7 @@ TPP Analyst provides two ranking metrics:
 
 The ranking statistic determines the order of proteins provided to GSEA.
 
-![Run GSEA](images/GO/RunGSEA.png){#fig-experimental-design width=85%}
+![Run GSEA](images/GO/RunGSEA.png){#fig-experimental-design width=60%}
 
 ## t-statistic
 

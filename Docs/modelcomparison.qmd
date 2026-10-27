@@ -58,7 +58,7 @@ Select the two datasets to compare using:
 
 Although these controls are labelled Vehicle and Treatment, they represent the two experimental datasets that will be compared.
 
-![TPP control panel](images/modelcomparison/PanelTPP.png){#fig-experimental-design width=85%}
+![TPP control panel](images/modelcomparison/PanelTPP.png){#fig-experimental-design width=55%}
 
 The selected datasets should correspond to biologically meaningful comparison groups.
 
@@ -361,7 +361,7 @@ TPP and NPARC can therefore provide complementary evidence for changes in protei
 
 # Selecting conditions for NPARC
 
-![NPARC control panel](images/modelcomparison/panelNPARC.png){#fig-experimental-design width=85%}
+![NPARC control panel](images/modelcomparison/panelNPARC.png){#fig-experimental-design width=55%}
 
 Select the two datasets to compare using:
 

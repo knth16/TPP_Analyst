@@ -321,7 +321,7 @@ to provide custom initial values for:
 - **k**
 - **p (plateau)**
 
-![Manual starting values.](images/modelfitting/Manual.png){#fig-experimental-design width=85%}
+![Manual starting values.](images/modelfitting/Manual.png){#fig-experimental-design width=60%}
 
 These values are used as starting guesses for the nonlinear fit.
 
