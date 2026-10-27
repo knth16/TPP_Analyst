@@ -1522,7 +1522,7 @@
     "href": "index.html",
     "title": "TPP Analyst",
     "section": "",
-    "text": "Figure 1: welcome.\n\n\n\nTPP Analyst is a free and open-source web application designed for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.\nTPP Analyst provides an integrated workflow for processing, exploring, and statistically analyzing thermal proteomics datasets through an interactive graphical interface.\nThis manual provides step-by-step instructions for using the different modules available in TPP Analyst.\n\n\nThe analysis workflow is organized into the following main stages:\n\nData input\nQuality control\nNormalization\nClustering\nModel fitting\nProtein plots\nGO analysis\nComparison models\n\nEach section of this manual corresponds to a major component of the application.\n\n\n\nNew users should begin with the Getting Started section, followed by the Input Data section to learn how to prepare and upload the required files.\n\n\n\n\n\n\nQuality Control\nNormalization\n\n\n\n\n\nClustering\n\n\n\n\n\nProtein Plots\n\n\n\n\n\nModel Fitting\nModel Comparison\n\n\n\n\n\nGene Ontology Analysis\n\n\n\n\n\nThe manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.",
+    "text": "Figure 1: welcome.\n\n\n\nTPP Analyst is a free and open-source web application designed for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.\nTPP Analyst provides an integrated workflow for processing, exploring, and statistically analyzing thermal proteomics datasets through an interactive graphical interface.\nThis manual provides step-by-step instructions for using the different modules available in TPP Analyst.\n\n\nThe analysis workflow is organized into the following main stages:\n\nData input\nQuality control\nNormalization\nClustering\nModel fitting\nProtein plots\nGO analysis\nComparison models\n\nEach section of this manual corresponds to a major component of the application.\n\n\n\nNew users should begin with the Getting Started section, followed by the Input Data section to learn how to prepare and upload the required files.\n\n\n\n\n\n\nQuality Control\nNormalization\n\n\n\n\n\nClustering\n\n\n\n\n\nProtein Plots\n\n\n\n\n\nModel Fitting\nModel Comparison\n\n\n\n\n\nGene Ontology Analysis\n\n\n\n\n\nThe manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.\n\n\n\nThe source code for TPP Analyst is available on GitHub.",
     "crumbs": [
       "Home"
     ]
@@ -1563,6 +1563,16 @@
     "title": "TPP Analyst",
     "section": "",
     "text": "The manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "index.html#github-repository",
+    "href": "index.html#github-repository",
+    "title": "TPP Analyst",
+    "section": "",
+    "text": "The source code for TPP Analyst is available on GitHub.",
     "crumbs": [
       "Home"
     ]
