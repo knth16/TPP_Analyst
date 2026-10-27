@@ -278,6 +278,16 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="welcome-to-tpp-analyst" class="level1">
 <h1>Welcome to TPP Analyst</h1>
+<div id="fig-experimental-design" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/input-data/welcome.png" class="img-fluid figure-img" style="width:85.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-experimental-design-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: welcome.
+</figcaption>
+</figure>
+</div>
 <p><strong>TPP Analyst</strong> is a free and open-source web application designed for the analysis and visualization of quantitative Thermal Proteome Profiling (TPP) data.</p>
 <p>TPP Analyst provides an integrated workflow for processing, exploring, and statistically analyzing thermal proteomics datasets through an interactive graphical interface.</p>
 <p>This manual provides step-by-step instructions for using the different modules available in TPP Analyst.</p>
@@ -417,7 +427,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/knth16\.github\.io\/TPP_Analyst\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
