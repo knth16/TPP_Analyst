@@ -1782,7 +1782,12 @@ tags$head(
 
 ui <- tagList(
   tags$head(
-    tags$title("TPP Analyst")
+    tags$title("TPP Analyst"),
+    tags$link(
+      rel = "icon",
+      type = "image/png",
+      href = "logo.png"
+    )
   ),
 
   dashboardPage(
