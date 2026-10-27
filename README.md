@@ -4,21 +4,81 @@ TPP Analyst can be run in three different ways depending on your needs and exper
 
 ## Option 1: Run the Pre-Built Docker Image (Recommended)
 
-For this and the option 2 you will need to install Docker desktop on your computer.
+TPP Analyst is available as a pre-built Docker image containing all required R packages, Bioconductor packages, and system dependencies.
 
-This is the easiest and most reliable option. The Docker image contains all required R packages, Bioconductor packages, and system dependencies.
+This is the simplest and most reliable installation method and is recommended for most users.
+
+### Step 1: Install Docker Desktop
+
+Download and install Docker Desktop for your operating system:
+
+https://www.docker.com/products/docker-desktop/
+
+After installation, launch Docker Desktop and ensure it is running before continuing.
+
+### Step 2: Run TPP Analyst
+
+Open a terminal (Command Prompt, PowerShell, Terminal, or Bash) and run:
 
 ```bash
 docker run -p 3838:3838 knth16/tppanalyst:latest
 ```
 
-Then open:
+The first time you run this command, Docker will automatically download the image from Docker Hub. The image is approximately 5-6 GB and may take several minutes to download depending on your internet connection.
+
+Docker automatically selects the correct image for your system, including:
+
+- Windows (Intel/AMD)
+- Linux (Intel/AMD)
+- Intel Macs
+- Apple Silicon Macs (M1/M2/M3/M4)
+
+### Step 3: Open the Application
+
+Open your web browser and navigate to:
 
 ```text
 http://localhost:3838
 ```
 
-This option guarantees that TPP Analyst runs in the exact environment in which it was developed and tested.
+TPP Analyst should now be available.
+
+### Alternative: Run Through Docker Desktop
+
+If you prefer using Docker Desktop instead of the command line:
+
+1. Open Docker Desktop.
+2. Navigate to **Images**.
+3. Search for:
+
+```text
+knth16/tppanalyst:latest
+```
+
+4. Pull the image.
+5. Click **Run**.
+6. Configure the port mapping:
+
+```text
+Host Port: 3838
+Container Port: 3838
+```
+
+7. Start the container.
+8. Open:
+
+```text
+http://localhost:3838
+```
+
+in your browser.
+
+### Notes
+
+- No additional configuration is required.
+- The Docker image contains all required software dependencies.
+- This option guarantees that TPP Analyst runs in the same environment in which it was developed and tested.
+- Docker automatically downloads the appropriate image for Intel/AMD and Apple Silicon processors.
 
 ---
 

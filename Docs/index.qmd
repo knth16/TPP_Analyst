@@ -58,3 +58,7 @@ New users should begin with the [Getting Started](getting-started.qmd) section, 
 ## About this manual
 
 The manual follows the same general progression as the TPP Analyst interface. Screenshots, parameter descriptions, recommendations, and examples are provided throughout the documentation to guide users through each stage of the analysis.
+
+## Github repository
+
+The source code for TPP Analyst is available on [GitHub](https://github.com/knth16/TPP_Analyst.git).
