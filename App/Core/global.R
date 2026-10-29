@@ -1,5 +1,10 @@
 #remember to also update the ui.R file with the new version number in the sidebar footer
-APP_VERSION <- "1.0.1"
+APP_VERSION <- "1.0.3"
+
+
+#file size config
+options(shiny.maxRequestSize = 200 * 1024^2) #200MB
+
 #packages
 library(shiny)
 library(shinydashboard)

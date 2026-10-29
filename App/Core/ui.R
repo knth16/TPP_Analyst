@@ -125,7 +125,7 @@ sidebar <- dashboardSidebar(
     font-size:11px;
     list-style:none;
   ",
-  "TPP Analyst v1.0.1"
+  "TPP Analyst v1.0.3"
 )
 
 
