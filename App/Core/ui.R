@@ -89,18 +89,19 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
 
     id = "tabs",
-tags$li(
-id = "sidebarHandle",
-style = "
-text-align:right;
-padding:12px 14px;
-color:white;
-cursor:pointer;
-list-style:none;
-border-bottom:1px solid rgba(255,255,255,0.08);
-",
-icon("angles-left")
-),
+
+    tags$li(
+      id = "sidebarHandle",
+      style = "
+      text-align:right;
+      padding:12px 14px;
+      color:white;
+      cursor:pointer;
+      list-style:none;
+      border-bottom:1px solid rgba(255,255,255,0.08);
+      ",
+      icon("angles-left")
+    ),
 
     menuItem("Welcome", tabName = "welcome", icon = icon("house")),
     menuItem("Data Input", tabName = "data_input", icon = icon("database")),
@@ -114,11 +115,23 @@ icon("angles-left")
       "Comparison Models",
       tabName = "condition_models",
       icon = icon("scale-balanced")
-    )
+    ),
+    tags$li(
+  style = "
+    margin-top:20px;
+    padding:15px;
+    text-align:center;
+    color:#9CA3AF;
+    font-size:11px;
+    list-style:none;
+  ",
+  "TPP Analyst v1.0.0"
+)
+
+
   )
 
 
-  
 )
 
 
@@ -456,6 +469,7 @@ tags$link(
   gap:16px;
 
 }
+
 /* ==========================
    Font
    ========================== */
