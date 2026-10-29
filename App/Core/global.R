@@ -1,10 +1,5 @@
-# ==========================================================
-# TPP Analyst Version
-# ==========================================================
-
-APP_VERSION <- "1.0.0"
-
-
+#remember to also update the ui.R file with the new version number in the sidebar footer
+APP_VERSION <- "1.0.1"
 #packages
 library(shiny)
 library(shinydashboard)
@@ -43,6 +38,7 @@ library(knitr)
 library(callr)
 library(processx)
 library(TPP)
+library(jsonlite)
 
 #####################################################################################
 
@@ -134,6 +130,38 @@ theme_manuscript <- function() {
 
 
 #functions
+
+#Version checker
+check_latest_version <- function() {
+
+  tryCatch({
+
+    release_info <- jsonlite::fromJSON(
+      "https://api.github.com/repos/knth16/TPP_Analyst/releases/latest"
+    )
+
+    latest_version <- gsub("^v", "", release_info$tag_name)
+
+    list(
+      latest = latest_version,
+      current = APP_VERSION,
+      update_available =
+        utils::compareVersion(latest_version, APP_VERSION) > 0
+    )
+
+  }, error = function(e) {
+
+    list(
+      latest = APP_VERSION,
+      current = APP_VERSION,
+      update_available = FALSE
+    )
+
+  })
+
+}
+
+
 
 
 clean_names_safe <- function(df) {

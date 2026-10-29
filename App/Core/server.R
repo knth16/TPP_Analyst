@@ -1,6 +1,32 @@
 
 server <- function(input, output, session) {
 
+
+
+#version checker
+
+  version_info <- check_latest_version()
+
+  if (version_info$update_available) {
+
+    showNotification(
+      paste0(
+        "A newer version (v",
+        version_info$latest,
+        ") is available. Docker users should run: docker pull knth16/tppanalyst:latest"
+      ),
+      duration = NULL,
+      type = "warning"
+    )
+
+
+  }
+
+
+
+
+
+
   ############################################################
   #Homepage
 output$welcome_text <- renderUI({
