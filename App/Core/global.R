@@ -1,5 +1,5 @@
 #remember to also update the ui.R file with the new version number in the sidebar footer
-APP_VERSION <- "1.0.3"
+APP_VERSION <- "1.1.0"
 
 
 #file size config
@@ -135,6 +135,8 @@ theme_manuscript <- function() {
 
 
 #functions
+
+
 
 #Version checker
 check_latest_version <- function() {
@@ -6340,6 +6342,42 @@ color = "#0EA5A5"
 )
         ),
 
+
+        checkboxInput(
+  ns("custom_heatmap_scale"),
+  "Set custom heatmap color scale",
+  FALSE
+),
+
+conditionalPanel(
+  condition = sprintf(
+    "input['%s'] == true",
+    ns("custom_heatmap_scale")
+  ),
+
+  fluidRow(
+
+    column(
+      6,
+      numericInput(
+        ns("heatmap_min"),
+        "Heatmap minimum",
+        value = 0
+      )
+    ),
+
+    column(
+      6,
+      numericInput(
+        ns("heatmap_max"),
+        "Heatmap maximum",
+        value = 2
+      )
+    )
+
+  )
+),
+
         downloadButton(ns("download_clustering_heatmap"), "Download heatmap")
       )
     ),
@@ -6526,6 +6564,42 @@ color = "#0EA5A5"
 color = "#0EA5A5"
 )
         ),
+
+
+        checkboxInput(
+  ns("custom_heatmap_scale_recluster"),
+  "Set custom heatmap color scale",
+  FALSE
+),
+
+conditionalPanel(
+  condition = sprintf(
+    "input['%s'] == true",
+    ns("custom_heatmap_scale_recluster")
+  ),
+
+  fluidRow(
+
+    column(
+      6,
+      numericInput(
+        ns("heatmap_min_recluster"),
+        "Heatmap minimum",
+        value = 0
+      )
+    ),
+
+    column(
+      6,
+      numericInput(
+        ns("heatmap_max_recluster"),
+        "Heatmap maximum",
+        value = 2
+      )
+    )
+
+  )
+),
 
         downloadButton(
           ns("download_reclustered_heatmap"),
@@ -7259,6 +7333,17 @@ incProgress(
   0.90,
   detail = "Rendering heatmap"
 )
+heatmap_limits <- if (
+  isTRUE(input$custom_heatmap_scale) &&
+  !is.null(input$heatmap_min) &&
+  !is.null(input$heatmap_max) &&
+  input$heatmap_min < input$heatmap_max
+) {
+  c(input$heatmap_min, input$heatmap_max)
+} else {
+  range(df_long$Intensity, na.rm = TRUE)
+}
+
 p <- ggplot() +
 geom_text(
   data = dataset_label_df,
@@ -7278,12 +7363,14 @@ geom_text(
   ) +
 
 
+
 scale_fill_gradientn(
   colours = colors,
-  breaks = pretty(range(df_long$Intensity, na.rm = TRUE), n = 5),
-  name = "Intensity",
-  limits = range(df_long$Intensity, na.rm = TRUE)
-) +
+  limits = heatmap_limits,
+  oob = scales::squish,
+  breaks = pretty(heatmap_limits, n = 5),
+  name = "Intensity"
+)+
 
   ggnewscale::new_scale_fill() +
 
@@ -8389,6 +8476,17 @@ incProgress(
   0.90,
   detail = "Rendering heatmap"
 )
+heatmap_limits_reclust <- if (
+  isTRUE(input$custom_heatmap_scale_recluster) &&
+  !is.null(input$heatmap_min_recluster) &&
+  !is.null(input$heatmap_max_recluster) &&
+  input$heatmap_min_recluster < input$heatmap_max_recluster
+) {
+  c(input$heatmap_min_recluster, input$heatmap_max_recluster)
+} else {
+  range(df_long$Intensity, na.rm = TRUE)
+}
+
 p <- ggplot() +
 
 geom_text(
@@ -8409,12 +8507,13 @@ geom_text(
       aes(x = Sample, y = y_index, fill = Intensity)
     ) +
 
-    scale_fill_gradientn(
-      colours = colors,
-      breaks = pretty(range(df_long$Intensity, na.rm = TRUE), n = 5),
-      name = "Intensity",
-      limits = range(df_long$Intensity, na.rm = TRUE)
-    ) +
+scale_fill_gradientn(
+  colours = colors,
+  limits = heatmap_limits_reclust,
+  oob = scales::squish,
+  breaks = pretty(heatmap_limits_reclust, n = 5),
+  name = "Intensity"
+) +
 
     ggnewscale::new_scale_fill() +
 
@@ -10537,6 +10636,14 @@ make_tm_distribution_plot <- function() {
     )
   )
 
+count_df <- df %>%
+  dplyr::group_by(Dataset) %>%
+  dplyr::summarise(
+    n = dplyr::n(),
+    y = max(Tm, na.rm = TRUE) + 2,
+    .groups = "drop"
+  )
+
   p <- ggplot(
     df,
     aes(
@@ -10557,6 +10664,17 @@ make_tm_distribution_plot <- function() {
       alpha = 0.8,
       outlier.shape = NA
     ) +
+    geom_text(
+  data = count_df,
+  aes(
+    x = Dataset,
+    y = y,
+    label = paste0("n = ", n)
+  ),
+  inherit.aes = FALSE,
+  fontface = "bold",
+  size = 5
+) +
 
     labs(
       x = NULL,

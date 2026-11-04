@@ -125,7 +125,7 @@ sidebar <- dashboardSidebar(
     font-size:11px;
     list-style:none;
   ",
-  "TPP Analyst v1.0.3"
+  "TPP Analyst v1.1.0"
 )
 
 
@@ -1137,18 +1137,49 @@ a.action-button:hover .fas {
 
     border-bottom: none !important;
 
-    display: flex;
+    display: flex !important;
+
+    flex-wrap: nowrap !important;
+
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+
+    white-space: nowrap;
 
     gap: 6px;
 
+    padding-bottom: 8px;   /* creates space above scrollbar */
+
     margin-bottom: 12px;
+
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent) transparent;
+
+}
+.nav-tabs > li {
+
+    flex: 0 0 auto;
+
+    margin-bottom: 0 !important;
+
+}
+.nav-tabs::-webkit-scrollbar {
+
+    height: 8px;
 
 }
 
+.nav-tabs::-webkit-scrollbar-thumb {
 
-.nav-tabs > li {
+    background: var(--color-accent);
 
-    margin-bottom: 0 !important;
+    border-radius: 999px;
+
+}
+
+.nav-tabs::-webkit-scrollbar-track {
+
+    background: transparent;
 
 }
 
@@ -1165,7 +1196,7 @@ a.action-button:hover .fas {
 
     font-weight: 500 !important;
 
-    padding: 10px 18px !important;
+    padding: 8px 14px !important;
 
     transition: all 0.2s ease;
 

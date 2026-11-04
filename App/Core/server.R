@@ -22,10 +22,51 @@ server <- function(input, output, session) {
 
   }
 
+#empty page handler
+empty_analysis_page <- function(
+  title,
+  icon_name,
+  description
+) {
 
+  div(
+    style = "
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:300px;
+      text-align:center;
+      color:#64748b;
+    ",
 
+    icon(
+      icon_name,
+      style = "
+        font-size:50px;
+        color:#0EA5A5;
+        margin-bottom:15px;
+      "
+    ),
 
+    tags$h3(
+      style = "
+        margin-top:0;
+        color:#1E3A5F;
+      ",
+      title
+    ),
 
+    tags$p(
+      style = "
+        max-width:500px;
+        font-size:15px;
+      ",
+      description
+    )
+  )
+
+}
 
   ############################################################
   #Homepage
@@ -502,6 +543,8 @@ processed <- processedDataModuleServer(
   organismMapping = selected_organisms,
   customProteinMapping = custom_protein_mapping
 )
+
+
 
 available_organisms <- c(
   "Homo sapiens",
@@ -1805,9 +1848,24 @@ analysis_cache <- reactiveValues()
 
 #QC tab - missing values and zero values
 output$qc_tabs_ui <- renderUI({
-  req(processed$data())
 
-  datasets <- processed$data()
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
+  )
+
+if (is.null(datasets)) {
+
+  return(
+    empty_analysis_page(
+      title = "Quality Control",
+      icon_name = "search",
+      description = "Load an example dataset or upload your own files in the Data Input section to begin quality control analysis."
+    )
+  )
+
+}
 
   tabs <- lapply(names(datasets), function(name) {
     tabPanel(
@@ -1817,10 +1875,7 @@ output$qc_tabs_ui <- renderUI({
     )
   })
 
-  do.call(tabsetPanel, c(
-    list(id = "qc_dataset_tabs"),
-    tabs
-  ))
+  do.call(tabsetPanel, c(list(id = "qc_dataset_tabs"), tabs))
 })
 
 
@@ -2283,8 +2338,48 @@ if(
   )
 
 }
+significant_005_allfilters <- 0
+significant_001_allfilters <- 0
 
+if(
+  length(pass_cols) > 0 &&
+  length(pval_cols) > 0
+){
 
+  pass_all <- apply(
+    summary_tbl[, pass_cols, drop = FALSE],
+    1,
+    function(x) all(x, na.rm = TRUE)
+  )
+
+  sig005_all_reps <- apply(
+    summary_tbl[, pval_cols, drop = FALSE],
+    1,
+    function(x){
+      x <- x[is.finite(x)]
+      length(x) > 0 && all(x < 0.05)
+    }
+  )
+
+  sig001_all_reps <- apply(
+    summary_tbl[, pval_cols, drop = FALSE],
+    1,
+    function(x){
+      x <- x[is.finite(x)]
+      length(x) > 0 && all(x < 0.01)
+    }
+  )
+
+  significant_005_allfilters <- sum(
+    pass_all & sig005_all_reps,
+    na.rm = TRUE
+  )
+
+  significant_001_allfilters <- sum(
+    pass_all & sig001_all_reps,
+    na.rm = TRUE
+  )
+}
 
 proteins_with_tm <- sum(
   apply(
@@ -2331,7 +2426,11 @@ proteins_passing_all_and_tm =
       ) < 0.01,
       na.rm = TRUE
     ),
+significant_005_allfilters =
+  significant_005_allfilters,
 
+significant_001_allfilters =
+  significant_001_allfilters,
   median_dTm =
     median(
       apply(
@@ -2975,6 +3074,12 @@ s$proteins_passing_all_and_tm,
 
     "\nSignificant (adj p < 0.01): ",
     s$significant_001,
+
+    "\nSignificant (adj p < 0.05, passed all filters): ",
+s$significant_005_allfilters,
+
+"\nSignificant (adj p < 0.01, passed all filters): ",
+s$significant_001_allfilters,
 
     "\nMedian ΔTm: ",
     round(s$median_dTm, 2),
@@ -3892,6 +3997,7 @@ predictions_rv(
   fit_results$predictions
 )
 
+
 })
 
 #selector for fstats based on user input
@@ -4087,8 +4193,29 @@ make_model_comparison_plot <- function() {
   selected_protein <- selected_id()
   pc <- pred_curves()
 
+fallback_null_curve <- pc %>%
+  dplyr::filter(
+    modelType == "null"
+  ) %>%
+  dplyr::transmute(
+    Temperature,
+    fitted
+  )
+
+fallback_alt_curves <- pc %>%
+  dplyr::filter(
+    modelType == "alternative"
+  ) %>%
+  dplyr::transmute(
+    Temperature,
+    fitted,
+    Dataset
+  )
+
   plot_data <- combined_data %>%
     dplyr::filter(.data[[id_col]] == selected_protein)
+
+  
   
   x_grid <- seq(
   min(plot_data$Temperature),
@@ -4104,14 +4231,29 @@ for(ds in unique(plot_data$Dataset)) {
       Dataset == ds
     )
 
-  fit <- NPARC::fitSingleSigmoid(
+fit <- try(
+  NPARC::fitSingleSigmoid(
     x = ds_data$Temperature,
     y = ds_data$RelAbundance
-  )
+  ),
+  silent = TRUE
+)
 
-  if(inherits(fit, "try-error")) {
-    next
+if(inherits(fit, "try-error")) {
+
+  fallback_ds <- fallback_alt_curves %>%
+    dplyr::filter(
+      Dataset == ds
+    )
+
+  if(nrow(fallback_ds) > 0){
+
+    smooth_alt_curves[[as.character(ds)]] <- fallback_ds
+
   }
+
+  next
+}
 
   pred <- predict(
     fit,
@@ -4129,9 +4271,12 @@ for(ds in unique(plot_data$Dataset)) {
 smooth_alt_curves <- dplyr::bind_rows(
   smooth_alt_curves
 )
-null_fit <- NPARC::fitSingleSigmoid(
-  x = plot_data$Temperature,
-  y = plot_data$RelAbundance
+null_fit <- try(
+  NPARC::fitSingleSigmoid(
+    x = plot_data$Temperature,
+    y = plot_data$RelAbundance
+  ),
+  silent = TRUE
 )
 
 smooth_null_curve <- NULL
@@ -4148,8 +4293,15 @@ if(!inherits(null_fit, "try-error")) {
         x = x_grid
       )
     )
-
   )
+
+} else {
+
+  if(nrow(fallback_null_curve) > 0){
+
+    smooth_null_curve <- fallback_null_curve
+
+  }
 
 }
 
@@ -4812,95 +4964,181 @@ output$download_tpp_curve_plot <- downloadHandler(
 
 # #normalization
 output$norm_tabs_ui <- renderUI({
-  req(processed$data())
 
-  datasets <- processed$data()
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
+  )
+
+  if (is.null(datasets)) {
+
+    return(
+      empty_analysis_page(
+        title = "Normalization",
+        icon_name = "sliders",
+        description = "Load an example dataset or upload your own files in the Data Input section to begin normalization."
+      )
+    )
+
+  }
 
   tabs <- lapply(names(datasets), function(name) {
+
     tabPanel(
       title = name,
       value = name,
       normalizationPanelModuleUI(name)
     )
+
   })
 
-  do.call(tabsetPanel, c(
-    list(id = "norm_dataset_tabs"),
-    tabs
-  ))
+  do.call(
+    tabsetPanel,
+    c(
+      list(id = "norm_dataset_tabs"),
+      tabs
+    )
+  )
+
 })
 # === Clustering tabs ===
 output$clustering_tabs_ui <- renderUI({
-  req(processed$data())
 
-  datasets <- processed$data()
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
+  )
+
+  if (is.null(datasets)) {
+
+    return(
+      empty_analysis_page(
+        title = "Clustering",
+        icon_name = "diagram-project",
+        description = "Load an example dataset or upload your own files in the Data Input section to begin clustering analysis."
+      )
+    )
+
+  }
 
   tabs <- lapply(names(datasets), function(name) {
 
-    cluster_id <- paste0(name, "_", isolate(cluster_version()))
+    cluster_id <- paste0(
+      name,
+      "_",
+      isolate(cluster_version())
+    )
 
     tabPanel(
       title = name,
       value = cluster_id,
       clusterPanelModuleUI(cluster_id, name)
     )
+
   })
 
-  do.call(tabsetPanel, c(
-    list(id = "clust_dataset_tabs"),
-    tabs
-  ))
+  do.call(
+    tabsetPanel,
+    c(
+      list(id = "clust_dataset_tabs"),
+      tabs
+    )
+  )
+
 })
 
 
 #modelfitting UI
 output$model_fitting_tabs_ui <- renderUI({
-  req(processed$data())
 
-  datasets <- processed$data()
-
-tabs <- lapply(names(datasets), function(name) {
-
-  safe_id <- gsub(
-    "[^[:alnum:]_.+-]",
-    "_",
-    name
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
   )
 
-  tabPanel(
-    title = name,
-    value = name,
-    modelPanelModuleUI(
-      safe_id,
+  if (is.null(datasets)) {
+
+    return(
+      empty_analysis_page(
+        title = "Model Fitting",
+        icon_name = "chart-simple",
+        description = "Load an example dataset or upload your own files in the Data Input section to begin model fitting."
+      )
+    )
+
+  }
+
+  tabs <- lapply(names(datasets), function(name) {
+
+    safe_id <- gsub(
+      "[^[:alnum:]_.+-]",
+      "_",
       name
     )
-  )
-})
 
-  do.call(tabsetPanel, c(
-    list(id = "model_dataset_tabs"),
-    tabs
-  ))
+    tabPanel(
+      title = name,
+      value = name,
+      modelPanelModuleUI(
+        safe_id,
+        name
+      )
+    )
+
+  })
+
+  do.call(
+    tabsetPanel,
+    c(
+      list(id = "model_dataset_tabs"),
+      tabs
+    )
+  )
+
 })
 
 #protein plots UI
 output$protein_plots_tabs_ui <- renderUI({
-  req(processed$data())
 
-  datasets <- processed$data()
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
+  )
+
+  if (is.null(datasets)) {
+
+    return(
+      empty_analysis_page(
+        title = "Protein Plots",
+        icon_name = "chart-column",
+        description = "Load an example dataset or upload your own files in the Data Input section to visualize protein abundance profiles."
+      )
+    )
+
+  }
 
   tabs <- lapply(names(datasets), function(name) {
+
     tabPanel(
       title = name,
       value = name,
       protplotsPanelModuleUI(name)
     )
+
   })
 
-  do.call(tabsetPanel, c(
-    list(id = "protein_plots_tabs"),
-    tabs
-  ))
+  do.call(
+    tabsetPanel,
+    c(
+      list(id = "protein_plots_tabs"),
+      tabs
+    )
+  )
+
 })
 
 
@@ -4913,9 +5151,23 @@ output$protein_plots_tabs_ui <- renderUI({
 
 output$go_terms_tabs_ui <- renderUI({
 
-  req(processed$data())
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
+  )
 
-  datasets <- processed$data()
+  if (is.null(datasets)) {
+
+    return(
+      empty_analysis_page(
+        title = "GO Analysis",
+        icon_name = "dna",
+        description = "Load an example dataset or upload your own files in the Data Input section to perform Gene Ontology enrichment analysis."
+      )
+    )
+
+  }
 
 tabs <- lapply(names(datasets), function(name) {
 
@@ -5311,14 +5563,34 @@ observeEvent(plot_trigger(), {
 # Model Comparison tab
 output$model_comparison_ui <- renderUI({
 
-  req(processed$data())
+  datasets <- tryCatch(
+    processed$data(),
+    shiny.silent.error = function(e) NULL,
+    error = function(e) NULL
+  )
 
-  available_conditions <- names(processed$data())
+  if (is.null(datasets)) {
+
+    return(
+      empty_analysis_page(
+        title = "Comparison Models",
+        icon_name = "scale-balanced",
+        description = "Load an example dataset or upload your own files in the Data Input section to compare protein stability between conditions."
+      )
+    )
+
+  }
+
+  available_conditions <- names(datasets)
 
   if (length(available_conditions) < 2) {
 
     return(
-    tags$strong("At least two conditions are required.")
+      empty_analysis_page(
+        title = "Comparison Models",
+        icon_name = "scale-balanced",
+        description = "At least two datasets or experimental conditions are required to perform NPARC or TPP comparisons."
+      )
     )
 
   }
@@ -5568,9 +5840,37 @@ color = "#0EA5A5"
 
 output$tpp_analysis_ui <- renderUI({
 
-  req(processed$data())
+datasets <- tryCatch(
+  processed$data(),
+  shiny.silent.error = function(e) NULL,
+  error = function(e) NULL
+)
 
-  available_conditions <- names(processed$data())
+if (is.null(datasets)) {
+
+  return(
+    empty_analysis_page(
+      title = "TPP Analysis",
+      icon_name = "temperature-half",
+      description = "Load an example dataset or upload your own files in the Data Input section to perform thermal proteome profiling analysis."
+    )
+  )
+
+}
+
+available_conditions <- names(datasets)
+
+if (length(available_conditions) < 2) {
+
+  return(
+    empty_analysis_page(
+      title = "TPP Analysis",
+      icon_name = "temperature-half",
+      description = "At least two datasets or experimental conditions are required to perform TPP analysis."
+    )
+  )
+
+}
 
   fluidPage(
 
