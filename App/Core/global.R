@@ -1,5 +1,5 @@
 #remember to also update the ui.R file with the new version number in the sidebar footer
-APP_VERSION <- "1.1.0"
+APP_VERSION <- "1.1.1"
 
 
 #file size config
