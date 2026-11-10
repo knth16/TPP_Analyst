@@ -9309,6 +9309,11 @@ tagList(
 
             withSpinner(
               DTOutput(ns("limma_results_table"))
+            ),
+            br(),
+            downloadButton(
+              ns("download_limma_results"),
+              "Download Limma results"
             )
           ),
 
@@ -9385,8 +9390,13 @@ color = "#0EA5A5"
               div(
                 style = "overflow-x: auto;",
                 DTOutput(ns("melting_curve_results_table")) %>% withSpinner(
-color = "#0EA5A5"
-)
+                color = "#0EA5A5"
+                )
+              ),
+              br(),
+              downloadButton(
+                ns("download_melting_curve_results"),
+                "Download melting curve results"
               )
             ),
 
@@ -9741,6 +9751,27 @@ output$limma_results_table <- renderDT({
     DT::formatRound(columns = cols_to_round, digits = 2) %>%
     DT::formatSignif(columns = cols_to_exclude, digits = 3)
 })
+
+#download table
+output$download_limma_results <- downloadHandler(
+  filename = function() {
+    paste0(
+      "Limma_results_",
+      Sys.Date(),
+      ".csv"
+    )
+  },
+  content = function(file) {
+
+    write.csv(
+      base_results(),
+      file,
+      row.names = TRUE
+    )
+
+  }
+)
+
 
 
     # Reactive quantile cutoff
@@ -10498,6 +10529,33 @@ output$melting_curve_results_table <- DT::renderDataTable({
       ) %>%
         DT::formatRound(columns = names(df)[sapply(df, is.numeric)], digits = 2)
     })
+
+#download table
+output$download_melting_curve_results <- downloadHandler(
+
+  filename = function() {
+
+    paste0(
+      "Melting_curve_results_",
+      Sys.Date(),
+      ".csv"
+    )
+
+  },
+
+  content = function(file) {
+
+    write.csv(
+      fit_results(),
+      file,
+      row.names = FALSE
+    )
+
+  }
+
+)
+
+
 
     selected_protein <- reactive({
       req(input$melting_curve_results_table_rows_selected)
@@ -12398,7 +12456,7 @@ tagList(
   div(
     style = "padding-top:0px; margin-top:0px;",
     fluidRow(
-      box(title = "Control parameters", width = 6, status = "primary", solidHeader = TRUE,
+      box(title = "Control parameters", width = 4, status = "primary", solidHeader = TRUE,
           selectInput(
           ns("rank_by"),
           "Rank genes by:",
@@ -12482,7 +12540,32 @@ actionLink(
             value = TRUE
             ) 
           )
+      ),
+      box(
+        title = "GSEA result table",
+        width = 8,
+        status = "info",
+        solidHeader = TRUE,
+
+        DT::dataTableOutput(
+          ns("GSEA_results_table")
+        ),
+
+        br(),
+
+        downloadButton(
+          ns("download_gsea_results_table"),
+          "Download table"
+        ),
+
+        br(),
+        br(),
+
+        textOutput(
+          ns("GSEA_results_note")
+        )
       )
+
     ),
     fluidRow(
     box(title = "Upset plot", width = 12, status = "info", solidHeader = TRUE,
@@ -12916,6 +12999,70 @@ if (!is.null(gse@result)) {
   )
 })
 
+#get results into a table
+output$GSEA_results_table <- DT::renderDataTable({
+
+  result <- gsea_result()
+
+  req(
+    !is.null(result),
+    !is.null(result@result),
+    nrow(result@result) > 0
+  )
+
+  tbl <- result@result %>%
+    arrange(p.adjust)
+
+  numeric_cols <- names(tbl)[
+    sapply(tbl, is.numeric)
+  ]
+
+  DT::datatable(
+    tbl,
+    rownames = FALSE,
+    filter = "top",
+    options = list(
+      pageLength = 5,
+      scrollX = TRUE
+    )
+  ) %>%
+    DT::formatRound(
+      columns = numeric_cols,
+      digits = 3
+    )
+
+})
+
+#summary note
+output$GSEA_results_note <- renderText({
+
+  result <- gsea_result()
+
+  req(
+    !is.null(result),
+    !is.null(result@result)
+  )
+
+  summary_line <- capture.output(
+    show(result)
+  )
+
+  clean_line <- gsub(
+    "^#\\.\\.\\.",
+    "",
+    summary_line[
+      grep(
+        "enriched terms found",
+        summary_line
+      )
+    ]
+  )
+
+  clean_line
+
+})
+
+
     # --- Helper: safe plotting wrapper ---
     safePlot <- function(plot_expr, error_label) {
       tryCatch({
@@ -13211,6 +13358,39 @@ output$gseaplot2 <- renderPlot({
   )
 
 })
+#downloaders 
+output$download_gsea_results_table <- downloadHandler(
+
+  filename = function() {
+
+    paste0(
+      "GSEA_Table_",
+      Sys.Date(),
+      ".csv"
+    )
+
+  },
+
+  content = function(file) {
+
+    result <- gsea_result()
+
+    req(
+      !is.null(result),
+      !is.null(result@result)
+    )
+
+    write.csv(
+      result@result,
+      file,
+      row.names = FALSE
+    )
+
+  }
+
+)
+
+
 output$download_upsetplot2 <- downloadHandler(
 
   filename = function() {

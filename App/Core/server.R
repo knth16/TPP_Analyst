@@ -1625,6 +1625,42 @@ output$split_mode_ui <- renderUI({
   )
 
 })
+#split table downloader
+output$download_split_table <- downloadHandler(
+
+  filename = function() {
+
+    req(input$selected_split)
+
+    paste0(
+      input$selected_split,
+      ".csv"
+    )
+
+  },
+
+  content = function(file) {
+
+    req(
+      processed$data(),
+      input$selected_split
+    )
+
+    datasets <- processed$data()
+
+    df <- datasets[[input$selected_split]]
+
+    write.csv(
+      df,
+      file,
+      row.names = FALSE
+    )
+
+  }
+
+)
+
+
 #select how to split the datasets
 observe({
 
@@ -5147,7 +5183,7 @@ output$protein_plots_tabs_ui <- renderUI({
  plot_trigger <- reactiveVal(FALSE)
 
 
-#protein plots module
+
 
 output$go_terms_tabs_ui <- renderUI({
 
@@ -5446,7 +5482,7 @@ gene_name <- dfi$Gene.Names[1]
 output$protein_plot <- plotly::renderPlotly({
 
   df_long <- plot_data()
-
+  plot_mode <- input$plot_mode
 
 
   if (identical(df_long, "no_selection") ||
@@ -5459,10 +5495,31 @@ output$protein_plot <- plotly::renderPlotly({
   req(df_long)
   if (nrow(df_long) == 0) return(NULL)
 
-  max_y <- max(df_long$Mean + df_long$SD, na.rm = TRUE) * 1.1
+  if (plot_mode == "mean") {
 
-  # detect number of datasets
+  max_y <- max(
+    df_long$Mean + df_long$SD,
+    na.rm = TRUE
+  ) * 1.1
+
+} else {
+
+  max_y <- max(
+    df_long$Intensity,
+    na.rm = TRUE
+  ) * 1.1
+
+}
+
+n_proteins <- length(unique(df_long$Protein))
+
+ # detect number of datasets
   n_datasets <- length(unique(df_long$Dataset))
+
+  
+if (plot_mode == "mean") {
+
+ 
 
   # --------------------------
   # CONDITIONAL MAPPING
@@ -5543,9 +5600,93 @@ output$protein_plot <- plotly::renderPlotly({
   }
 
   # --------------------------
-  # ✅ RETURN PLOTLY
+  # RETURN PLOTLY
   # --------------------------
-  plotly::ggplotly(p, tooltip = "text")
+plotly::ggplotly(p, tooltip = "text")
+
+} else {
+
+  if (n_proteins == 1) {
+
+    p <- ggplot(
+      df_long,
+      aes(
+        x = as.numeric(temperature),
+        y = Intensity,
+        color = Replicate,
+        shape = Replicate,
+        linetype = Replicate,
+        group = Replicate,
+        text = tooltip
+      )
+    )
+
+  } else if (n_datasets == 1) {
+
+    p <- ggplot(
+      df_long,
+      aes(
+        x = as.numeric(temperature),
+        y = Intensity,
+        color = Protein,
+        shape = Replicate,
+        linetype = Replicate,
+        group = interaction(
+          Protein,
+          Replicate
+        ),
+        text = tooltip
+      )
+    )
+
+  } else {
+
+    p <- ggplot(
+      df_long,
+      aes(
+        x = as.numeric(temperature),
+        y = Intensity,
+        color = Dataset,
+        shape = Replicate,
+        linetype = Replicate,
+        group = interaction(
+          Dataset,
+          Protein,
+          Replicate
+        ),
+        text = tooltip
+      )
+    )
+
+  }
+
+  p <- p +
+    geom_point(size = 3) +
+    geom_line(size = 0.8) +
+    labs(
+      x = "Temperature (°C)",
+      y = "Normalized abundance"
+    ) +
+    theme_light(base_size = 14) +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor.x = element_blank(),
+      panel.border = element_rect(
+        color = "grey80",
+        fill = NA,
+        linewidth = 0.5
+      )
+    ) +
+    coord_cartesian(
+      ylim = c(0, max_y)
+    )
+
+  plotly::ggplotly(
+    p,
+    tooltip = "text"
+  )
+
+}
 
 })
 

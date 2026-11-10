@@ -1732,6 +1732,13 @@ title = HTML(
             div(
               style = "overflow-x: auto; width: 100%;",
               DTOutput("split_table")
+            ),
+
+            br(),
+
+            downloadButton(
+              "download_split_table",
+              "Download displayed dataset"
             )
 
           )
@@ -1776,8 +1783,19 @@ tabItem(
       status = "info",
       solidHeader = TRUE,
       plotlyOutput("protein_plot", height = 600) %>% withSpinner(
-color = "#0EA5A5"
-)
+      color = "#0EA5A5"
+      ),
+      radioButtons(
+        "plot_mode",
+        "Plot mode",
+        choices = c(
+          "Mean ± SD" = "mean",
+          "Show individual replicates" = "replicates"
+        ),
+        selected = "mean",
+        inline = TRUE
+      )
+
     )
   )
 ),
